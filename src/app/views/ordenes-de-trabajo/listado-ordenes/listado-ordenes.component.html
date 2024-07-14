@@ -1,0 +1,44 @@
+<c-card>
+    <c-card-header>
+        <h5>Listado ordenes de trabajo</h5>
+    </c-card-header>
+    <c-card-body>
+        <p>Ordenes de trabajo vigentes de la más reciente a la más antigua.</p>
+        <table cTable hover striped>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Fecha de creación</th>
+                    <th scope="col">Identificación</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Celular</th>
+                    <th scope="col">Cantidad de servicios</th>
+                    <th scope="col">Fecha de entrega</th>
+                    <th scope="col">Valor total</th>
+                    <th scope="col">Abonado</th>
+                    <th scope="col">Saldo</th>
+                    <th scope="col">Estado de pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (orden of ordenes; track orden.orderNumber) {
+                    <tr>
+                        <th scope="row">{{orden.orderNumber}}</th>
+                        <td>{{orden.date}}</td>
+                        <td>{{orden.identification}}</td>
+                        <td>{{orden.name}}</td>
+                        <td>{{orden.phone}}</td>
+                        <td>{{orden.productCount}}</td>
+                        <td>{{orden.deadline}}</td>
+                        <td>{{orden.totalValue | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
+                        <td>{{orden.payment | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
+                        <td>{{orden.balance | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
+                        <td>
+                            <c-badge color="{{orden.paymentStatus == 'Pendiente' ? 'warning' : 'success'}}" shape="rounded-pill">{{orden.paymentStatus}}</c-badge>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </c-card-body>
+</c-card>
