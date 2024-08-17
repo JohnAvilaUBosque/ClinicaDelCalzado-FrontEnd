@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { IconSetService } from '@coreui/icons-angular';
-import { iconSubset } from './icons/icon-subset';
+import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { freeSet } from '@coreui/icons';
 
 @Component({
   selector: 'app-root',
   template: '<router-outlet />',
   standalone: true,
-  imports: [RouterOutlet]
+  imports: [RouterOutlet, IconModule],
+  providers: [IconSetService]
 })
 export class AppComponent implements OnInit {
   title = 'Clinica del calzado';
@@ -17,11 +18,10 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private titleService: Title,
-    private iconSetService: IconSetService
+    public iconSetService: IconSetService
   ) {
     this.titleService.setTitle(this.title);
-    // iconSet singleton
-    this.iconSetService.icons = { ...iconSubset };
+    iconSetService.icons = freeSet;
   }
 
   ngOnInit(): void {

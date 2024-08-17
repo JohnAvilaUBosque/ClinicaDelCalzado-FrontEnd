@@ -1,24 +1,38 @@
-import { Component, inject } from '@angular/core';
-import { CardBodyComponent, CardComponent, CardHeaderComponent, TableModule, BadgeComponent } from '@coreui/angular';
+import { Component, inject, OnInit } from '@angular/core';
+import { TableModule, CardModule, BadgeModule, ButtonModule } from '@coreui/angular';
 import { OrdenDeTrabajoService } from '../orden-de-trabajo.service'
-import { CurrencyPipe } from '@angular/common';
+import { OrdenDeTrabajoModel } from '../orden-de-trabajo.model'
+import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
+import { IconDirective } from '@coreui/icons-angular';
+import { ConstantsService } from '../../../constants.service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listado-ordenes',
   standalone: true,
-  imports: [CardComponent, CardBodyComponent, CardHeaderComponent, TableModule, BadgeComponent, CurrencyPipe],
+  imports: [CommonModule, CardModule, TableModule, BadgeModule, ButtonModule, IconDirective, CurrencyPipe, UpperCasePipe],
   templateUrl: './listado-ordenes.component.html',
   styleUrl: './listado-ordenes.component.scss'
 })
-export class ListadoOrdenesComponent {
+export class ListadoOrdenesComponent implements OnInit {
 
-  private calculatorService = inject(OrdenDeTrabajoService);
+  private ordenDeTrabajoService = inject(OrdenDeTrabajoService);
+  private router = inject(Router);
 
-  public ordenes: any;
+  public constantsService = inject(ConstantsService);
 
-  constructor () {
-    this.calculatorService.obtenerOrdenes().subscribe(data => {
-      this.ordenes = data['orders'];
+  public ordenes: OrdenDeTrabajoModel[] = [];
+
+  constructor() {
+  }
+
+  ngOnInit(): void {
+    this.ordenDeTrabajoService.obtenerOrdenes().subscribe(data => {
+      this.ordenes = data;
     })
+  }
+
+  verOrden(orden: OrdenDeTrabajoModel) {
+    this.router.navigate(['ordenesdetrabajo/ver/'+orden.orderNumber]); // TO DO: Hacer esto dentro del suscribe del crear orden
   }
 }

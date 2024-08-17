@@ -34,6 +34,13 @@ export const routes: Routes = [
         }
       },
       {
+        path: 'ver/:id-orden',
+        loadComponent: () => import('./crear-orden/crear-orden.component').then(m => m.CrearOrdenComponent),
+        data: {
+          title: 'Ver'
+        }
+      },
+      {
         path: 'borrar',
         loadComponent: () => import('./borrar-ordenes/borrar-ordenes.component').then(m => m.BorrarOrdenesComponent),
         data: {

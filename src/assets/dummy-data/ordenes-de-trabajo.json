@@ -1,32 +1,49 @@
 {
     "orders": [
         {
-            "orderNumber": "ORD-2024-001",
+            "orderNumber": "ORD-2024-00001",
+            "attendedBy": "Liliana Morantes",
             "identification": "1234567890",
             "name": "Client Example",
             "phone": "3124567890",
-            "date": "2024-06-18",
+            "date": "2024-06-18 09:22",
+            "productCount": 3,
+            "paymentStatus": "Pendiente",
+            "totalValue": 200000,
+            "payment": 0,
+            "balance": 0,
+            "orderStatus": "Cancelada",
+            "deadline": "2024-07-25"
+        },
+        {
+            "orderNumber": "ORD-2024-00002",
+            "attendedBy": "Liliana Morantes",
+            "identification": "9876543210",
+            "name": "Pepito Perez",
+            "phone": "3210987654",
+            "date": "2024-06-29 15:48",
             "productCount": 3,
             "paymentStatus": "Pendiente",
             "totalValue": 200000,
             "payment": 50000,
             "balance": 150000,
             "orderStatus": "Vigente",
-            "deadline": "2024-07-25"
+            "deadline": "2024-07-10"
         },
         {
-            "orderNumber": "ORD-2024-002",
-            "identification": "9876543210",
-            "name": "Pepito Perez",
-            "phone": "3210987654",
-            "date": "2024-06-29",
+            "orderNumber": "ORD-2024-00003",
+            "attendedBy": "Yesid Rivera",
+            "identification": "654987321",
+            "name": "Helena Rodriguez",
+            "phone": "3098765421",
+            "date": "2024-07-15 20:05",
             "productCount": 1,
             "paymentStatus": "Pagado",
             "totalValue": 70000,
             "payment": 70000,
             "balance": 0,
             "orderStatus": "Vigente",
-            "deadline": "2024-07-16"
+            "deadline": "2024-07-25"
         }
     ]
 }

@@ -13,7 +13,7 @@ export const navItems: INavData[] = [
   {
     name: 'Crear orden de trabajo',
     url: '/ordenesdetrabajo/crear',
-    iconComponent: { name: 'cil-notes' }
+    iconComponent: { name: 'cil-note-add' }
   },
   {
     name: 'Buscar orden de trabajo',
@@ -32,7 +32,7 @@ export const navItems: INavData[] = [
   {
     name: 'Generar informe general',
     url: '/informes/general',
-    iconComponent: { name: 'cil-chart-pie' }
+    iconComponent: { name: 'cil-chart' }
   },
   {
     name: 'Generar informe detallado',
@@ -51,6 +51,6 @@ export const navItems: INavData[] = [
   {
     name: 'Agregar administrador',
     url: '/usuarios/agregar',
-    iconComponent: { name: 'cil-user-follow' }
+    iconComponent: { name: 'cil-user-plus' }
   }
 ];
