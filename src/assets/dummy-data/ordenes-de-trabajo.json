@@ -3,47 +3,92 @@
         {
             "orderNumber": "ORD-2024-00001",
             "attendedBy": "Liliana Morantes",
-            "identification": "1234567890",
-            "name": "Client Example",
-            "phone": "3124567890",
-            "date": "2024-06-18 09:22",
-            "productCount": 3,
-            "paymentStatus": "Pendiente",
-            "totalValue": 200000,
-            "payment": 0,
-            "balance": 0,
+            "createDate": "2024-06-18 09:22",
             "orderStatus": "Cancelada",
-            "deadline": "2024-07-25"
+            "client": {
+                "identification": "1234567890",
+                "name": "Client Example",
+                "cellphone": "3124567890"
+            },
+            "totalValue": 20000,
+            "downPayment": 10000,
+            "balance": 10000,
+            "paymentStatus": "Pendiente",
+            "deliveryDate": "2024-07-25",
+            "comment": "Se requiere lo más pronto",
+            "services": [
+                {
+                    "name": "Arreglar botas",
+                    "price": 20000,
+                    "status": "Recibido"
+                }
+            ],
+            "servicesCount": 1
         },
         {
             "orderNumber": "ORD-2024-00002",
             "attendedBy": "Liliana Morantes",
-            "identification": "9876543210",
-            "name": "Pepito Perez",
-            "phone": "3210987654",
-            "date": "2024-06-29 15:48",
-            "productCount": 3,
-            "paymentStatus": "Pendiente",
-            "totalValue": 200000,
-            "payment": 50000,
-            "balance": 150000,
+            "createDate": "2024-06-29 15:48",
             "orderStatus": "Vigente",
-            "deadline": "2024-07-10"
+            "client": {
+                "identification": "9876543210",
+                "name": "Pepito Perez",
+                "cellphone": "3210987654"
+            },
+            "totalValue": 30000,
+            "downPayment": 0,
+            "balance": 30000,
+            "paymentStatus": "Pendiente",
+            "deliveryDate": "2024-07-10",
+            "comment": "Se requiere lo más pronto",
+            "services": [
+                {
+                    "name": "Pegar suela de tenis",
+                    "price": 18000,
+                    "status": "Despachado"
+                },
+                {
+                    "name": "Cocer chaqueta de cuero",
+                    "price": 12000,
+                    "status": "Despachado"
+                }
+            ],
+            "servicesCount": 2
         },
         {
             "orderNumber": "ORD-2024-00003",
             "attendedBy": "Yesid Rivera",
-            "identification": "654987321",
-            "name": "Helena Rodriguez",
-            "phone": "3098765421",
-            "date": "2024-07-15 20:05",
-            "productCount": 1,
-            "paymentStatus": "Pagado",
-            "totalValue": 70000,
-            "payment": 70000,
-            "balance": 0,
+            "createDate": "2024-07-15 20:05",
             "orderStatus": "Vigente",
-            "deadline": "2024-07-25"
+            "client": {
+                "identification": "654987321",
+                "name": "Helena Rodriguez",
+                "cellphone": "3098765421"
+            },
+            "totalValue": 19000,
+            "downPayment": 19000,
+            "balance": 0,
+            "paymentStatus": "Pagado",
+            "deliveryDate": "2024-07-25",
+            "comment": "Se requiere lo más pronto",
+            "services": [
+                {
+                    "name": "Cambiar cordones zapatos",
+                    "price": 4000,
+                    "status": "Recibido"
+                },
+                {
+                    "name": "Limpieza de chaqueta",
+                    "price": 10000,
+                    "status": "Terminado"
+                },
+                {
+                    "name": "Cambiar cremallera bolso",
+                    "price": 15000,
+                    "status": "Despachado"
+                }
+            ],
+            "servicesCount": 3
         }
     ]
 }

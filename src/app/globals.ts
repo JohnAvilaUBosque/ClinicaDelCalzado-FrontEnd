@@ -12,3 +12,8 @@ export enum FORMATS_VIEW {
     DATE = 'dd/MM/yyyy',
     TIME = 'hh:mm'
 }
+
+export class REGULAR_EXP {
+    CURRENCY = /^\$\d{1,3}(\,\d{3})*$/;
+    NUMBER = /[^0-9]/g;
+}

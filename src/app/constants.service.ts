@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FORMATS_VIEW, FORMATS_API, API_URL, ORDEN_NUMBER_DEFAULT } from './globals'
+import { FORMATS_VIEW, FORMATS_API, API_URL, ORDEN_NUMBER_DEFAULT, REGULAR_EXP } from './globals'
 
 @Injectable({
   providedIn: 'root'
@@ -10,4 +10,6 @@ export class ConstantsService {
   
   public readonly FORMATS_VIEW = FORMATS_VIEW;
   public readonly FORMATS_API = FORMATS_API;
+
+  public readonly REGULAR_EXP = new REGULAR_EXP();
 }

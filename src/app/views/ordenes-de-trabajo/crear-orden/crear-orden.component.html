@@ -1,17 +1,15 @@
 <c-card>
     <c-card-header>
-        <h5>Crear órden de trabajo</h5>
+        <h5 class="float-start"> {{ modoVisualizacion ? 'Ver' : 'Crear'}} órden de trabajo</h5>
+        @if (modoVisualizacion) {
+        <c-badge color="{{orden.orderStatus == 'Vigente' ? 'info' : 'danger'}}" shape="rounded-pill" class="float-end">
+            {{orden.orderStatus | uppercase}}
+        </c-badge>
+        }
     </c-card-header>
     <c-card-body>
         <form cForm #orderForm="ngForm" (ngSubmit)="onSubmit()">
             <c-row> <!-- Datos automaticos -->
-                <c-col sm="6" md="4">
-                    <div class="mb-3">
-                        <label cLabel="col" sizing="sm">Atendido por:</label>
-                        <input cFormControl type="text" readOnly plaintext [ngModel]="orden.attendedBy"
-                            name="attendedBy">
-                    </div>
-                </c-col>
                 <c-col sm="6" md="4">
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Número de órden:</label>
@@ -21,9 +19,16 @@
                 </c-col>
                 <c-col sm="6" md="4">
                     <div class="mb-3">
+                        <label cLabel="col" sizing="sm">Atendido por:</label>
+                        <input cFormControl type="text" readOnly plaintext [ngModel]="orden.attendedBy"
+                            name="attendedBy">
+                    </div>
+                </c-col>
+                <c-col sm="6" md="4">
+                    <div class="mb-3">
                         <label cLabel="col" sizing="sm">Fecha de creación:</label>
                         <input cFormControl type="text" readOnly plaintext
-                            [ngModel]="orden.date | date:constantsService.FORMATS_VIEW.DATETIME" name="date">
+                            [ngModel]="orden.createDate | date:constantsService.FORMATS_VIEW.DATETIME" name="date">
                     </div>
                 </c-col>
             </c-row>
@@ -31,8 +36,10 @@
                 <c-col sm="6" md="4">
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Nombre cliente:</label>
-                        <input cFormControl type="text" [(ngModel)]="orden.name" name="nameClient" #nameClient="ngModel"
-                            required [valid]="nameClient.touched && nameClient.invalid ? false : undefined">
+                        <input cFormControl type="text" [(ngModel)]="orden.client.name" name="nameClient"
+                            #nameClient="ngModel" required
+                            [valid]="nameClient.touched && nameClient.invalid ? false : undefined"
+                            [readonly]="modoVisualizacion" [plaintext]="modoVisualizacion">
                         <c-form-feedback *ngIf="!!(nameClient.touched && nameClient.invalid)" [valid]="false">
                             Este campo es requerido!
                         </c-form-feedback>
@@ -41,9 +48,10 @@
                 <c-col sm="6" md="4">
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Identificación cliente:</label>
-                        <input cFormControl type="text" [(ngModel)]="orden.identification" name="identification"
+                        <input cFormControl type="text" [(ngModel)]="orden.client.identification" name="identification"
                             #identification="ngModel" required
-                            [valid]="identification.touched && identification.invalid ? false : undefined">
+                            [valid]="identification.touched && identification.invalid ? false : undefined"
+                            [readonly]="modoVisualizacion" [plaintext]="modoVisualizacion">
                         <c-form-feedback *ngIf="!!(identification.touched && identification.invalid)" [valid]="false">
                             Este campo es requerido!
                         </c-form-feedback>
@@ -52,8 +60,9 @@
                 <c-col sm="6" md="4">
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Celular cliente:</label>
-                        <input cFormControl type="text" [(ngModel)]="orden.phone" name="phone" #phone="ngModel" required
-                            [valid]="phone.touched && phone.invalid ? false : undefined">
+                        <input cFormControl type="text" [(ngModel)]="orden.client.cellphone" name="phone"
+                            #phone="ngModel" required [valid]="phone.touched && phone.invalid ? false : undefined"
+                            [readonly]="modoVisualizacion" [plaintext]="modoVisualizacion">
                         <c-form-feedback *ngIf="!!(phone.touched && phone.invalid)" [valid]="false">
                             Este campo es requerido!
                         </c-form-feedback>
@@ -69,16 +78,24 @@
                         <c-col>
                             <label cLabel="col" sizing="sm">Valor individual:</label>
                         </c-col>
+                        @if (modoVisualizacion) {
+                        <c-col xs="auto">
+                            <label cLabel="col" sizing="sm">Estado:</label>
+                        </c-col>
+                        }
+                        @else {
                         <c-col xs="auto">
                             <label cLabel="col" sizing="sm">Borrar</label>
                         </c-col>
+                        }
                     </c-row>
                     @for (service of orden.services; track $index) {
                     <c-row class="mb-2">
                         <c-col xs="7">
                             <input cFormControl type="text" [(ngModel)]="service.name" name="nameService{{$index}}"
                                 #nameService="ngModel" required
-                                [valid]="nameService.touched && nameService.invalid ? false : undefined">
+                                [valid]="nameService.touched && nameService.invalid ? false : undefined"
+                                [readonly]="modoVisualizacion" [plaintext]="modoVisualizacion">
                             <c-form-feedback *ngIf="!!(nameService.touched && nameService.invalid)" [valid]="false">
                                 Este campo es requerido!
                             </c-form-feedback>
@@ -87,35 +104,50 @@
                             <input cFormControl type="text"
                                 [ngModel]="service.price | currency: 'COP' : 'symbol-narrow' : '1.0'"
                                 (ngModelChange)="cambiarValorIndividual($event, $index)" name="price{{$index}}"
-                                #price="ngModel" required pattern="^[\d$,]+$"
-                                [valid]="price.touched && price.invalid ? false : undefined">
+                                #price="ngModel" required [pattern]="constantsService.REGULAR_EXP.CURRENCY"
+                                [valid]="price.touched && price.invalid ? false : undefined"
+                                [readonly]="modoVisualizacion" [plaintext]="modoVisualizacion">
                             <c-form-feedback *ngIf="!!(price.touched && price.invalid)" [valid]="false">
                                 Este campo es requerido y debe ser un valor monetario valido!
                             </c-form-feedback>
                         </c-col>
+                        @if (modoVisualizacion) {
+                        <c-col xs="auto" class="mt-1">
+                            <c-badge
+                                color="{{service.status == 'Recibido' ? 'primary' : service.status == 'Terminado' ?  'dark' : 'success'}}"
+                                shape="rounded-pill">
+                                {{service.status | uppercase}}
+                            </c-badge>
+                        </c-col>
+                        }
+                        @else {
                         <c-col xs="auto" class="mt-1">
                             <button cButton color="danger" variant="outline" size="sm" shape="rounded-pill"
                                 (click)="borrarServicio($index)">
                                 <svg cIcon name="cil-x"></svg>
                             </button>
                         </c-col>
+                        }
                     </c-row>
                     }
+                    @if (!modoVisualizacion) {
                     <c-row class="mb-3">
                         <c-col xs="auto">
                             <button cButton color="info" variant="outline" size="sm" shape="rounded-pill"
-                                (click)="agregarServicio()">
+                                (click)="agregarServicioAOrden()">
                                 <svg cIcon name="cil-plus"></svg>
                             </button>
                         </c-col>
                     </c-row>
+                    }
                     <c-row> <!-- Comentario -->
                         <c-col>
                             <div class="mb-3">
                                 <label cLabel="col" sizing="sm">Comentario general:</label>
                                 <textarea cFormControl rows="5" [(ngModel)]="orden.comment" name="comment"
                                     #comment="ngModel" required
-                                    [valid]="comment.touched && comment.invalid ? false : undefined"></textarea>
+                                    [valid]="comment.touched && comment.invalid ? false : undefined"
+                                    [readonly]="modoVisualizacion" [plaintext]="modoVisualizacion"></textarea>
                                 <c-form-feedback *ngIf="!!(comment.touched && comment.invalid)" [valid]="false">
                                     Este campo es requerido!
                                 </c-form-feedback>
@@ -130,6 +162,17 @@
                         </c-card-header>
                         <c-card-body>
                             <c-row>
+                                @if (modoVisualizacion) {
+                                <c-col sm="6" md="12">
+                                    <div class="mb-3">
+                                        <label cLabel="col" sizing="sm">Estado del pago:</label>
+                                        <c-badge color="{{orden.paymentStatus == 'Pendiente' ? 'warning' : 'success'}}"
+                                            shape="rounded-pill" class="float-end mt-2">
+                                            {{orden.paymentStatus | uppercase}}
+                                        </c-badge>
+                                    </div>
+                                </c-col>
+                                }
                                 <c-col sm="6" md="12">
                                     <div class="mb-3">
                                         <label cLabel="col" sizing="sm">Valor Total:</label>
@@ -142,10 +185,11 @@
                                     <div class="mb-3">
                                         <label cLabel="col" sizing="sm">Abono:</label>
                                         <input cFormControl id="i-abono" type="text"
-                                            [ngModel]="orden.payment | currency: 'COP' : 'symbol-narrow' : '1.0'"
+                                            [ngModel]="orden.downPayment | currency: 'COP' : 'symbol-narrow' : '1.0'"
                                             (ngModelChange)="cambiarAbono($event)" name="payment" #payment="ngModel"
-                                            required pattern="^[\d$,]+$"
-                                            [valid]="payment.touched && payment.invalid ? false : undefined">
+                                            required [pattern]="constantsService.REGULAR_EXP.CURRENCY"
+                                            [valid]="payment.touched && payment.invalid ? false : undefined"
+                                            [readonly]="modoVisualizacion" [plaintext]="modoVisualizacion">
                                         <c-form-feedback *ngIf="!!(payment.touched && payment.invalid)" [valid]="false">
                                             Este campo es requerido y debe ser un valor monetario valido!
                                         </c-form-feedback>
@@ -162,9 +206,10 @@
                                 <c-col sm="6" md="12">
                                     <div class="mb-3">
                                         <label cLabel="col" sizing="sm">Fecha de entrega:</label>
-                                        <input cFormControl type="date" [(ngModel)]="orden.deadline" name="deadline"
+                                        <input cFormControl type="date" [(ngModel)]="orden.deliveryDate" name="deadline"
                                             #deadline="ngModel" required
-                                            [valid]="deadline.touched && deadline.invalid ? false : undefined">
+                                            [valid]="deadline.touched && deadline.invalid ? false : undefined"
+                                            [readonly]="modoVisualizacion" [plaintext]="modoVisualizacion">
                                         <c-form-feedback *ngIf="!!(deadline.touched && deadline.invalid)"
                                             [valid]="false">
                                             Este campo es requerido!
