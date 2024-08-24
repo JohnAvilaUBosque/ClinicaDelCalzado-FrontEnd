@@ -21,9 +21,16 @@ export const routes: Routes = [
       },
       {
         path: 'crear',
-        loadComponent: () => import('./crear-orden/crear-orden.component').then(m => m.CrearOrdenComponent),
+        loadComponent: () => import('./formulario-orden/formulario-orden.component').then(m => m.FormularioOrdenComponent),
         data: {
           title: 'Crear'
+        }
+      },
+      {
+        path: 'ver/:id-orden',
+        loadComponent: () => import('./formulario-orden/formulario-orden.component').then(m => m.FormularioOrdenComponent),
+        data: {
+          title: 'Ver'
         }
       },
       {
@@ -34,10 +41,10 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'ver/:id-orden',
-        loadComponent: () => import('./crear-orden/crear-orden.component').then(m => m.CrearOrdenComponent),
+        path: 'buscar/:id-orden-erroneo',
+        loadComponent: () => import('./buscar-orden/buscar-orden.component').then(m => m.BuscarOrdenComponent),
         data: {
-          title: 'Ver'
+          title: 'Buscar'
         }
       },
       {

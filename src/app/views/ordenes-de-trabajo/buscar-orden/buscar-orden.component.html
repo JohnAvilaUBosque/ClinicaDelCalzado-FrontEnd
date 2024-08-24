@@ -1,1 +1,29 @@
-<p>buscar-orden works!</p>
+<c-card>
+    <c-card-header>
+        <h5> Buscar órden de trabajo</h5>
+    </c-card-header>
+    <c-card-body>
+        <form cForm #searchOrderForm="ngForm" (ngSubmit)="onSubmit()">
+            <c-row>
+                <c-col sm="12" md="10">
+                    <div class="mb-3">
+                        <label cLabel="col" sizing="sm">Número de órden:</label>
+                        <input cFormControl type="text" [(ngModel)]="numeroOrden" name="ordenNumber"
+                            #ordenNumber="ngModel" required
+                            [valid]="ordenNumber.touched && ordenNumber.invalid ? false : undefined">
+                        <c-form-feedback *ngIf="!!(ordenNumber.touched && ordenNumber.invalid)" [valid]="false">
+                            Este campo es requerido!
+                        </c-form-feedback>
+                    </div>
+                </c-col>
+                <c-col sm="12" md="2" class="align-self-center">
+                    <input cButton color="primary" type="submit" value="Buscar" class="w-100" [disabled]="searchOrderForm.invalid">
+                </c-col>
+            </c-row>
+        </form>
+        <c-alert [(visible)]="alertVisible" dismissible color="danger" fade class="mt-4">
+            <svg cIcon name="cil-bell-exclamation" size="lg"></svg>
+            No se encontró órden de trabajo con el número: <strong>{{numeroOrdenErroneo}}</strong>
+        </c-alert>
+    </c-card-body>
+</c-card>

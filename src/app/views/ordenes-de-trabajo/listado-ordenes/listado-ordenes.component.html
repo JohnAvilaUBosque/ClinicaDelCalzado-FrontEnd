@@ -18,7 +18,7 @@
                         <th scope="col">Celular cliente</th>
                         <th scope="col">Cantidad servicios</th>
                         <th scope="col">Fecha entrega</th>
-                        <th scope="col">Valor total</th>
+                        <th scope="col">Precio total</th>
                         <th scope="col">Abonado</th>
                         <th scope="col">Saldo</th>
                         <th scope="col">Estado pago</th>
@@ -27,7 +27,7 @@
                 <tbody>
                     @for (orden of ordenes; track orden.orderNumber) {
                     <tr>
-                        <td scope="row">
+                        <td>
                             <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
                                 (click)="verOrden(orden)">
                                 <svg cIcon name="cil-external-link"></svg>

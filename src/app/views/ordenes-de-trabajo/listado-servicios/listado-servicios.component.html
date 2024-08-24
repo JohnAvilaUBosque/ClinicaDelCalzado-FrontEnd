@@ -1,0 +1,71 @@
+<c-row>
+    <c-col>
+        <table cTable hover bordered>
+            <thead>
+                <tr>
+                    <th scope="col">Listado de servicios</th>
+                    <th scope="col">Precio individual</th>
+                    @if (esSoloLectura) {
+                    <th scope="col">Estado</th>
+                    }
+                    @else {
+                    <th scope="col"></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (service of services; track $index) {
+                <tr>
+                    <td>
+                        <input cFormControl type="text" [(ngModel)]="service.name" name="nameService{{$index}}"
+                            #nameService="ngModel" required
+                            [valid]="nameService.touched && nameService.invalid ? false : undefined"
+                            [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                        <c-form-feedback *ngIf="!!(nameService.touched && nameService.invalid)" [valid]="false">
+                            Este campo es requerido!
+                        </c-form-feedback>
+                    </td>
+                    <td>
+                        <input cFormControl type="text"
+                            [ngModel]="service.price | currency: 'COP' : 'symbol-narrow' : '1.0'"
+                            (ngModelChange)="cambiarPrecioIndividual($event, $index)" name="price{{$index}}"
+                            #price="ngModel" required [pattern]="constantsService.REGULAR_EXP.CURRENCY"
+                            [valid]="price.touched && price.invalid ? false : undefined" [readonly]="esSoloLectura"
+                            [plaintext]="esSoloLectura">
+                        <c-form-feedback *ngIf="!!(price.touched && price.invalid)" [valid]="false">
+                            Este campo es requerido y debe ser un valor monetario valido!
+                        </c-form-feedback>
+                    </td>
+                    @if (esSoloLectura) {
+                    <td>
+                        <c-badge
+                            color="{{service.status == 'Recibido' ? 'primary' : service.status == 'Terminado' ?  'dark' : 'success'}}"
+                            shape="rounded-pill">
+                            {{service.status | uppercase}}
+                        </c-badge>
+                    </td>
+                    }
+                    @else {
+                    <td>
+                        <button cButton color="danger" variant="outline" size="sm" shape="rounded-pill"
+                            (click)="borrarServicio($index)">
+                            <svg cIcon name="cil-x"></svg>
+                        </button>
+                    </td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </c-col>
+</c-row>
+
+@if (!esSoloLectura) {
+<c-row>
+    <c-col xs="auto">
+        <button cButton color="info" variant="outline" size="sm" shape="rounded-pill" (click)="agregarServicioAOrden()">
+            <svg cIcon name="cil-plus"></svg>
+        </button>
+    </c-col>
+</c-row>
+}

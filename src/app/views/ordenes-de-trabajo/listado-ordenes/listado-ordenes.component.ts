@@ -8,7 +8,7 @@ import { ConstantsService } from '../../../constants.service'
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-listado-ordenes',
+  selector: 'listado-ordenes',
   standalone: true,
   imports: [CommonModule, CardModule, TableModule, BadgeModule, ButtonModule, IconDirective, CurrencyPipe, UpperCasePipe],
   templateUrl: './listado-ordenes.component.html',
