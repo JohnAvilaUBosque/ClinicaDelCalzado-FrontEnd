@@ -1,0 +1,43 @@
+<c-card>
+    <c-card-header>
+        <h5>Listado administradores</h5>
+    </c-card-header>
+    <c-card-body>
+        <div class="overflow-y-auto">
+            <table cTable hover striped>
+                <thead>
+                    <tr>
+                        <th scope="col">Acciones</th>
+                        <th scope="col">Identificación</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Celular</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (admin of administradores; track admin.identification) {
+                    <tr>
+                        <td>
+                            <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                                (click)="verAdministrador(admin)">
+                                <svg cIcon name="cil-external-link"></svg>
+                            </button>
+                        </td>
+                        <th scope="row">{{admin.identification}}</th>
+                        <td>{{admin.name}}</td>
+                        <td>{{admin.cellphone}}</td>
+                        <td>{{admin.rol}}</td>
+                        <td>
+                            <c-badge color="{{admin.status == constService.ESTADO_ADMIN.ACTIVO ? 'info' : 'danger'}}"
+                                shape="rounded-pill">
+                                {{admin.status | uppercase}}
+                            </c-badge>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </c-card-body>
+</c-card>

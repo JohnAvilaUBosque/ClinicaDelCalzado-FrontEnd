@@ -1,0 +1,18 @@
+{
+    "admins": [
+        {
+            "identification": 123456789,
+            "name": "Liliana Morantes",
+            "cellphone": "3216549870",
+            "status": "Activo",
+            "rol": "Principal"
+        },
+        {
+            "identification": 987654321,
+            "name": "Eduardo Avila",
+            "cellphone": "3123456789",
+            "status": "Inactivo",
+            "rol": "Secundario"
+        }
+    ]
+}

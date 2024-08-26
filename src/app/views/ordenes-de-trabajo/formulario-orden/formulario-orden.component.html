@@ -1,11 +1,46 @@
 <c-card>
     <c-card-header>
-        <h5 class="float-start"> {{ esSoloLectura ? 'Ver' : 'Crear'}} órden de trabajo</h5>
-        @if (esSoloLectura) {
-        <c-badge color="{{orden.orderStatus == 'Vigente' ? 'info' : 'danger'}}" shape="rounded-pill" class="float-end">
-            {{orden.orderStatus | uppercase}}
-        </c-badge>
-        }
+        <c-row>
+            <c-col xs="auto" class="col-title">
+                <h5> {{ esSoloLectura ? 'Ver' : 'Crear'}} órden de trabajo</h5>
+            </c-col>
+            @if (esSoloLectura) {
+            <c-col xs="auto">
+                <div class="actions">
+                    <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
+                        (click)="enviarPorWhatsApp()" cTooltip="Enviar por WhatsApp">
+                        <svg cIcon name="cil-phone"></svg>
+                    </button>
+                    <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                        (click)="descargarOrden()" cTooltip="Descargar órden">
+                        <svg cIcon name="cil-data-transfer-down"></svg>
+                    </button>
+                    <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                        (click)="abonarAOrden()" cTooltip="Abonar a órden">
+                        <svg cIcon name="cil-dollar"></svg>
+                    </button>
+                    <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                        (click)="agregarComentario()" cTooltip="Agregar comentario">
+                        <svg cIcon name="cil-short-text"></svg>
+                    </button>
+                    <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                        (click)="cambiarEstadoServicios()" cTooltip="Cambiar estado de servicios">
+                        <svg cIcon name="cil-flag-alt"></svg>
+                    </button>
+                    <button cButton color="danger" variant="ghost" size="sm" shape="rounded-pill"
+                        (click)="cancelarOrden()" cTooltip="Cancelar órden">
+                        <svg cIcon name="cil-x"></svg>
+                    </button>
+                </div>
+            </c-col>
+            <c-col class="align-self-center">
+                <c-badge color="{{orden.orderStatus == constService.ESTADO_ORDEN.VIGENTE ? 'info' : 'danger'}}" shape="rounded-pill"
+                    class="float-end">
+                    {{orden.orderStatus | uppercase}}
+                </c-badge>
+            </c-col>
+            }
+        </c-row>
     </c-card-header>
     <c-card-body>
         <form cForm #orderForm="ngForm" (ngSubmit)="onSubmit()">
@@ -28,7 +63,7 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Fecha de creación:</label>
                         <input cFormControl type="text" readOnly plaintext
-                            [ngModel]="orden.createDate | date:constantsService.FORMATS_VIEW.DATETIME" name="date">
+                            [ngModel]="orden.createDate | date:constService.FORMATS_VIEW.DATETIME" name="date">
                     </div>
                 </c-col>
             </c-row>
@@ -103,7 +138,7 @@
                                 <c-col sm="6" md="12">
                                     <div class="mb-3">
                                         <label cLabel="col" sizing="sm">Estado del pago:</label>
-                                        <c-badge color="{{orden.paymentStatus == 'Pendiente' ? 'warning' : 'success'}}"
+                                        <c-badge color="{{orden.paymentStatus == constService.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
                                             shape="rounded-pill" class="float-end mt-2">
                                             {{orden.paymentStatus | uppercase}}
                                         </c-badge>
@@ -124,7 +159,7 @@
                                         <input cFormControl id="i-abono" type="text"
                                             [ngModel]="orden.downPayment | currency: 'COP' : 'symbol-narrow' : '1.0'"
                                             (ngModelChange)="cambiarAbono($event)" name="payment" #payment="ngModel"
-                                            required [pattern]="constantsService.REGULAR_EXP.CURRENCY"
+                                            required [pattern]="constService.REGULAR_EXP.CURRENCY"
                                             [valid]="payment.touched && payment.invalid ? false : undefined"
                                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                                         <c-form-feedback *ngIf="!!(payment.touched && payment.invalid)" [valid]="false">

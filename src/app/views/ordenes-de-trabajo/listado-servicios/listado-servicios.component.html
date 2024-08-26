@@ -29,7 +29,7 @@
                         <input cFormControl type="text"
                             [ngModel]="service.price | currency: 'COP' : 'symbol-narrow' : '1.0'"
                             (ngModelChange)="cambiarPrecioIndividual($event, $index)" name="price{{$index}}"
-                            #price="ngModel" required [pattern]="constantsService.REGULAR_EXP.CURRENCY"
+                            #price="ngModel" required [pattern]="constService.REGULAR_EXP.CURRENCY"
                             [valid]="price.touched && price.invalid ? false : undefined" [readonly]="esSoloLectura"
                             [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(price.touched && price.invalid)" [valid]="false">
@@ -39,7 +39,7 @@
                     @if (esSoloLectura) {
                     <td>
                         <c-badge
-                            color="{{service.status == 'Recibido' ? 'primary' : service.status == 'Terminado' ?  'dark' : 'success'}}"
+                            color="{{service.status == constService.ESTADO_SERVICIO.RECIBIDO ? 'warning' : service.status == 'Terminado' ?  'info' : 'success'}}"
                             shape="rounded-pill">
                             {{service.status | uppercase}}
                         </c-badge>

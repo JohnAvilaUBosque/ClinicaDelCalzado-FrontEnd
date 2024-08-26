@@ -41,16 +41,16 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Usuarios'
+    name: 'Administradores'
   },
   {
     name: 'Listado de administradores',
-    url: '/usuarios/listado',
+    url: '/admins/listado',
     iconComponent: { name: 'cil-people' }
   },
   {
     name: 'Agregar administrador',
-    url: '/usuarios/agregar',
+    url: '/admins/agregar',
     iconComponent: { name: 'cil-user-plus' }
   }
 ];

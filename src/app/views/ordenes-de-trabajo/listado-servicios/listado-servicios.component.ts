@@ -15,7 +15,7 @@ import { IconDirective } from '@coreui/icons-angular';
 })
 export class ListadoServiciosComponent implements OnInit {
 
-  public constantsService = inject(ConstantsService);
+  public constService = inject(ConstantsService);
 
   @Input() esSoloLectura: boolean = false;
   @Input() services: ServicioModel[] = [];
@@ -32,7 +32,7 @@ export class ListadoServiciosComponent implements OnInit {
   }
 
   cambiarPrecioIndividual(value: string, index: number) {
-    var valorIndividual = Number.parseInt(value.replace(this.constantsService.REGULAR_EXP.NUMBER, ''));
+    var valorIndividual = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NUMBER, ''));
     this.services[index].price = Number.isNaN(valorIndividual) ? 0 : valorIndividual;
     this.cambiaronPreciosEvent.emit();
   }

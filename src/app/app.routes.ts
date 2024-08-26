@@ -23,8 +23,8 @@ export const routes: Routes = [
         loadChildren: () => import('./views/informes/routes').then((m) => m.routes)
       },
       {
-        path: 'usuarios',
-        loadChildren: () => import('./views/usuarios/routes').then((m) => m.routes)
+        path: 'admins',
+        loadChildren: () => import('./views/admins/routes').then((m) => m.routes)
       }
     ]
   },
@@ -44,7 +44,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
+    loadComponent: () => import('./views/usuarios/login/login.component').then(m => m.LoginComponent),
     data: {
       title: 'Login Page'
     }

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { BadgeComponent, ButtonModule, CardModule, FormModule, GridModule } from '@coreui/angular';
+import { BadgeComponent, ButtonModule, CardModule, FormModule, GridModule, TooltipModule } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { OrdenDeTrabajoService } from '../orden-de-trabajo.service';
 import { OrdenDeTrabajoModel } from '../orden-de-trabajo.model';
@@ -14,7 +14,7 @@ import { ListadoServiciosComponent } from '../listado-servicios/listado-servicio
 @Component({
   selector: 'formulario-orden',
   standalone: true,
-  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, IconDirective, FormsModule, BadgeComponent, ListadoServiciosComponent],
+  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, IconDirective, BadgeComponent, ListadoServiciosComponent],
   templateUrl: './formulario-orden.component.html',
   styleUrl: './formulario-orden.component.scss'
 })
@@ -25,7 +25,7 @@ export class FormularioOrdenComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  public constantsService = inject(ConstantsService);
+  public constService = inject(ConstantsService);
 
   public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public esSoloLectura: boolean = false;
@@ -36,9 +36,11 @@ export class FormularioOrdenComponent implements OnInit {
     const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
         if (title == 'Crear') {
-          this.orden.orderNumber = this.constantsService.ORDEN_NUMBER_DEFAULT;
+          this.orden.orderNumber = this.constService.ORDEN_NUMBER_DEFAULT;
           this.orden.attendedBy = this.usuarioService.obtenerUsuarioLocal()?.name;
-          this.orden.createDate = formatDate(new Date(), this.constantsService.FORMATS_API.DATETIME, 'en-US');
+          this.orden.createDate = formatDate(new Date(), this.constService.FORMATS_API.DATETIME, 'en-US');
+          this.orden.orderStatus = this.constService.ESTADO_ORDEN.VIGENTE;
+          this.orden.paymentStatus = this.constService.ESTADO_PAGO.PENDIENTE;
         }
         else if (title == 'Ver') {
           this.esSoloLectura = true;
@@ -62,13 +64,13 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   onSubmit() {
-    this.orden.deliveryDate = formatDate(this.orden.deliveryDate, this.constantsService.FORMATS_API.DATE, 'en-US');
+    this.orden.deliveryDate = formatDate(this.orden.deliveryDate, this.constService.FORMATS_API.DATE, 'en-US');
     this.ordenDeTrabajoService.crearOrden(this.orden);
     this.router.navigate(['ordenesdetrabajo/ver/' + 'ORD-2024-00003']); // TO DO: Hacer esto dentro del suscribe del crear orden
   }
 
   cambiarAbono(value: string) {
-    var abono = Number.parseInt(value.replace(this.constantsService.REGULAR_EXP.NUMBER, ''));
+    var abono = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NUMBER, ''));
     this.orden.downPayment = Number.isNaN(abono) ? 0 : abono;
     this.calcularSaldo();
   }
@@ -82,4 +84,27 @@ export class FormularioOrdenComponent implements OnInit {
     this.orden.balance = this.orden.totalValue - this.orden.downPayment;
   }
 
+  enviarPorWhatsApp() {
+    throw new Error('Method not implemented.');
+  }
+
+  descargarOrden() {
+    throw new Error('Method not implemented.');
+  }
+
+  abonarAOrden() {
+    throw new Error('Method not implemented.');
+  }
+
+  agregarComentario() {
+    throw new Error('Method not implemented.');
+  }
+
+  cambiarEstadoServicios() {
+    throw new Error('Method not implemented.');
+  }
+
+  cancelarOrden() {
+    throw new Error('Method not implemented.');
+  }
 }
