@@ -28,4 +28,8 @@ export class AdministradorService {
     console.log(administrador)
   }
 
+  editarAdministrador(administrador: AdministradorModel): Observable<any> | void {
+    // return this.http.post<any>(this.url, orden);
+    console.log(administrador)
+  }
 }

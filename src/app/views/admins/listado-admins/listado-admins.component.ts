@@ -15,7 +15,7 @@ import { AdministradorService } from '../administrador.service';
   templateUrl: './listado-admins.component.html',
   styleUrl: './listado-admins.component.scss'
 })
-export class ListadoAdminsComponent {
+export class ListadoAdminsComponent implements OnInit {
 
   private administradorService = inject(AdministradorService);
   private router = inject(Router);

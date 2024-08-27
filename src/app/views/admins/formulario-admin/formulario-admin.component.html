@@ -1,1 +1,129 @@
-<p>formulario-admin works!</p>
+<c-card>
+    <c-card-header>
+        <c-row>
+            <c-col xs="auto" class="col-title">
+                <h5> {{ titulo }} administrador</h5>
+            </c-col>
+            @if (esSoloLectura) {
+            <c-col xs="auto">
+                <div class="actions">
+                    <button cButton color="info" variant="ghost" size="sm" shape="rounded-pill"
+                        (click)="habilitarModoEdicion()" cTooltip="Editar">
+                        <svg cIcon name="cil-pencil"></svg>
+                    </button>
+                </div>
+            </c-col>
+            }
+        </c-row>
+    </c-card-header>
+    <c-card-body>
+        <form cForm #adminForm="ngForm" (ngSubmit)="onSubmit()">
+            <c-row>
+                <c-col sm="6">
+                    <div class="mb-3">
+                        <label cLabel="col" sizing="sm">Identificación:</label>
+                        <input cFormControl type="text" [(ngModel)]="admin.identification" name="identification"
+                            #identification="ngModel" required
+                            [valid]="identification.touched && identification.invalid ? false : undefined"
+                            [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                        <c-form-feedback *ngIf="!!(identification.touched && identification.invalid)" [valid]="false">
+                            Este campo es requerido!
+                        </c-form-feedback>
+                    </div>
+                </c-col>
+            </c-row>
+            <c-row>
+                <c-col sm="6">
+                    <div class="mb-3">
+                        <label cLabel="col" sizing="sm">Nombre:</label>
+                        <input cFormControl type="text" [(ngModel)]="admin.name" name="name" #nameClient="ngModel"
+                            required [valid]="nameClient.touched && nameClient.invalid ? false : undefined"
+                            [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                        <c-form-feedback *ngIf="!!(nameClient.touched && nameClient.invalid)" [valid]="false">
+                            Este campo es requerido!
+                        </c-form-feedback>
+                    </div>
+                </c-col>
+                <c-col sm="6">
+                    <div class="mb-3">
+                        <label cLabel="col" sizing="sm">Celular:</label>
+                        <input cFormControl type="text" [(ngModel)]="admin.cellphone" name="phone" #phone="ngModel"
+                            required [valid]="phone.touched && phone.invalid ? false : undefined"
+                            [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                        <c-form-feedback *ngIf="!!(phone.touched && phone.invalid)" [valid]="false">
+                            Este campo es requerido!
+                        </c-form-feedback>
+                    </div>
+                </c-col>
+            </c-row>
+            @if (!esSoloLectura && !esModoEdicion) {
+            <c-row>
+                <c-col sm="6">
+                    <div class="mb-3">
+                        <label cLabel="col" sizing="sm">Clave:</label>
+                        <input cFormControl type="password" [(ngModel)]="admin.password" name="password"
+                            #password="ngModel" required
+                            [valid]="password.touched && password.invalid ? false : undefined"
+                            [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                        <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
+                            Este campo es requerido!
+                        </c-form-feedback>
+                    </div>
+                </c-col>
+                <c-col sm="6">
+                    <div class="mb-3">
+                        <label cLabel="col" sizing="sm">Confimación de clave:</label>
+                        <input cFormControl type="password" [(ngModel)]="admin.passwordConfirm" name="passwordConfirm"
+                            #passwordConfirm="ngModel" required
+                            [valid]="passwordConfirm.touched && passwordConfirm.invalid ? false : undefined"
+                            [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                        <c-form-feedback *ngIf="!!(passwordConfirm.touched && passwordConfirm.invalid)" [valid]="false">
+                            Este campo es requerido!
+                        </c-form-feedback>
+                    </div>
+                </c-col>
+            </c-row>
+            }
+            <c-row>
+                <c-col sm="6">
+                    <div class="mb-3">
+                        <label cLabel="col" sizing="sm">Rol:</label>
+                        <select cSelect [(ngModel)]="admin.rol" name="rol" #rol="ngModel" required
+                            [valid]="rol.touched && rol.invalid ? false : undefined" [disabled]="esSoloLectura">
+                            <option [value]="constService.ROL_ADMIN.PRINCIPAL">{{constService.ROL_ADMIN.PRINCIPAL}}
+                            </option>
+                            <option [value]="constService.ROL_ADMIN.SECUNDARIO">{{constService.ROL_ADMIN.SECUNDARIO}}
+                            </option>
+                        </select>
+                        <c-form-feedback *ngIf="!!(rol.touched && rol.invalid)" [valid]="false">
+                            Este campo es requerido!
+                        </c-form-feedback>
+                    </div>
+                </c-col>
+                <c-col sm="6" class="align-self-end">
+                    <div class="mb-3">
+                        <label cLabel="col" sizing="sm">Estado:</label>
+                        <c-button-group [formGroup]="btnRadioGroup" class="ms-4">
+                            <input class="btn-check" formControlName="radio" id="radio1" type="radio"
+                                [value]="constService.ESTADO_ADMIN.ACTIVO" />
+                            <label (click)="cambiarEstado('Radio1')" cButton cFormCheckLabel color="info" for="radio1"
+                                variant="outline" [disabled]="esSoloLectura">
+                                {{ constService.ESTADO_ADMIN.ACTIVO }}
+                            </label>
+
+                            <input class="btn-check" formControlName="radio" id="radio2" type="radio"
+                                [value]="constService.ESTADO_ADMIN.INACTIVO" />
+                            <label (click)="cambiarEstado('Radio2')" cButton cFormCheckLabel color="danger" for="radio2"
+                                variant="outline" [disabled]="esSoloLectura">
+                                {{ constService.ESTADO_ADMIN.INACTIVO }}
+                            </label>
+                        </c-button-group>
+                    </div>
+                </c-col>
+            </c-row>
+            @if (!esSoloLectura) {
+            <input cButton color="primary" type="submit" [value]="titulo" [disabled]="adminForm.invalid">
+            }
+        </form>
+    </c-card-body>
+</c-card>

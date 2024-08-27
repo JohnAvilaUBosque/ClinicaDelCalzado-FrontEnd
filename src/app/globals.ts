@@ -39,3 +39,7 @@ export enum ESTADO_ADMIN {
     INACTIVO = 'Inactivo',
 }
 
+export enum ROL_ADMIN {
+    PRINCIPAL = 'Principal',
+    SECUNDARIO = 'Secundario',
+}
