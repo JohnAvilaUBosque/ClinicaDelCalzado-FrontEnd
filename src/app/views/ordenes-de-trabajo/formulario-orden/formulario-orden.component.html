@@ -34,8 +34,8 @@
                 </div>
             </c-col>
             <c-col class="align-self-center">
-                <c-badge color="{{orden.orderStatus == constService.ESTADO_ORDEN.VIGENTE ? 'info' : 'danger'}}" shape="rounded-pill"
-                    class="float-end">
+                <c-badge color="{{orden.orderStatus == constService.ESTADO_ORDEN.VIGENTE ? 'info' : 'danger'}}"
+                    shape="rounded-pill" class="float-end">
                     {{orden.orderStatus | uppercase}}
                 </c-badge>
             </c-col>
@@ -72,7 +72,7 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Nombre cliente:</label>
                         <input cFormControl type="text" [(ngModel)]="orden.client.name" name="nameClient"
-                            #nameClient="ngModel" required
+                            #nameClient="ngModel" maxlength="100" required
                             [valid]="nameClient.touched && nameClient.invalid ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(nameClient.touched && nameClient.invalid)" [valid]="false">
@@ -84,11 +84,11 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Identificación cliente:</label>
                         <input cFormControl type="text" [(ngModel)]="orden.client.identification" name="identification"
-                            #identification="ngModel" required
-                            [valid]="identification.touched && identification.invalid ? false : undefined"
+                            #identification="ngModel" maxlength="20" [pattern]="constService.REGULAR_EXP.NUMBER"
+                            required [valid]="identification.touched && identification.invalid ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(identification.touched && identification.invalid)" [valid]="false">
-                            Este campo es requerido!
+                            Este campo es requerido y debe ser numérico!
                         </c-form-feedback>
                     </div>
                 </c-col>
@@ -96,10 +96,11 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Celular cliente:</label>
                         <input cFormControl type="text" [(ngModel)]="orden.client.cellphone" name="phone"
-                            #phone="ngModel" required [valid]="phone.touched && phone.invalid ? false : undefined"
-                            [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                            #phone="ngModel" maxlength="10" [pattern]="constService.REGULAR_EXP.NUMBER" required
+                            [valid]="phone.touched && phone.invalid ? false : undefined" [readonly]="esSoloLectura"
+                            [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(phone.touched && phone.invalid)" [valid]="false">
-                            Este campo es requerido!
+                            Este campo es requerido y debe ser numérico!
                         </c-form-feedback>
                     </div>
                 </c-col>
@@ -117,7 +118,7 @@
                             <div>
                                 <label cLabel="col" sizing="sm">Comentario general:</label>
                                 <textarea cFormControl rows="5" [(ngModel)]="orden.comment" name="comment"
-                                    #comment="ngModel" required
+                                    #comment="ngModel" maxlength="500" required
                                     [valid]="comment.touched && comment.invalid ? false : undefined"
                                     [readonly]="esSoloLectura" [plaintext]="esSoloLectura"></textarea>
                                 <c-form-feedback *ngIf="!!(comment.touched && comment.invalid)" [valid]="false">
@@ -138,7 +139,8 @@
                                 <c-col sm="6" md="12">
                                     <div class="mb-3">
                                         <label cLabel="col" sizing="sm">Estado del pago:</label>
-                                        <c-badge color="{{orden.paymentStatus == constService.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
+                                        <c-badge
+                                            color="{{orden.paymentStatus == constService.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
                                             shape="rounded-pill" class="float-end mt-2">
                                             {{orden.paymentStatus | uppercase}}
                                         </c-badge>
@@ -159,7 +161,7 @@
                                         <input cFormControl id="i-abono" type="text"
                                             [ngModel]="orden.downPayment | currency: 'COP' : 'symbol-narrow' : '1.0'"
                                             (ngModelChange)="cambiarAbono($event)" name="payment" #payment="ngModel"
-                                            required [pattern]="constService.REGULAR_EXP.CURRENCY"
+                                            maxlength="11" [pattern]="constService.REGULAR_EXP.CURRENCY" required
                                             [valid]="payment.touched && payment.invalid ? false : undefined"
                                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                                         <c-form-feedback *ngIf="!!(payment.touched && payment.invalid)" [valid]="false">
@@ -172,7 +174,12 @@
                                         <label cLabel="col" sizing="sm">Saldo:</label>
                                         <input cFormControl id="i-saldo" type="text" readOnly plaintext
                                             [ngModel]="orden.balance | currency: 'COP' : 'symbol-narrow' : '1.0'"
-                                            name="balance">
+                                            name="balance" #balance="ngModel"
+                                            [pattern]="constService.REGULAR_EXP.CURRENCY"
+                                            [valid]="balance.invalid ? false : undefined">
+                                        <c-form-feedback *ngIf="!!(balance.invalid)" [valid]="false">
+                                            El saldo no puede quedar en un valor monetario negativo!
+                                        </c-form-feedback>
                                     </div>
                                 </c-col>
                                 <c-col sm="6" md="12">

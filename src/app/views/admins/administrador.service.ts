@@ -16,7 +16,7 @@ export class AdministradorService {
     return this.http.get<any>(this.url).pipe(map(x => x['admins']));
   }
 
-  obtenerAdministrador(id: number): Observable<AdministradorModel | undefined> {
+  obtenerAdministrador(id: string): Observable<AdministradorModel | undefined> {
     // return this.http.get<any>(this.url + '/' + idOrden);
     return this.obtenerAdministradores().pipe(map(
       administradores => administradores.find(admin => admin.identification == id)

@@ -4,24 +4,38 @@
       <c-col sm="9" md="7" xl="5">
         <c-card class="p-4">
           <c-card-body>
-            <form cForm>
+            <form cForm #loginForm="ngForm" (ngSubmit)="onSubmit()">
               <h1>Clinica del Calzado</h1>
               <p class="text-body-secondary">Ingresa tus credenciales</p>
-              <c-input-group class="mb-3">
-                <span cInputGroupText>
-                  <svg cIcon name="cilUser"></svg>
-                </span>
-                <input autoComplete="username" cFormControl placeholder="Identificación" />
-              </c-input-group>
-              <c-input-group class="mb-4">
-                <span cInputGroupText>
-                  <svg cIcon name="cilLockLocked"></svg>
-                </span>
-                <input autoComplete="current-password" cFormControl placeholder="Clave" type="password" />
-              </c-input-group>
               <c-row>
                 <c-col>
-                  <button cButton color="primary" (click)="iniciarSesion()">
+                  <c-input-group class="mb-3">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilUser"></svg>
+                    </span>
+                    <input cFormControl type="text" [(ngModel)]="user.id" name="nameClient" #nameClient="ngModel"
+                      placeholder="Identificación" maxlength="20" [pattern]="constService.REGULAR_EXP.NUMBER" required
+                      [valid]="nameClient.touched && nameClient.invalid ? false : undefined" />
+                    <c-form-feedback *ngIf="!!(nameClient.touched && nameClient.invalid)" [valid]="false">
+                      Este campo es requerido!
+                    </c-form-feedback>
+                  </c-input-group>
+                  <c-input-group class="mb-4">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilLockLocked"></svg>
+                    </span>
+                    <input cFormControl type="password" [(ngModel)]="user.clave" name="password" #password="ngModel"
+                      placeholder="Clave" maxlength="20" required
+                      [valid]="password.touched && password.invalid ? false : undefined" />
+                    <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
+                      Este campo es requerido!
+                    </c-form-feedback>
+                  </c-input-group>
+                </c-col>
+              </c-row>
+              <c-row>
+                <c-col>
+                  <button cButton type="submit" color="primary" [disabled]="loginForm.invalid">
                     Iniciar sesión
                   </button>
                 </c-col>

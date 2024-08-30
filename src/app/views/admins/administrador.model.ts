@@ -1,5 +1,5 @@
 export class AdministradorModel {
-    identification: number = 0;
+    identification: string = '';
     name: string = '';
     cellphone: string = '';
     password: string = '';

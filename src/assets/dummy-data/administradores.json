@@ -13,6 +13,13 @@
             "cellphone": "3123456789",
             "status": "Inactivo",
             "rol": "Secundario"
+        },
+        {
+            "identification": 789456123,
+            "name": "Yesid Rivera",
+            "cellphone": "3456789120",
+            "status": "Activo",
+            "rol": "Secundario"
         }
     ]
 }

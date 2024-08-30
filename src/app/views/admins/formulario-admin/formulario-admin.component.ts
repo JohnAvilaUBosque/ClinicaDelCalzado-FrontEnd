@@ -94,4 +94,8 @@ export class FormularioAdminComponent implements OnInit {
     this.admin.status = value;
   }
 
+  cambiarClave(): void {
+    throw new Error('Method not implemented.');
+  }
+
 }

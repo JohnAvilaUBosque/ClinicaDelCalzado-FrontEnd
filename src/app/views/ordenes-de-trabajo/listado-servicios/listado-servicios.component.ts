@@ -19,7 +19,7 @@ export class ListadoServiciosComponent implements OnInit {
 
   @Input() esSoloLectura: boolean = false;
   @Input() services: ServicioModel[] = [];
-  
+
   @Output() cambiaronPreciosEvent = new EventEmitter<string>();
 
   ngOnInit(): void {
@@ -32,7 +32,7 @@ export class ListadoServiciosComponent implements OnInit {
   }
 
   cambiarPrecioIndividual(value: string, index: number) {
-    var valorIndividual = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NUMBER, ''));
+    var valorIndividual = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NOT_NUMBER, ''));
     this.services[index].price = Number.isNaN(valorIndividual) ? 0 : valorIndividual;
     this.cambiaronPreciosEvent.emit();
   }

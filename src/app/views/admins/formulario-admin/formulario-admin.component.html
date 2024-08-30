@@ -11,6 +11,10 @@
                         (click)="habilitarModoEdicion()" cTooltip="Editar">
                         <svg cIcon name="cil-pencil"></svg>
                     </button>
+                    <button cButton color="info" variant="ghost" size="sm" shape="rounded-pill" (click)="cambiarClave()"
+                        cTooltip="Cambiar clave">
+                        <svg cIcon name="cil-lock-locked"></svg>
+                    </button>
                 </div>
             </c-col>
             }
@@ -23,11 +27,12 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Identificación:</label>
                         <input cFormControl type="text" [(ngModel)]="admin.identification" name="identification"
-                            #identification="ngModel" required
+                            #identification="ngModel" maxlength="20" required
+                            [pattern]="constService.REGULAR_EXP.NUMBER"
                             [valid]="identification.touched && identification.invalid ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(identification.touched && identification.invalid)" [valid]="false">
-                            Este campo es requerido!
+                            Este campo es requerido y debe ser numérico!
                         </c-form-feedback>
                     </div>
                 </c-col>
@@ -37,7 +42,8 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Nombre:</label>
                         <input cFormControl type="text" [(ngModel)]="admin.name" name="name" #nameClient="ngModel"
-                            required [valid]="nameClient.touched && nameClient.invalid ? false : undefined"
+                            maxlength="100" required
+                            [valid]="nameClient.touched && nameClient.invalid ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(nameClient.touched && nameClient.invalid)" [valid]="false">
                             Este campo es requerido!
@@ -48,10 +54,11 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Celular:</label>
                         <input cFormControl type="text" [(ngModel)]="admin.cellphone" name="phone" #phone="ngModel"
-                            required [valid]="phone.touched && phone.invalid ? false : undefined"
-                            [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                            maxlength="10" [pattern]="constService.REGULAR_EXP.NUMBER" required
+                            [valid]="phone.touched && phone.invalid ? false : undefined" [readonly]="esSoloLectura"
+                            [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(phone.touched && phone.invalid)" [valid]="false">
-                            Este campo es requerido!
+                            Este campo es requerido y debe ser numérico!
                         </c-form-feedback>
                     </div>
                 </c-col>
@@ -62,7 +69,7 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Clave:</label>
                         <input cFormControl type="password" [(ngModel)]="admin.password" name="password"
-                            #password="ngModel" required
+                            #password="ngModel" maxlength="20" required
                             [valid]="password.touched && password.invalid ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
@@ -74,7 +81,7 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Confimación de clave:</label>
                         <input cFormControl type="password" [(ngModel)]="admin.passwordConfirm" name="passwordConfirm"
-                            #passwordConfirm="ngModel" required
+                            #passwordConfirm="ngModel" maxlength="20" required
                             [valid]="passwordConfirm.touched && passwordConfirm.invalid ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(passwordConfirm.touched && passwordConfirm.invalid)" [valid]="false">

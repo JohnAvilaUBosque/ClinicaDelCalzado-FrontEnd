@@ -1,23 +1,30 @@
 import { Component, inject } from '@angular/core';
-import { NgStyle } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
-import { ContainerComponent, RowComponent, ColComponent, CardGroupComponent, TextColorDirective, CardComponent, CardBodyComponent, FormDirective, InputGroupComponent, InputGroupTextDirective, FormControlDirective, ButtonDirective } from '@coreui/angular';
+import { GridModule, FormModule, CardModule, ButtonModule } from '@coreui/angular';
 import { Router } from '@angular/router';
+import { UsuarioModel } from '../usuario.model';
+import { FormsModule } from '@angular/forms';
+import { ConstantsService } from 'src/app/constants.service';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    standalone: true,
-    imports: [ContainerComponent, RowComponent, ColComponent, CardGroupComponent, TextColorDirective, CardComponent, CardBodyComponent, FormDirective, InputGroupComponent, InputGroupTextDirective, IconDirective, FormControlDirective, ButtonDirective, NgStyle]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [CommonModule, GridModule, FormModule, FormsModule, CardModule, ButtonModule, IconDirective]
 })
 export class LoginComponent {
 
   private router = inject(Router);
 
+  public constService = inject(ConstantsService);
+
+  user: UsuarioModel = new UsuarioModel();
+
   constructor() { }
 
-  iniciarSesion() {
+  onSubmit() {
     this.router.navigate(['ordenesdetrabajo/listado']);
   }
 }

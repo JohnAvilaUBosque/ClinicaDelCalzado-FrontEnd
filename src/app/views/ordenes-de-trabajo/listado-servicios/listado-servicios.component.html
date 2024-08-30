@@ -18,7 +18,7 @@
                 <tr>
                     <td>
                         <input cFormControl type="text" [(ngModel)]="service.name" name="nameService{{$index}}"
-                            #nameService="ngModel" required
+                            #nameService="ngModel" maxlength="100" required
                             [valid]="nameService.touched && nameService.invalid ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(nameService.touched && nameService.invalid)" [valid]="false">
@@ -29,7 +29,7 @@
                         <input cFormControl type="text"
                             [ngModel]="service.price | currency: 'COP' : 'symbol-narrow' : '1.0'"
                             (ngModelChange)="cambiarPrecioIndividual($event, $index)" name="price{{$index}}"
-                            #price="ngModel" required [pattern]="constService.REGULAR_EXP.CURRENCY"
+                            #price="ngModel" maxlength="11" required [pattern]="constService.REGULAR_EXP.CURRENCY"
                             [valid]="price.touched && price.invalid ? false : undefined" [readonly]="esSoloLectura"
                             [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(price.touched && price.invalid)" [valid]="false">

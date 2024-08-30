@@ -70,7 +70,7 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   cambiarAbono(value: string) {
-    var abono = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NUMBER, ''));
+    var abono = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NOT_NUMBER, ''));
     this.orden.downPayment = Number.isNaN(abono) ? 0 : abono;
     this.calcularSaldo();
   }

@@ -10,13 +10,13 @@ export class UsuarioService {
     user: 'USER'
   };
 
-  constructor() { 
+  constructor() {
     this.crearUsuarioLocalFake(); // TO DO: Cambiar el usuario local en el login
   }
 
   private crearUsuarioLocalFake() {
     var usuario = new UsuarioModel();
-    usuario.id = 1;
+    usuario.id = '123456789';
     usuario.name = 'Liliana Morantes';
     usuario.email = 'lili@mail.com';
     this.cambiarUsuarioLocal(usuario);
