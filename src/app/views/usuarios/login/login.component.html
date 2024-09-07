@@ -14,7 +14,7 @@
                       <svg cIcon name="cilUser"></svg>
                     </span>
                     <input cFormControl type="text" [(ngModel)]="user.id" name="nameClient" #nameClient="ngModel"
-                      placeholder="Identificación" maxlength="20" [pattern]="constService.REGULAR_EXP.NUMBER" required
+                      placeholder="Identificación" maxlength="20" required
                       [valid]="nameClient.touched && nameClient.invalid ? false : undefined" />
                     <c-form-feedback *ngIf="!!(nameClient.touched && nameClient.invalid)" [valid]="false">
                       Este campo es requerido!

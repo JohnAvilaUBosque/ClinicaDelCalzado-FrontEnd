@@ -3,13 +3,13 @@
         <table cTable hover bordered>
             <thead>
                 <tr>
-                    <th scope="col">Listado de servicios</th>
-                    <th scope="col">Precio individual</th>
+                    <th scope="col" class="col-7">Listado de servicios</th>
+                    <th scope="col" class="col-4">Precio individual</th>
                     @if (esSoloLectura) {
-                    <th scope="col">Estado</th>
+                    <th scope="col" class="col">Estado</th>
                     }
                     @else {
-                    <th scope="col"></th>
+                    <th scope="col" class="col"></th>
                     }
                 </tr>
             </thead>
@@ -33,7 +33,7 @@
                             [valid]="price.touched && price.invalid ? false : undefined" [readonly]="esSoloLectura"
                             [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(price.touched && price.invalid)" [valid]="false">
-                            Este campo es requerido y debe ser un valor monetario valido!
+                            Este campo es requerido y debe ser un valor monetario válido!
                         </c-form-feedback>
                     </td>
                     @if (esSoloLectura) {

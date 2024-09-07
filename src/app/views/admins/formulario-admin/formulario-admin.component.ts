@@ -29,6 +29,7 @@ export class FormularioAdminComponent implements OnInit {
   public esSoloLectura: boolean = false;
   public esModoEdicion: boolean = false;
   public titulo: string = '';
+  public lasClavesCoinciden: boolean = false;
 
   ngOnInit(): void {
     const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
@@ -98,4 +99,7 @@ export class FormularioAdminComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
 
+  confirmarClave() {
+    this.lasClavesCoinciden = this.admin.password == this.admin.passwordConfirm;
+  }
 }

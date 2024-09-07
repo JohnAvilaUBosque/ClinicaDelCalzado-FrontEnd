@@ -17,6 +17,7 @@ export class REGULAR_EXP {
     CURRENCY = /^\$\d{1,3}(\,\d{3})*$/;
     NOT_NUMBER = /[^0-9]/g;
     NUMBER = /^\d+$/;
+    CLAVE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 }
 
 export enum ESTADO_ORDEN {

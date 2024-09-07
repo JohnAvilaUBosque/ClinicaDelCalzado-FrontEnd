@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertModule, ButtonModule, CardModule, FormModule, GridModule } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { map } from 'rxjs';
+import { ConstantsService } from 'src/app/constants.service';
 
 @Component({
   selector: 'app-buscar-orden',
@@ -17,6 +18,8 @@ export class BuscarOrdenComponent {
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+
+  public constService = inject(ConstantsService);
 
   numeroOrden: string = "";
   alertVisible: boolean = false;

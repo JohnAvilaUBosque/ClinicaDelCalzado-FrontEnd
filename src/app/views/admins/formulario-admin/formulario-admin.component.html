@@ -69,11 +69,12 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Clave:</label>
                         <input cFormControl type="password" [(ngModel)]="admin.password" name="password"
-                            #password="ngModel" maxlength="20" required
+                            #password="ngModel" maxlength="20" [pattern]="constService.REGULAR_EXP.CLAVE" required
                             [valid]="password.touched && password.invalid ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
-                            Este campo es requerido!
+                            La clave debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1
+                            número y 1 símbolo!
                         </c-form-feedback>
                     </div>
                 </c-col>
@@ -81,11 +82,13 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Confimación de clave:</label>
                         <input cFormControl type="password" [(ngModel)]="admin.passwordConfirm" name="passwordConfirm"
-                            #passwordConfirm="ngModel" maxlength="20" required
-                            [valid]="passwordConfirm.touched && passwordConfirm.invalid ? false : undefined"
+                            #passwordConfirm="ngModel" (ngModelChange)="confirmarClave()" maxlength="20" required
+                            [valid]="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden) ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
-                        <c-form-feedback *ngIf="!!(passwordConfirm.touched && passwordConfirm.invalid)" [valid]="false">
-                            Este campo es requerido!
+                        <c-form-feedback
+                            *ngIf="!!(passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden))"
+                            [valid]="false">
+                            Las claves no coinciden!
                         </c-form-feedback>
                     </div>
                 </c-col>
@@ -111,19 +114,25 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Estado:</label>
                         <c-button-group [formGroup]="btnRadioGroup" class="ms-4">
+                            @if (!esSoloLectura || (esSoloLectura && constService.ESTADO_ADMIN.ACTIVO == admin.status))
+                            {
                             <input class="btn-check" formControlName="radio" id="radio1" type="radio"
                                 [value]="constService.ESTADO_ADMIN.ACTIVO" />
                             <label (click)="cambiarEstado('Radio1')" cButton cFormCheckLabel color="info" for="radio1"
                                 variant="outline" [disabled]="esSoloLectura">
                                 {{ constService.ESTADO_ADMIN.ACTIVO }}
                             </label>
+                            }
 
+                            @if (!esSoloLectura || (esSoloLectura && constService.ESTADO_ADMIN.INACTIVO ==
+                            admin.status)) {
                             <input class="btn-check" formControlName="radio" id="radio2" type="radio"
                                 [value]="constService.ESTADO_ADMIN.INACTIVO" />
                             <label (click)="cambiarEstado('Radio2')" cButton cFormCheckLabel color="danger" for="radio2"
                                 variant="outline" [disabled]="esSoloLectura">
                                 {{ constService.ESTADO_ADMIN.INACTIVO }}
                             </label>
+                            }
                         </c-button-group>
                     </div>
                 </c-col>

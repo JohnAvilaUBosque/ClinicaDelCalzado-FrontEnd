@@ -16,7 +16,7 @@
                         <svg cIcon name="cil-data-transfer-down"></svg>
                     </button>
                     <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
-                        (click)="abonarAOrden()" cTooltip="Abonar a órden">
+                        (click)="abonarAOrden()" cTooltip="Abonar">
                         <svg cIcon name="cil-dollar"></svg>
                     </button>
                     <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
@@ -165,7 +165,7 @@
                                             [valid]="payment.touched && payment.invalid ? false : undefined"
                                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                                         <c-form-feedback *ngIf="!!(payment.touched && payment.invalid)" [valid]="false">
-                                            Este campo es requerido y debe ser un valor monetario valido!
+                                            Este campo es requerido y debe ser un valor monetario válido!
                                         </c-form-feedback>
                                     </div>
                                 </c-col>
