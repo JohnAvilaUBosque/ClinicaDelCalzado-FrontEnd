@@ -1,5 +1,10 @@
-export const API_URL = 'https://api.example.com';
+export const TITLE = 'Clínica del calzado'
 export const ORDEN_NUMBER_DEFAULT = 'ORD-####-#####';
+
+export const WHATSAPP_URL = 'https://wa.me/+57';
+
+// URL de la API del backend
+export const API_URL = 'https://api.example.com';
 
 export enum FORMATS_API {
     DATETIME = 'yyyy-MM-dd hh:mm',
@@ -17,8 +22,10 @@ export class REGULAR_EXP {
     CURRENCY = /^\$\d{1,3}(\,\d{3})*$/;
     NOT_NUMBER = /[^0-9]/g;
     NUMBER = /^\d+$/;
-    CLAVE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 }
+
+// CONSTANTES DE CLÍNICA DEL CALZADO
 
 export enum ESTADO_ORDEN {
     VIGENTE = 'Vigente',

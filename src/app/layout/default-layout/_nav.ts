@@ -3,10 +3,10 @@ import { INavData } from '@coreui/angular';
 export const navItems: INavData[] = [
   {
     title: true,
-    name: 'Ordenes de trabajo',
+    name: 'Órdenes de trabajo',
   },
   {
-    name: 'Listado ordenes de trabajo',
+    name: 'Listado órdenes de trabajo',
     url: '/ordenesdetrabajo/listado',
     iconComponent: { name: 'cil-list' }
   },
@@ -21,7 +21,7 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-magnifying-glass' }
   },
   {
-    name: 'Borrar ordenes de trabajo',
+    name: 'Borrar órdenes de trabajo',
     url: '/ordenesdetrabajo/borrar',
     iconComponent: { name: 'cil-trash' }
   },

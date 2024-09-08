@@ -6,6 +6,7 @@ import { AlertModule, ButtonModule, CardModule, FormModule, GridModule } from '@
 import { IconDirective } from '@coreui/icons-angular';
 import { map } from 'rxjs';
 import { ConstantsService } from 'src/app/constants.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-buscar-orden',
@@ -16,6 +17,7 @@ import { ConstantsService } from 'src/app/constants.service';
 })
 export class BuscarOrdenComponent {
 
+  private titleService = inject(Title);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -26,7 +28,10 @@ export class BuscarOrdenComponent {
   numeroOrdenErroneo: string = "";
 
   ngOnInit(): void {
+    this.titleService.setTitle(this.constService.TITLE + ' - ' + 'Buscar orden de trabajo');
+    
     this.route.params.pipe(map((p) => p['id-orden-erroneo'])).subscribe(
+
       idOrdenErroneo => {
         if (idOrdenErroneo) {
           this.numeroOrdenErroneo = idOrdenErroneo;

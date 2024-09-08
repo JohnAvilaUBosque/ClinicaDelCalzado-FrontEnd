@@ -21,7 +21,7 @@ export const routes: Routes = [
       },
       {
         path: 'detallado',
-        loadComponent: () => import('./informe-especifico/informe-especifico.component').then(m => m.InformeEspecificoComponent),
+        loadComponent: () => import('./informe-detallado/informe-detallado.component').then(m => m.InformeDetalladoComponent),
         data: {
           title: 'Detallado'
         }

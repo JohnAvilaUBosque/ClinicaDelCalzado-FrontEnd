@@ -6,6 +6,7 @@ import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { ConstantsService } from '../../../constants.service'
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'listado-ordenes',
@@ -17,16 +18,16 @@ import { Router } from '@angular/router';
 export class ListadoOrdenesComponent implements OnInit {
 
   private ordenDeTrabajoService = inject(OrdenDeTrabajoService);
+  private titleService = inject(Title);
   private router = inject(Router);
   
   public constService = inject(ConstantsService);
 
   public ordenes: OrdenDeTrabajoModel[] = [];
 
-  constructor() {
-  }
-
   ngOnInit(): void {
+    this.titleService.setTitle(this.constService.TITLE + ' - ' + 'Órdenes de trabajo');
+
     this.ordenDeTrabajoService.obtenerOrdenes().subscribe(data => {
       this.ordenes = data;
     })

@@ -23,6 +23,10 @@
                                 (click)="verAdministrador(admin)">
                                 <svg cIcon name="cil-external-link"></svg>
                             </button>
+                            <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
+                                (click)="editarAdministrador(admin)" cTooltip="Editar">
+                                <svg cIcon name="cil-pencil"></svg>
+                            </button>
                         </td>
                         <th scope="row">{{admin.identification}}</th>
                         <td>{{admin.name}}</td>

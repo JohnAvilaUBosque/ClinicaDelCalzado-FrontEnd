@@ -7,11 +7,11 @@
             @if (esSoloLectura) {
             <c-col xs="auto">
                 <div class="actions">
-                    <button cButton color="info" variant="ghost" size="sm" shape="rounded-pill"
+                    <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
                         (click)="habilitarModoEdicion()" cTooltip="Editar">
                         <svg cIcon name="cil-pencil"></svg>
                     </button>
-                    <button cButton color="info" variant="ghost" size="sm" shape="rounded-pill" (click)="cambiarClave()"
+                    <button cButton color="warning" variant="ghost" size="sm" shape="rounded-pill" (click)="cambiarClave()"
                         cTooltip="Cambiar clave">
                         <svg cIcon name="cil-lock-locked"></svg>
                     </button>
@@ -69,7 +69,7 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Clave:</label>
                         <input cFormControl type="password" [(ngModel)]="admin.password" name="password"
-                            #password="ngModel" maxlength="20" [pattern]="constService.REGULAR_EXP.CLAVE" required
+                            #password="ngModel" maxlength="20" [pattern]="constService.REGULAR_EXP.PASSWORD" required
                             [valid]="password.touched && password.invalid ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                         <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
@@ -138,7 +138,7 @@
                 </c-col>
             </c-row>
             @if (!esSoloLectura) {
-            <input cButton color="primary" type="submit" [value]="titulo" [disabled]="adminForm.invalid">
+            <input cButton color="primary" type="submit" [value]="titulo" [disabled]="adminForm.invalid || !lasClavesCoinciden">
             }
         </form>
     </c-card-body>

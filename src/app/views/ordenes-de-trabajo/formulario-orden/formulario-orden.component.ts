@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { BadgeComponent, ButtonModule, CardModule, FormModule, GridModule, TooltipModule } from '@coreui/angular';
+import { BadgeComponent, ButtonModule, CardModule, FormModule, GridModule, ModalModule, TooltipModule } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { OrdenDeTrabajoService } from '../orden-de-trabajo.service';
 import { OrdenDeTrabajoModel } from '../orden-de-trabajo.model';
@@ -10,11 +10,12 @@ import { map } from 'rxjs';
 import { UsuarioService } from '../../usuarios/usuario.service';
 import { ConstantsService } from 'src/app/constants.service';
 import { ListadoServiciosComponent } from '../listado-servicios/listado-servicios.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'formulario-orden',
   standalone: true,
-  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, IconDirective, BadgeComponent, ListadoServiciosComponent],
+  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, ModalModule, IconDirective, BadgeComponent, ListadoServiciosComponent],
   templateUrl: './formulario-orden.component.html',
   styleUrl: './formulario-orden.component.scss'
 })
@@ -22,12 +23,14 @@ export class FormularioOrdenComponent implements OnInit {
 
   private ordenDeTrabajoService = inject(OrdenDeTrabajoService);
   private usuarioService = inject(UsuarioService);
+  private titleService = inject(Title);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
   public constService = inject(ConstantsService);
 
   public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
+  public whatsAppNumber: string = '';
   public esSoloLectura: boolean = false;
 
   @ViewChild(ListadoServiciosComponent) listadoServiciosComponent!: ListadoServiciosComponent;
@@ -35,6 +38,8 @@ export class FormularioOrdenComponent implements OnInit {
   ngOnInit(): void {
     const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
+        this.titleService.setTitle(this.constService.TITLE + ' - ' + title + ' orden de trabajo');
+
         if (title == 'Crear') {
           this.orden.orderNumber = this.constService.ORDEN_NUMBER_DEFAULT;
           this.orden.attendedBy = this.usuarioService.obtenerUsuarioLocal()?.name;
@@ -50,8 +55,10 @@ export class FormularioOrdenComponent implements OnInit {
 
               this.ordenDeTrabajoService.obtenerOrden(idOrden).subscribe(
                 ordenEncontrada => {
-                  if (ordenEncontrada)
+                  if (ordenEncontrada) {
                     this.orden = ordenEncontrada;
+                    this.whatsAppNumber = ordenEncontrada.client.cellphone;
+                  }
                   else
                     this.router.navigate(['ordenesdetrabajo/buscar/' + idOrden]);
                 }
@@ -85,7 +92,26 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   enviarPorWhatsApp() {
-    throw new Error('Method not implemented.');
+    // var mensaje =
+    //   `Orden de trabajo #${this.orden.orderNumber}
+    //   Fecha de creación: ${formatDate(this.orden.createDate, this.constService.FORMATS_VIEW.DATETIME, 'en-US')}
+    //   Precio total: $${this.orden.totalValue}
+    //   Abono: $${this.orden.downPayment}
+    //   Saldo: $${this.orden.balance}
+    //   Fecha de entrega: ${formatDate(this.orden.deliveryDate, this.constService.FORMATS_VIEW.DATE, 'en-US')}
+    //   Comentario: ${this.orden.comment}
+    //   `;
+      
+    var mensaje =
+    'Orden de trabajo ' + this.orden.orderNumber + '%0A%0A' +
+    'Fecha de creación: ' + formatDate(this.orden.createDate, this.constService.FORMATS_VIEW.DATETIME, 'en-US') + '%0A' +
+    'Precio total: $' + this.orden.totalValue + '%0A' +
+    'Abono: $' + this.orden.downPayment + '%0A' +
+    'Saldo: $' + this.orden.balance + '%0A' +
+    'Fecha de entrega: ' + formatDate(this.orden.deliveryDate, this.constService.FORMATS_VIEW.DATE, 'en-US') + '%0A' +
+    'Comentario: ' + this.orden.comment;
+
+    window.open(this.constService.WHATSAPP_URL + this.whatsAppNumber + '?text=' + mensaje);
   }
 
   descargarOrden() {

@@ -2,13 +2,13 @@
     <c-card-header>
         <c-row>
             <c-col xs="auto" class="col-title">
-                <h5> {{ esSoloLectura ? 'Ver' : 'Crear'}} órden de trabajo</h5>
+                <h5> {{ esSoloLectura ? 'Ver' : 'Crear'}} orden de trabajo</h5>
             </c-col>
             @if (esSoloLectura) {
             <c-col xs="auto">
                 <div class="actions">
                     <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
-                        (click)="enviarPorWhatsApp()" cTooltip="Enviar por WhatsApp">
+                        cTooltip="Enviar por WhatsApp" [cModalToggle]="staticBackdropModal.id">
                         <svg cIcon name="cil-phone"></svg>
                     </button>
                     <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
@@ -206,3 +206,28 @@
         </form>
     </c-card-body>
 </c-card>
+
+<c-modal #staticBackdropModal backdrop="static" id="staticBackdropModal">
+    <c-modal-header>
+        <h5 cModalTitle>Enviar orden de trabajo por WhatsApp</h5>
+        <button [cModalToggle]="staticBackdropModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <label cLabel="col" sizing="sm">Confirma el número de WhatsApp:</label>
+        <input cFormControl type="text" [(ngModel)]="whatsAppNumber" name="wpNumber" #wpNumber="ngModel" maxlength="10"
+            [pattern]="constService.REGULAR_EXP.NUMBER" required
+            [valid]="wpNumber.touched && wpNumber.invalid ? false : undefined">
+        <c-form-feedback *ngIf="!!(wpNumber.touched && wpNumber.invalid)" [valid]="false">
+            Este campo es requerido y debe ser numérico!
+        </c-form-feedback>
+    </c-modal-body>
+    <c-modal-footer>
+        <button [cModalToggle]="staticBackdropModal.id" cButton color="secondary">
+            Cerrar
+        </button>
+        <button cButton color="success" (click)="enviarPorWhatsApp()" [disabled]="wpNumber.invalid">
+            Enviar
+            <svg cIcon name="cil-phone"></svg>
+        </button>
+    </c-modal-footer>
+</c-modal>

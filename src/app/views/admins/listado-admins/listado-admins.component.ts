@@ -7,6 +7,8 @@ import { ConstantsService } from '../../../constants.service'
 import { Router } from '@angular/router';
 import { AdministradorModel } from '../administrador.model';
 import { AdministradorService } from '../administrador.service';
+import { Title } from '@angular/platform-browser';
+import { TITLE } from 'src/app/globals';
 
 @Component({
   selector: 'listado-admins',
@@ -18,22 +20,26 @@ import { AdministradorService } from '../administrador.service';
 export class ListadoAdminsComponent implements OnInit {
 
   private administradorService = inject(AdministradorService);
+  private titleService = inject(Title);
   private router = inject(Router);
-  
+
   public constService = inject(ConstantsService);
 
   public administradores: AdministradorModel[] = [];
 
-  constructor() {
-  }
-
   ngOnInit(): void {
+    this.titleService.setTitle(this.constService.TITLE + ' - ' + 'Administradores');
+
     this.administradorService.obtenerAdministradores().subscribe(data => {
       this.administradores = data;
     })
   }
 
   verAdministrador(administrador: AdministradorModel) {
-    this.router.navigate(['admins/ver/'+administrador.identification]);
+    this.router.navigate(['admins/ver/' + administrador.identification]);
+  }
+
+  editarAdministrador(administrador: AdministradorModel) {
+    this.router.navigate(['admins/editar/' + administrador.identification]);
   }
 }

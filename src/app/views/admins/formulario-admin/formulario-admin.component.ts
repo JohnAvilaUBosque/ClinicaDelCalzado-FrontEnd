@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { ConstantsService } from 'src/app/constants.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'formulario-admin',
@@ -19,6 +20,7 @@ import { ConstantsService } from 'src/app/constants.service';
 export class FormularioAdminComponent implements OnInit {
 
   private administradorService = inject(AdministradorService);
+  private titleService = inject(Title);
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -32,34 +34,40 @@ export class FormularioAdminComponent implements OnInit {
   public lasClavesCoinciden: boolean = false;
 
   ngOnInit(): void {
-    const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
+    this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
+        this.titleService.setTitle(this.constService.TITLE + ' - ' + title + ' administrador');
+        
         this.titulo = title;
         if (title == 'Agregar') {
           this.admin.status = this.constService.ESTADO_ADMIN.ACTIVO;
         }
         else if (title == 'Editar') {
           this.habilitarModoEdicion();
-          this.btnRadioGroup.setValue({ radio: this.admin.status });
+          this.obtenerAdmin();
         }
         else if (title == 'Ver') {
-          this.deshabilitarModoEdicion();
-
-          this.route.params.pipe(map((p) => p['id-admin'])).subscribe(
-            idAdmin => {
-              this.administradorService.obtenerAdministrador(idAdmin).subscribe(
-                adminEncontrado => {
-                  if (adminEncontrado) {
-                    this.admin = adminEncontrado;
-                    this.btnRadioGroup.setValue({ radio: this.admin.status });
-                  }
-                  else
-                    this.router.navigate(['admins/listado']);
-                }
-              )
-            }
-          );
+          this.habilitarModoVer();
+          this.obtenerAdmin();
         }
+      }
+    );
+  }
+
+  private obtenerAdmin() {
+    this.route.params.pipe(map((p) => p['id-admin'])).subscribe(
+      idAdmin => {
+        this.administradorService.obtenerAdministrador(idAdmin).subscribe(
+          adminEncontrado => {
+            if (adminEncontrado) {
+              this.admin = adminEncontrado;
+              this.btnRadioGroup.setValue({ radio: this.admin.status });
+            }
+
+            else
+              this.router.navigate(['admins/listado']);
+          }
+        );
       }
     );
   }
@@ -67,7 +75,7 @@ export class FormularioAdminComponent implements OnInit {
   onSubmit() {
     if (this.esModoEdicion) {
       this.administradorService.editarAdministrador(this.admin);
-      this.deshabilitarModoEdicion();
+      this.habilitarModoVer();
     } else {
       this.administradorService.crearAdministrador(this.admin);
       this.router.navigate(['admins/ver/' + '123456789']); // TO DO: Hacer esto dentro del suscribe del crear admin
@@ -80,7 +88,7 @@ export class FormularioAdminComponent implements OnInit {
     this.esSoloLectura = false;
   }
 
-  deshabilitarModoEdicion() {
+  habilitarModoVer() {
     this.titulo = 'Ver';
     this.esSoloLectura = true;
     this.esModoEdicion = false;

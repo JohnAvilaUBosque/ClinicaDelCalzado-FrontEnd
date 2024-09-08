@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ConstantsService } from 'src/app/constants.service';
 
 @Component({
   selector: 'app-informe-general',
@@ -9,4 +11,11 @@ import { Component } from '@angular/core';
 })
 export class InformeGeneralComponent {
 
+  private titleService = inject(Title);
+
+  public constService = inject(ConstantsService);
+
+  ngOnInit(): void {
+    this.titleService.setTitle(this.constService.TITLE + ' - ' + 'Informe general');
+  }
 }

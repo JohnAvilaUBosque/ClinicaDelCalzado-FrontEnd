@@ -27,17 +27,10 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'editar',
+        path: 'editar/:id-admin',
         loadComponent: () => import('./formulario-admin/formulario-admin.component').then(m => m.FormularioAdminComponent),
         data: {
           title: 'Editar'
-        }
-      },
-      {
-        path: 'ver',
-        loadComponent: () => import('./formulario-admin/formulario-admin.component').then(m => m.FormularioAdminComponent),
-        data: {
-          title: 'Ver'
         }
       },
       {
