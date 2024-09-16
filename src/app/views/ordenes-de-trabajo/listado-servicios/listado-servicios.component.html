@@ -14,13 +14,16 @@
                 </tr>
             </thead>
             <tbody>
+
                 @for (service of services; track $index) {
                 <tr>
                     <td>
-                        <input cFormControl type="text" [(ngModel)]="service.name" name="nameService{{$index}}"
-                            #nameService="ngModel" maxlength="100" required
+                        <textarea #textareaElement (input)="adjustTextareaHeight(textareaElement)" cFormControl rows="1"
+                            [(ngModel)]="service.name" name="nameService{{$index}}" #nameService="ngModel"
+                            maxlength="100" required
                             [valid]="nameService.touched && nameService.invalid ? false : undefined"
-                            [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                            [readonly]="esSoloLectura" [plaintext]="esSoloLectura"
+                            style="resize: none; overflow: hidden;"></textarea>
                         <c-form-feedback *ngIf="!!(nameService.touched && nameService.invalid)" [valid]="false">
                             Este campo es requerido!
                         </c-form-feedback>
@@ -40,7 +43,7 @@
                     <td>
                         <c-badge
                             color="{{service.status == constService.ESTADO_SERVICIO.RECIBIDO ? 'warning' : service.status == 'Terminado' ?  'info' : 'success'}}"
-                            shape="rounded-pill">
+                            shape="rounded-pill" class="mt-2">
                             {{service.status | uppercase}}
                         </c-badge>
                     </td>
@@ -48,7 +51,7 @@
                     @else {
                     <td>
                         <button cButton color="danger" variant="outline" size="sm" shape="rounded-pill"
-                            (click)="borrarServicio($index)">
+                            cTooltip="Borrar servicio" (click)="borrarServicio($index)">
                             <svg cIcon name="cil-x"></svg>
                         </button>
                     </td>
@@ -63,7 +66,8 @@
 @if (!esSoloLectura) {
 <c-row>
     <c-col xs="auto">
-        <button cButton color="info" variant="outline" size="sm" shape="rounded-pill" (click)="agregarServicioAOrden()">
+        <button cButton color="primary" variant="outline" size="sm" shape="rounded-pill" cTooltip="Agregar servicio"
+            (click)="agregarServicioAOrden()">
             <svg cIcon name="cil-plus"></svg>
         </button>
     </c-col>

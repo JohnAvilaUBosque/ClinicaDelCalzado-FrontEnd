@@ -1,8 +1,9 @@
-import { ServicioModel } from './servicio.model'
+import { ServicioModel } from './servicio.model';
+import { ClienteModel } from './client.model';
 
 export class OrdenDeTrabajoModel {
     orderNumber: string = '';
-    attendedById: number = 0;
+    attendedById: string = '';
     attendedBy: string = '';
     createDate: string = '';
     orderStatus: string = '';
@@ -11,14 +12,14 @@ export class OrdenDeTrabajoModel {
     downPayment: number = 0;
     balance: number = 0;
     paymentStatus: string = '';
-    comment: string = '';
+    comments: ComentarioModel[] = [];
     deliveryDate: string = '';
     services: ServicioModel[] = [];
     servicesCount: number = 0;
 }
 
-class ClienteModel {
-    identification: string = '';
-    name: string = '';
-    cellphone: string = '';
+export class ComentarioModel {
+    comment: string = '';
+    adminName: string = '';
+    date: string = '';
 }

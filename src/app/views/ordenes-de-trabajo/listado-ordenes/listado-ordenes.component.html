@@ -8,7 +8,7 @@
             <table cTable hover striped>
                 <thead>
                     <tr>
-                        <th scope="col">Ver órden</th>
+                        <th scope="col"></th>
                         <th scope="col">Estado órden</th>
                         <th scope="col">Número</th>
                         <th scope="col">Atendido por</th>
@@ -29,12 +29,13 @@
                     <tr>
                         <td>
                             <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
-                                (click)="verOrden(orden)">
+                                cTooltip="Ver orden" (click)="verOrden(orden)">
                                 <svg cIcon name="cil-external-link"></svg>
                             </button>
                         </td>
                         <td>
-                            <c-badge color="{{orden.orderStatus == constService.ESTADO_ORDEN.VIGENTE ? 'info' : 'danger'}}"
+                            <c-badge
+                                color="{{orden.orderStatus == constService.ESTADO_ORDEN.VIGENTE ? 'info' : 'danger'}}"
                                 shape="rounded-pill">
                                 {{orden.orderStatus | uppercase}}
                             </c-badge>
@@ -51,7 +52,8 @@
                         <td>{{orden.downPayment | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
                         <td>{{orden.balance | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
                         <td>
-                            <c-badge color="{{orden.paymentStatus == constService.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
+                            <c-badge
+                                color="{{orden.paymentStatus == constService.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
                                 shape="rounded-pill">
                                 {{orden.paymentStatus | uppercase}}
                             </c-badge>

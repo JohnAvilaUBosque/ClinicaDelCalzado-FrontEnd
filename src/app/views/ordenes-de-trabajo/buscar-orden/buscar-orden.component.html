@@ -16,7 +16,7 @@
                         </c-form-feedback>
                     </div>
                 </c-col>
-                <c-col sm="12" md="2" class="align-self-center">
+                <c-col sm="12" md="2" style="margin-top: 31px">
                     <input cButton color="primary" type="submit" value="Buscar" class="w-100"
                         [disabled]="searchOrderForm.invalid">
                 </c-col>
@@ -24,7 +24,7 @@
         </form>
         <c-alert [(visible)]="alertVisible" dismissible color="danger" fade class="mt-4">
             <svg cIcon name="cil-bell-exclamation" size="lg"></svg>
-            No se encontró órden de trabajo con el número: <strong>{{numeroOrdenErroneo}}</strong>
+            No se encontró la orden de trabajo: <strong>{{idOrdenNoEncontrada}}</strong>
         </c-alert>
     </c-card-body>
 </c-card>

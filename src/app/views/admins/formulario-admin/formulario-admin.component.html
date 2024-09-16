@@ -2,17 +2,17 @@
     <c-card-header>
         <c-row>
             <c-col xs="auto" class="col-title">
-                <h5> {{ titulo }} administrador</h5>
+                <h5 class="me-2"> {{ titulo }} administrador</h5>
             </c-col>
             @if (esSoloLectura) {
             <c-col xs="auto">
                 <div class="actions">
-                    <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
-                        (click)="habilitarModoEdicion()" cTooltip="Editar">
+                    <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Editar"
+                        (click)="habilitarModoEdicion()">
                         <svg cIcon name="cil-pencil"></svg>
                     </button>
-                    <button cButton color="warning" variant="ghost" size="sm" shape="rounded-pill" (click)="cambiarClave()"
-                        cTooltip="Cambiar clave">
+                    <button cButton color="warning" variant="ghost" size="sm" shape="rounded-pill"
+                        cTooltip="Cambiar clave" (click)="cambiarClave()">
                         <svg cIcon name="cil-lock-locked"></svg>
                     </button>
                 </div>
@@ -138,7 +138,8 @@
                 </c-col>
             </c-row>
             @if (!esSoloLectura) {
-            <input cButton color="primary" type="submit" [value]="titulo" [disabled]="adminForm.invalid || !lasClavesCoinciden">
+            <input cButton color="primary" type="submit" [value]="titulo"
+                [disabled]="adminForm.invalid || !lasClavesCoinciden">
             }
         </form>
     </c-card-body>

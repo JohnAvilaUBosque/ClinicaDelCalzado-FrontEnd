@@ -1,5 +1,5 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { BadgeComponent, ButtonModule, FormModule, GridModule, TableModule } from '@coreui/angular';
+import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { BadgeComponent, ButtonModule, FormModule, GridModule, TableModule, TooltipModule } from '@coreui/angular';
 import { ServicioModel } from '../servicio.model';
 import { ConstantsService } from 'src/app/constants.service';
 import { FormsModule } from '@angular/forms';
@@ -9,11 +9,11 @@ import { IconDirective } from '@coreui/icons-angular';
 @Component({
   selector: 'listado-servicios',
   standalone: true,
-  imports: [CommonModule, GridModule, FormsModule, FormModule, ButtonModule, TableModule, IconDirective, BadgeComponent],
+  imports: [CommonModule, GridModule, FormsModule, FormModule, ButtonModule, TableModule, TooltipModule, IconDirective, BadgeComponent],
   templateUrl: './listado-servicios.component.html',
   styleUrl: './listado-servicios.component.scss'
 })
-export class ListadoServiciosComponent implements OnInit {
+export class ListadoServiciosComponent implements OnInit, OnChanges {
 
   public constService = inject(ConstantsService);
 
@@ -22,9 +22,19 @@ export class ListadoServiciosComponent implements OnInit {
 
   @Output() cambiaronPreciosEvent = new EventEmitter<string>();
 
+  @ViewChildren('textareaElement') textareas!: QueryList<ElementRef>;
+
   ngOnInit(): void {
     if (!this.esSoloLectura)
       this.agregarServicioAOrden();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['services'].currentValue?.length && this.esSoloLectura)
+      setTimeout(() =>
+        this.textareas.forEach((textarea: ElementRef) =>
+          this.adjustTextareaHeight(textarea.nativeElement)
+        ), 100);
   }
 
   agregarServicioAOrden() {
@@ -42,4 +52,8 @@ export class ListadoServiciosComponent implements OnInit {
     this.cambiaronPreciosEvent.emit();
   }
 
+  adjustTextareaHeight(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
 }

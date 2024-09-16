@@ -41,13 +41,6 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'buscar/:id-orden-erroneo',
-        loadComponent: () => import('./buscar-orden/buscar-orden.component').then(m => m.BuscarOrdenComponent),
-        data: {
-          title: 'Buscar'
-        }
-      },
-      {
         path: 'borrar',
         loadComponent: () => import('./borrar-ordenes/borrar-ordenes.component').then(m => m.BorrarOrdenesComponent),
         data: {

@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ConstantsService } from 'src/app/constants.service';
 
 @Component({
-  selector: 'app-informe-general',
+  selector: 'informe-general',
   standalone: true,
   imports: [],
   templateUrl: './informe-general.component.html',

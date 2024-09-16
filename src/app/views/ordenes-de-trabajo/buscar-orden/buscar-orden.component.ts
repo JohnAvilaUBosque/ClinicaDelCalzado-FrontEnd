@@ -9,7 +9,7 @@ import { ConstantsService } from 'src/app/constants.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-buscar-orden',
+  selector: 'buscar-orden',
   standalone: true,
   imports: [CommonModule, CardModule, GridModule, ButtonModule, AlertModule, IconDirective, FormsModule, FormModule],
   templateUrl: './buscar-orden.component.html',
@@ -25,16 +25,15 @@ export class BuscarOrdenComponent {
 
   numeroOrden: string = "";
   alertVisible: boolean = false;
-  numeroOrdenErroneo: string = "";
+  idOrdenNoEncontrada: string = "";
 
   ngOnInit(): void {
     this.titleService.setTitle(this.constService.TITLE + ' - ' + 'Buscar orden de trabajo');
-    
-    this.route.params.pipe(map((p) => p['id-orden-erroneo'])).subscribe(
 
-      idOrdenErroneo => {
-        if (idOrdenErroneo) {
-          this.numeroOrdenErroneo = idOrdenErroneo;
+    this.route.queryParams.pipe(map((p) => p['ordenNoEncontrada'])).subscribe(
+      ordenNoEncontrada => {
+        if (ordenNoEncontrada) {
+          this.idOrdenNoEncontrada = ordenNoEncontrada;
           this.alertVisible = true;
         }
       });

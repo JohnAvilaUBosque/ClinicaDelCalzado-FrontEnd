@@ -9,7 +9,7 @@ import { ConstantsService } from 'src/app/constants.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-login',
+  selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,

@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ConstantsService } from 'src/app/constants.service';
 
 @Component({
-  selector: 'app-borrar-ordenes',
+  selector: 'borrar-ordenes',
   standalone: true,
   imports: [],
   templateUrl: './borrar-ordenes.component.html',

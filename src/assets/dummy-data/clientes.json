@@ -1,0 +1,19 @@
+{
+    "clients": [
+        {
+            "identification": "654987321",
+            "name": "Helena Rodriguez",
+            "cellphone": "3503779573"
+        },
+        {
+            "identification": "9876543210",
+            "name": "Pepito Perez",
+            "cellphone": "3194218651"
+        },
+        {
+            "identification": "1234567890",
+            "name": "Client Example",
+            "cellphone": "3124567890"
+        }
+    ]
+}

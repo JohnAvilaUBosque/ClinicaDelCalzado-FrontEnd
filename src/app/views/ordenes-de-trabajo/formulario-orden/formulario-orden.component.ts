@@ -2,20 +2,22 @@ import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { BadgeComponent, ButtonModule, CardModule, FormModule, GridModule, ModalModule, TooltipModule } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { OrdenDeTrabajoService } from '../orden-de-trabajo.service';
-import { OrdenDeTrabajoModel } from '../orden-de-trabajo.model';
+import { OrdenDeTrabajoModel, ComentarioModel } from '../orden-de-trabajo.model';
 import { FormsModule } from '@angular/forms';
-import { CommonModule, formatDate } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { UsuarioService } from '../../usuarios/usuario.service';
 import { ConstantsService } from 'src/app/constants.service';
 import { ListadoServiciosComponent } from '../listado-servicios/listado-servicios.component';
+import { ListadoClientesComponent } from '../listado-clientes/listado-clientes.component';
 import { Title } from '@angular/platform-browser';
+import { ClienteModel } from '../client.model';
 
 @Component({
   selector: 'formulario-orden',
   standalone: true,
-  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, ModalModule, IconDirective, BadgeComponent, ListadoServiciosComponent],
+  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, ModalModule, IconDirective, BadgeComponent, ListadoServiciosComponent, ListadoClientesComponent],
   templateUrl: './formulario-orden.component.html',
   styleUrl: './formulario-orden.component.scss'
 })
@@ -30,10 +32,10 @@ export class FormularioOrdenComponent implements OnInit {
   public constService = inject(ConstantsService);
 
   public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
-  public whatsAppNumber: string = '';
   public esSoloLectura: boolean = false;
 
-  @ViewChild(ListadoServiciosComponent) listadoServiciosComponent!: ListadoServiciosComponent;
+  public whatsAppNumber: string = '';
+  public commentarioNuevo: string = '';
 
   ngOnInit(): void {
     const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
@@ -42,8 +44,9 @@ export class FormularioOrdenComponent implements OnInit {
 
         if (title == 'Crear') {
           this.orden.orderNumber = this.constService.ORDEN_NUMBER_DEFAULT;
+          this.orden.attendedById = this.usuarioService.obtenerUsuarioLocal()?.id;
           this.orden.attendedBy = this.usuarioService.obtenerUsuarioLocal()?.name;
-          this.orden.createDate = formatDate(new Date(), this.constService.FORMATS_API.DATETIME, 'en-US');
+          this.orden.createDate = this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME);
           this.orden.orderStatus = this.constService.ESTADO_ORDEN.VIGENTE;
           this.orden.paymentStatus = this.constService.ESTADO_PAGO.PENDIENTE;
         }
@@ -60,7 +63,7 @@ export class FormularioOrdenComponent implements OnInit {
                     this.whatsAppNumber = ordenEncontrada.client.cellphone;
                   }
                   else
-                    this.router.navigate(['ordenesdetrabajo/buscar/' + idOrden]);
+                    this.router.navigate(['ordenesdetrabajo/buscar'], { queryParams: { ordenNoEncontrada: idOrden } });
                 }
               )
             }
@@ -70,8 +73,10 @@ export class FormularioOrdenComponent implements OnInit {
     );
   }
 
-  onSubmit() {
-    this.orden.deliveryDate = formatDate(this.orden.deliveryDate, this.constService.FORMATS_API.DATE, 'en-US');
+  crearOrden() {
+    this.orden.deliveryDate = this.constService.fechaATexto(this.orden.deliveryDate, this.constService.FORMATS_API.DATE);
+    if (this.commentarioNuevo) this.orden.comments.push({ comment: this.commentarioNuevo, adminName: this.usuarioService.obtenerUsuarioLocal()?.name, date: this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME) });
+
     this.ordenDeTrabajoService.crearOrden(this.orden);
     this.router.navigate(['ordenesdetrabajo/ver/' + 'ORD-2024-00003']); // TO DO: Hacer esto dentro del suscribe del crear orden
   }
@@ -92,33 +97,26 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   enviarPorWhatsApp() {
-    // var mensaje =
-    //   `Orden de trabajo #${this.orden.orderNumber}
-    //   Fecha de creación: ${formatDate(this.orden.createDate, this.constService.FORMATS_VIEW.DATETIME, 'en-US')}
-    //   Precio total: $${this.orden.totalValue}
-    //   Abono: $${this.orden.downPayment}
-    //   Saldo: $${this.orden.balance}
-    //   Fecha de entrega: ${formatDate(this.orden.deliveryDate, this.constService.FORMATS_VIEW.DATE, 'en-US')}
-    //   Comentario: ${this.orden.comment}
-    //   `;
-      
     var mensaje =
-    'Orden de trabajo ' + this.orden.orderNumber + '%0A%0A' +
-    'Fecha de creación: ' + formatDate(this.orden.createDate, this.constService.FORMATS_VIEW.DATETIME, 'en-US') + '%0A' +
-    'Precio total: $' + this.orden.totalValue + '%0A' +
-    'Abono: $' + this.orden.downPayment + '%0A' +
-    'Saldo: $' + this.orden.balance + '%0A' +
-    'Fecha de entrega: ' + formatDate(this.orden.deliveryDate, this.constService.FORMATS_VIEW.DATE, 'en-US') + '%0A' +
-    'Comentario: ' + this.orden.comment;
+      'Orden de trabajo: *' + this.orden.orderNumber + '* %0A' +
+      this.constService.fechaATexto(this.orden.createDate, this.constService.FORMATS_VIEW.DATETIME) + '%0A %0A' +
+      'Servicios: ' + '%0A';
+
+    this.orden.services.forEach(x => mensaje += '- ' + x.name + ' (' + this.constService.monedaATexto(x.price) + ') %0A');
+
+    mensaje += '%0A' + 'Precio total: ' + this.constService.monedaATexto(this.orden.totalValue) + '%0A' +
+      'Abono: ' + this.constService.monedaATexto(this.orden.downPayment) + '%0A' +
+      'Saldo: ' + this.constService.monedaATexto(this.orden.balance) + '%0A %0A' +
+      'Fecha de entrega: ' + this.constService.fechaATexto(this.orden.deliveryDate, this.constService.FORMATS_VIEW.DATE);
 
     window.open(this.constService.WHATSAPP_URL + this.whatsAppNumber + '?text=' + mensaje);
   }
 
-  descargarOrden() {
+  descargar() {
     throw new Error('Method not implemented.');
   }
 
-  abonarAOrden() {
+  abonar() {
     throw new Error('Method not implemented.');
   }
 
@@ -130,7 +128,13 @@ export class FormularioOrdenComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  cancelarOrden() {
+  cancelar() {
     throw new Error('Method not implemented.');
+  }
+
+  cambiarCliente(cliente: ClienteModel) {
+    this.orden.client.identification = cliente.identification;
+    this.orden.client.name = cliente.name;
+    this.orden.client.cellphone = cliente.cellphone;
   }
 }
