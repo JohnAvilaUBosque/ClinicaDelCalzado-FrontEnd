@@ -118,7 +118,7 @@
                             {
                             <input class="btn-check" formControlName="radio" id="radio1" type="radio"
                                 [value]="constService.ESTADO_ADMIN.ACTIVO" />
-                            <label (click)="cambiarEstado('Radio1')" cButton cFormCheckLabel color="info" for="radio1"
+                            <label (click)="cambiarEstado(constService.ESTADO_ADMIN.ACTIVO)" cButton cFormCheckLabel color="info" for="radio1"
                                 variant="outline" [disabled]="esSoloLectura">
                                 {{ constService.ESTADO_ADMIN.ACTIVO }}
                             </label>
@@ -128,7 +128,7 @@
                             admin.status)) {
                             <input class="btn-check" formControlName="radio" id="radio2" type="radio"
                                 [value]="constService.ESTADO_ADMIN.INACTIVO" />
-                            <label (click)="cambiarEstado('Radio2')" cButton cFormCheckLabel color="danger" for="radio2"
+                            <label (click)="cambiarEstado(constService.ESTADO_ADMIN.INACTIVO)" cButton cFormCheckLabel color="danger" for="radio2"
                                 variant="outline" [disabled]="esSoloLectura">
                                 {{ constService.ESTADO_ADMIN.INACTIVO }}
                             </label>
@@ -139,7 +139,7 @@
             </c-row>
             @if (!esSoloLectura) {
             <input cButton color="primary" type="submit" [value]="titulo"
-                [disabled]="adminForm.invalid || !lasClavesCoinciden">
+                [disabled]="adminForm.invalid || (!esModoEdicion && !lasClavesCoinciden)">
             }
         </form>
     </c-card-body>
