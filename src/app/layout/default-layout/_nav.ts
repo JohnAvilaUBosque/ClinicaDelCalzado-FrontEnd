@@ -21,11 +21,6 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-magnifying-glass' }
   },
   {
-    name: 'Borrar órdenes de trabajo',
-    url: '/ordenesdetrabajo/borrar',
-    iconComponent: { name: 'cil-trash' }
-  },
-  {
     name: 'Informes',
     title: true
   },

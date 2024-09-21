@@ -42,7 +42,7 @@
                     @if (esSoloLectura) {
                     <td>
                         <c-badge
-                            color="{{service.status == constService.ESTADO_SERVICIO.RECIBIDO ? 'warning' : service.status == 'Terminado' ?  'info' : 'success'}}"
+                            color="{{service.status == constService.ESTADO_SERVICIO.RECIBIDO ? 'warning' : service.status == constService.ESTADO_SERVICIO.TERMINADO ?  'info' : 'success'}}"
                             shape="rounded-pill" class="mt-2">
                             {{service.status | uppercase}}
                         </c-badge>

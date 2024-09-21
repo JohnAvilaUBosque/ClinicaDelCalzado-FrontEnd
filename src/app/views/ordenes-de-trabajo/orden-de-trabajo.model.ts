@@ -20,6 +20,6 @@ export class OrdenDeTrabajoModel {
 
 export class ComentarioModel {
     comment: string = '';
-    adminName: string = '';
+    adminName?: string = '';
     date: string = '';
 }

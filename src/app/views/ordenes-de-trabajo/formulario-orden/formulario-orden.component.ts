@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { BadgeComponent, ButtonModule, CardModule, FormModule, GridModule, ModalModule, TooltipModule } from '@coreui/angular';
+import { BadgeComponent, ButtonModule, CardModule, FormModule, GridModule, ModalComponent, ModalModule, TooltipModule } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { OrdenDeTrabajoService } from '../orden-de-trabajo.service';
 import { OrdenDeTrabajoModel, ComentarioModel } from '../orden-de-trabajo.model';
@@ -36,6 +36,8 @@ export class FormularioOrdenComponent implements OnInit {
 
   public whatsAppNumber: string = '';
   public commentarioNuevo: string = '';
+  public abonoNuevo: number = 0;
+  public saldoNuevo: number = 0;
 
   ngOnInit(): void {
     const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
@@ -75,7 +77,8 @@ export class FormularioOrdenComponent implements OnInit {
 
   crearOrden() {
     this.orden.deliveryDate = this.constService.fechaATexto(this.orden.deliveryDate, this.constService.FORMATS_API.DATE);
-    if (this.commentarioNuevo) this.orden.comments.push({ comment: this.commentarioNuevo, adminName: this.usuarioService.obtenerUsuarioLocal()?.name, date: this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME) });
+    if (this.commentarioNuevo)
+      this.agregarComentarioAOrden(this.commentarioNuevo);
 
     this.ordenDeTrabajoService.crearOrden(this.orden);
     this.router.navigate(['ordenesdetrabajo/ver/' + 'ORD-2024-00003']); // TO DO: Hacer esto dentro del suscribe del crear orden
@@ -96,7 +99,34 @@ export class FormularioOrdenComponent implements OnInit {
     this.orden.balance = this.orden.totalValue - this.orden.downPayment;
   }
 
-  enviarPorWhatsApp() {
+  cambiarAbonoNuevo(value: string) {
+    var abonoNuevo = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NOT_NUMBER, ''));
+    this.abonoNuevo = Number.isNaN(abonoNuevo) ? 0 : abonoNuevo;
+    this.calcularSaldoNuevo();
+  }
+
+  calcularSaldoNuevo() {
+    this.saldoNuevo = this.orden.totalValue - (this.orden.downPayment + this.abonoNuevo);
+  }
+
+  private agregarComentarioAOrden(comentario: string) {
+    var commentarioObject: ComentarioModel = {
+      comment: comentario,
+      adminName: this.usuarioService.obtenerUsuarioLocal()?.name,
+      date: this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME)
+    }
+    this.orden.comments.push(commentarioObject);
+  }
+
+  // Funciones de modales
+
+  cambiarCliente(cliente: ClienteModel) {
+    this.orden.client.identification = cliente.identification;
+    this.orden.client.name = cliente.name;
+    this.orden.client.cellphone = cliente.cellphone;
+  }
+
+  enviarPorWhatsApp(whatsAppModal: ModalComponent) {
     var mensaje =
       'Orden de trabajo: *' + this.orden.orderNumber + '* %0A' +
       this.constService.fechaATexto(this.orden.createDate, this.constService.FORMATS_VIEW.DATETIME) + '%0A %0A' +
@@ -110,31 +140,49 @@ export class FormularioOrdenComponent implements OnInit {
       'Fecha de entrega: ' + this.constService.fechaATexto(this.orden.deliveryDate, this.constService.FORMATS_VIEW.DATE);
 
     window.open(this.constService.WHATSAPP_URL + this.whatsAppNumber + '?text=' + mensaje);
+
+    whatsAppModal.visible = false;
   }
 
-  descargar() {
-    throw new Error('Method not implemented.');
+  descargar(descargarModal: ModalComponent) {
+
+    descargarModal.visible = false;
   }
 
-  abonar() {
-    throw new Error('Method not implemented.');
+  abonar(abonarModal: ModalComponent) {
+    this.orden.downPayment += this.abonoNuevo;
+    this.orden.balance = this.saldoNuevo;
+    this.agregarComentarioAOrden("El cliente realizó un abono de " +
+      this.constService.monedaATexto(this.orden.downPayment) +
+      ", quedando un saldo de " +
+      this.constService.monedaATexto(this.orden.balance)
+    );
+
+    this.abonoNuevo = 0;
+    this.saldoNuevo = 0;
+
+    abonarModal.visible = false;
   }
 
-  agregarComentario() {
-    throw new Error('Method not implemented.');
+  agregarNuevoComentario(comentarioModal: ModalComponent) {
+    this.agregarComentarioAOrden(this.commentarioNuevo);
+
+    this.commentarioNuevo = "";
+
+    comentarioModal.visible = false;
   }
 
-  cambiarEstadoServicios() {
-    throw new Error('Method not implemented.');
+  cambiarEstadoServicios(estadoServiciosModel: ModalComponent) {
+    this.agregarComentarioAOrden("El servicio 'Reparar zapatos' cambió de estado a ENTREGADO");
+
+    estadoServiciosModel.visible = false;
   }
 
-  cancelar() {
-    throw new Error('Method not implemented.');
+  cancelar(cancelarModal: ModalComponent) {
+    this.orden.orderStatus = this.constService.ESTADO_ORDEN.CANCELADA
+    this.agregarComentarioAOrden("Se canceló la orden de trabajo");
+
+    cancelarModal.visible = false;
   }
 
-  cambiarCliente(cliente: ClienteModel) {
-    this.orden.client.identification = cliente.identification;
-    this.orden.client.name = cliente.name;
-    this.orden.client.cellphone = cliente.cellphone;
-  }
 }

@@ -39,13 +39,6 @@ export const routes: Routes = [
         data: {
           title: 'Buscar'
         }
-      },
-      {
-        path: 'borrar',
-        loadComponent: () => import('./borrar-ordenes/borrar-ordenes.component').then(m => m.BorrarOrdenesComponent),
-        data: {
-          title: 'Borrar'
-        }
       }
     ]
   }

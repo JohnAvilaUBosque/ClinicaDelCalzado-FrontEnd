@@ -9,7 +9,7 @@
                 <thead>
                     <tr>
                         <th scope="col"></th>
-                        <th scope="col">Estado órden</th>
+                        <th scope="col">Estado orden</th>
                         <th scope="col">Número</th>
                         <th scope="col">Atendido por</th>
                         <th scope="col">Fecha creación</th>
@@ -35,7 +35,7 @@
                         </td>
                         <td>
                             <c-badge
-                                color="{{orden.orderStatus == constService.ESTADO_ORDEN.VIGENTE ? 'info' : 'danger'}}"
+                                color="{{orden.orderStatus == constService.ESTADO_ORDEN.VIGENTE ? 'info' : orden.orderStatus == constService.ESTADO_ORDEN.CANCELADA ? 'danger' : 'success' }}"
                                 shape="rounded-pill">
                                 {{orden.orderStatus | uppercase}}
                             </c-badge>

@@ -28,27 +28,28 @@ export class REGULAR_EXP {
 // CONSTANTES DE CLÍNICA DEL CALZADO
 
 export enum ESTADO_ORDEN {
-    VIGENTE = 'Vigente',
-    CANCELADA = 'Cancelada',
+    VIGENTE = 'VIGENTE',
+    CANCELADA = 'CANCELADA',
+    FINALIZADA = 'FINALIZADA',
 }
 
 export enum ESTADO_PAGO {
-    PENDIENTE = 'Pendiente',
-    PAGADO = 'Pagado',
+    PENDIENTE = 'PENDIENTE',
+    PAGADO = 'PAGADO',
 }
 
 export enum ESTADO_SERVICIO {
-    RECIBIDO = 'Recibido',
-    TERMINADO = 'Terminado',
-    DESPACHADO = 'Despachado'
+    RECIBIDO = 'RECIBIDO',
+    TERMINADO = 'TERMINADO',
+    DESPACHADO = 'DESPACHADO'
 }
 
 export enum ESTADO_ADMIN {
-    ACTIVO = 'Activo',
-    INACTIVO = 'Inactivo',
+    ACTIVO = 'ACTIVO',
+    INACTIVO = 'INACTIVO',
 }
 
 export enum ROL_ADMIN {
-    PRINCIPAL = 'Principal',
-    SECUNDARIO = 'Secundario',
+    PRINCIPAL = 'PRINCIPAL',
+    SECUNDARIO = 'SECUNDARIO',
 }

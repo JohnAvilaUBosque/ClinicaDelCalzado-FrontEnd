@@ -4,16 +4,16 @@
             "orderNumber": "ORD-2024-00001",
             "attendedBy": "Liliana Morantes",
             "createDate": "2024-06-18 09:22",
-            "orderStatus": "Cancelada",
+            "orderStatus": "CANCELADA",
             "client": {
                 "identification": "1234567890",
                 "name": "Client Example",
                 "cellphone": "3124567890"
             },
             "totalValue": 20000,
-            "downPayment": 10000,
-            "balance": 10000,
-            "paymentStatus": "Pendiente",
+            "downPayment": 0,
+            "balance": 20000,
+            "paymentStatus": "PENDIENTE",
             "deliveryDate": "2024-07-25",
             "comments": [
                 {
@@ -26,7 +26,7 @@
                 {
                     "name": "Arreglar botas",
                     "price": 20000,
-                    "status": "Recibido"
+                    "status": "RECIBIDO"
                 }
             ],
             "servicesCount": 1
@@ -35,16 +35,16 @@
             "orderNumber": "ORD-2024-00002",
             "attendedBy": "Liliana Morantes",
             "createDate": "2024-06-29 15:48",
-            "orderStatus": "Vigente",
+            "orderStatus": "FINALIZADA",
             "client": {
                 "identification": "9876543210",
                 "name": "Pepito Perez",
                 "cellphone": "3194218651"
             },
-            "totalValue": 30000,
-            "downPayment": 0,
-            "balance": 30000,
-            "paymentStatus": "Pendiente",
+            "totalValue": 15000,
+            "downPayment": 15000,
+            "balance": 0,
+            "paymentStatus": "PAGADO",
             "deliveryDate": "2024-07-10",
             "comments": [
                 {
@@ -53,7 +53,7 @@
                     "date": "2024-06-18 09:22"
                 },
                 {
-                    "comment": "El cliente realizó abono de $15,000",
+                    "comment": "El cliente realizó un abono de $10,000, quedando un saldo de $0",
                     "adminName": "Liliana Morantes",
                     "date": "2024-06-19 14:00"
                 },
@@ -67,12 +67,12 @@
                 {
                     "name": "Pegar suela de tenis",
                     "price": 18000,
-                    "status": "Despachado"
+                    "status": "DESPACHADO"
                 },
                 {
                     "name": "Cocer chaqueta de cuero",
                     "price": 12000,
-                    "status": "Despachado"
+                    "status": "DESPACHADO"
                 }
             ],
             "servicesCount": 2
@@ -81,39 +81,44 @@
             "orderNumber": "ORD-2024-00003",
             "attendedBy": "Yesid Rivera",
             "createDate": "2024-07-15 20:05",
-            "orderStatus": "Vigente",
+            "orderStatus": "VIGENTE",
             "client": {
                 "identification": "654987321",
                 "name": "Helena Rodriguez",
                 "cellphone": "3503779573"
             },
-            "totalValue": 19000,
-            "downPayment": 19000,
-            "balance": 0,
-            "paymentStatus": "Pagado",
+            "totalValue": 32000,
+            "downPayment": 10000,
+            "balance": 22000,
+            "paymentStatus": "PENDIENTE",
             "deliveryDate": "2024-07-25",
             "comments": [
                 {
                     "comment": "Se requiere lo más pronto",
                     "adminName": "Yesid Rivera",
                     "date": "2024-06-18 09:22"
+                },
+                {
+                    "comment": "El cliente realizó un abono de $10,000, quedando un saldo de $22,000",
+                    "adminName": "Liliana Morantes",
+                    "date": "2024-06-19 14:00"
                 }
             ],
             "services": [
                 {
                     "name": "Cambiar cordones zapatos",
                     "price": 4000,
-                    "status": "Recibido"
+                    "status": "RECIBIDO"
                 },
                 {
                     "name": "Limpieza de chaqueta",
                     "price": 10000,
-                    "status": "Terminado"
+                    "status": "TERMINADO"
                 },
                 {
                     "name": "Cambiar cremallera bolso del mismo color de los accesorios",
                     "price": 15000,
-                    "status": "Despachado"
+                    "status": "DESPACHADO"
                 }
             ],
             "servicesCount": 3

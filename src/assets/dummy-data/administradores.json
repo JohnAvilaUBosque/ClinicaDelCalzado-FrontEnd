@@ -4,22 +4,22 @@
             "identification": 123456789,
             "name": "Liliana Morantes",
             "cellphone": "3216549870",
-            "status": "Activo",
-            "rol": "Principal"
+            "status": "ACTIVO",
+            "rol": "PRINCIPAL"
         },
         {
             "identification": 987654321,
             "name": "Eduardo Avila",
             "cellphone": "3123456789",
-            "status": "Inactivo",
-            "rol": "Secundario"
+            "status": "INACTIVO",
+            "rol": "SECUNDARIO"
         },
         {
             "identification": 789456123,
             "name": "Yesid Rivera",
             "cellphone": "3456789120",
-            "status": "Activo",
-            "rol": "Secundario"
+            "status": "ACTIVO",
+            "rol": "SECUNDARIO"
         }
     ]
 }

@@ -7,7 +7,7 @@
             <c-row>
                 <c-col sm="12" md="10">
                     <div class="mb-3">
-                        <label cLabel="col" sizing="sm">Número de órden:</label>
+                        <label cLabel="col" sizing="sm">Número de orden:</label>
                         <input cFormControl type="text" [(ngModel)]="numeroOrden" name="ordenNumber"
                             #ordenNumber="ngModel" [placeholder]="constService.ORDEN_NUMBER_DEFAULT" maxlength="20"
                             required [valid]="ordenNumber.touched && ordenNumber.invalid ? false : undefined">
