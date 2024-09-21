@@ -3,12 +3,15 @@ import { BadgeComponent, ButtonGroupComponent, ButtonModule, CardModule, FormChe
 import { IconDirective } from '@coreui/icons-angular';
 import { AdministradorService } from '../administrador.service';
 import { AdministradorModel } from '../administrador.model';
+import { PreguntaService } from '../../usuarios/pregunta.service';
+import { PreguntaModel } from '../../usuarios/pregunta.model';
 import { FormsModule, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { ConstantsService } from 'src/app/constants.service';
 import { Title } from '@angular/platform-browser';
+import { UsuarioService } from '../../usuarios/usuario.service';
 
 @Component({
   selector: 'formulario-admin',
@@ -20,6 +23,8 @@ import { Title } from '@angular/platform-browser';
 export class FormularioAdminComponent implements OnInit {
 
   private administradorService = inject(AdministradorService);
+  private preguntaService = inject(PreguntaService);
+  private usuarioService = inject(UsuarioService);
   private titleService = inject(Title);
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
@@ -32,12 +37,16 @@ export class FormularioAdminComponent implements OnInit {
   public esModoEdicion: boolean = false;
   public titulo: string = '';
   public lasClavesCoinciden: boolean = false;
+  public idUsuarioLocal: string = '';
+  public preguntas: Array<PreguntaModel> = [];
 
   ngOnInit(): void {
+    this.idUsuarioLocal = this.usuarioService.obtenerUsuarioLocal()?.id;
+
     this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
         this.titleService.setTitle(this.constService.TITLE + ' - ' + title + ' administrador');
-        
+
         this.titulo = title;
         if (title == 'Agregar') {
           this.admin.status = this.constService.ESTADO_ADMIN.ACTIVO;
@@ -52,6 +61,10 @@ export class FormularioAdminComponent implements OnInit {
         }
       }
     );
+
+    this.preguntaService.obtenerPreguntas().subscribe(data => {
+      this.preguntas = data;
+    })
   }
 
   private obtenerAdmin() {
