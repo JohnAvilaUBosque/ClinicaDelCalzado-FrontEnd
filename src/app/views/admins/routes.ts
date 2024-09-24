@@ -40,6 +40,7 @@ export const routes: Routes = [
           title: 'Ver'
         }
       },
+      { path: '**', redirectTo: 'listado' }
     ]
   }
 ];

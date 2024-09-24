@@ -178,11 +178,11 @@ export class FormularioOrdenComponent implements OnInit {
     estadoServiciosModel.visible = false;
   }
 
-  cancelar(cancelarModal: ModalComponent) {
-    this.orden.orderStatus = this.constService.ESTADO_ORDEN.CANCELADA
+  anular(anularModal: ModalComponent) {
+    this.orden.orderStatus = this.constService.ESTADO_ORDEN.ANULADA
     this.agregarComentarioAOrden("Se canceló la orden de trabajo");
 
-    cancelarModal.visible = false;
+    anularModal.visible = false;
   }
 
 }

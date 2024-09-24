@@ -4,7 +4,7 @@
             "orderNumber": "ORD-2024-00001",
             "attendedBy": "Liliana Morantes",
             "createDate": "2024-06-18 09:22",
-            "orderStatus": "CANCELADA",
+            "orderStatus": "ANULADA",
             "client": {
                 "identification": "1234567890",
                 "name": "Client Example",

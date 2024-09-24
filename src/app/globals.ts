@@ -29,7 +29,7 @@ export class REGULAR_EXP {
 
 export enum ESTADO_ORDEN {
     VIGENTE = 'VIGENTE',
-    CANCELADA = 'CANCELADA',
+    ANULADA = 'ANULADA',
     FINALIZADA = 'FINALIZADA',
 }
 

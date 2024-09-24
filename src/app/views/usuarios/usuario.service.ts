@@ -18,7 +18,7 @@ export class UsuarioService {
     var usuario = new UsuarioModel();
     usuario.id = '123456789';
     usuario.name = 'Liliana Morantes';
-    usuario.email = 'lili@mail.com';
+    usuario.rol = 'PRINCIPAL';
     this.cambiarUsuarioLocal(usuario);
   }
 

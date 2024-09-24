@@ -19,14 +19,15 @@
                     @for (admin of administradores; track admin.identification) {
                     <tr>
                         <td>
-                            <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
-                                cTooltip="Ver administrador" (click)="verAdministrador(admin)">
+                            <a cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                                cTooltip="Ver administrador" [routerLink]="['/admins/ver/' + admin.identification]">
                                 <svg cIcon name="cil-external-link"></svg>
-                            </button>
-                            <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
-                                cTooltip="Editar administrador" (click)="editarAdministrador(admin)">
+                            </a>
+                            <a cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
+                                cTooltip="Editar administrador"
+                                [routerLink]="['/admins/editar/' + admin.identification]">
                                 <svg cIcon name="cil-pencil"></svg>
-                            </button>
+                            </a>
                         </td>
                         <th scope="row">{{admin.identification}}</th>
                         <td>{{admin.name}}</td>

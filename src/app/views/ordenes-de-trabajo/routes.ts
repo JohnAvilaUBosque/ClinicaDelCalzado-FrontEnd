@@ -39,7 +39,8 @@ export const routes: Routes = [
         data: {
           title: 'Buscar'
         }
-      }
+      },
+      { path: '**', redirectTo: 'listado' }
     ]
   }
 ];

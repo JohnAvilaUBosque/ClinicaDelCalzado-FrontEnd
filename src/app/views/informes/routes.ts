@@ -9,7 +9,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'general',
+        redirectTo: 'detallado',
         pathMatch: 'full'
       },
       {
@@ -25,7 +25,8 @@ export const routes: Routes = [
         data: {
           title: 'Detallado'
         }
-      }
+      },
+      { path: '**', redirectTo: 'detallado' }
     ]
   }
 ];

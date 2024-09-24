@@ -4,7 +4,7 @@ import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule } fro
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { ConstantsService } from '../../../constants.service'
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AdministradorModel } from '../administrador.model';
 import { AdministradorService } from '../administrador.service';
 import { Title } from '@angular/platform-browser';
@@ -13,7 +13,7 @@ import { TITLE } from 'src/app/globals';
 @Component({
   selector: 'listado-admins',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, BadgeModule, ButtonModule, TooltipModule, IconDirective, CurrencyPipe, UpperCasePipe],
+  imports: [CommonModule, CardModule, TableModule, BadgeModule, ButtonModule, TooltipModule, RouterModule, IconDirective, CurrencyPipe, UpperCasePipe],
   templateUrl: './listado-admins.component.html',
   styleUrl: './listado-admins.component.scss'
 })
@@ -33,13 +33,5 @@ export class ListadoAdminsComponent implements OnInit {
     this.administradorService.obtenerAdministradores().subscribe(data => {
       this.administradores = data;
     })
-  }
-
-  verAdministrador(administrador: AdministradorModel) {
-    this.router.navigate(['admins/ver/' + administrador.identification]);
-  }
-
-  editarAdministrador(administrador: AdministradorModel) {
-    this.router.navigate(['admins/editar/' + administrador.identification]);
   }
 }
