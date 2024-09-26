@@ -12,7 +12,7 @@ import { map } from 'rxjs';
 import { ConstantsService } from 'src/app/constants.service';
 import { Title } from '@angular/platform-browser';
 import { UsuarioService } from '../../usuarios/usuario.service';
-import { CambioDeClaveModel, UsuarioModel } from '../../usuarios/usuario.model';
+import { CambioDeClaveModel } from '../../usuarios/usuario.model';
 
 @Component({
   selector: 'formulario-admin',
@@ -34,7 +34,7 @@ export class FormularioAdminComponent implements OnInit {
   public constService = inject(ConstantsService);
 
   public titulo: string = '';
-  public adminLocal: UsuarioModel = new UsuarioModel();
+  public adminLocal: AdministradorModel = new AdministradorModel();
 
   public admin: AdministradorModel = new AdministradorModel();
   public lasClavesCoinciden: boolean = false;
@@ -42,22 +42,23 @@ export class FormularioAdminComponent implements OnInit {
   public esModoCreacion: boolean = false;
   public esModoEdicion: boolean = false;
   public esModoLectura: boolean = false;
+  public esInformacionPersonal: boolean = false;
 
   public editarDatosSeguridad: boolean = false;
   public preguntas: Array<PreguntaModel> = [];
 
   public cambioDeClave: CambioDeClaveModel = new CambioDeClaveModel();
 
-  btnRadioGroup = this.formBuilder.group({
+  public btnRadioGroup = this.formBuilder.group({
     radioEstado: new FormControl("")
   });
 
   ngOnInit(): void {
-    this.adminLocal = this.usuarioService.obtenerUsuarioLocal();
+    this.adminLocal = this.usuarioService.obtenerAdminLocal();
 
     this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
-        this.titleService.setTitle(this.constService.TITLE + ' - ' + title + ' administrador');
+        this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + title + ' administrador');
 
         this.titulo = title;
         if (title == 'Agregar') {
@@ -85,9 +86,14 @@ export class FormularioAdminComponent implements OnInit {
           adminEncontrado => {
             if (adminEncontrado) {
               this.admin = adminEncontrado;
-              this.btnRadioGroup.setValue({ radioEstado: this.admin.status });
+              this.esInformacionPersonal = this.adminLocal.identification == this.admin.identification;
 
-              if (this.esModoEdicion && this.adminLocal.id == this.admin.identification) {
+              this.btnRadioGroup.setValue({ radioEstado: this.admin.status });
+              if (this.esModoCreacion || this.esModoLectura || (this.esModoEdicion && (this.esInformacionPersonal || this.adminLocal.rol == this.constService.ROL_ADMIN.SECUNDARIO))) {
+                this.btnRadioGroup.disable();
+              }
+
+              if (this.esModoEdicion && this.esInformacionPersonal) {
                 this.preguntaService.obtenerPreguntas().subscribe(data => {
                   this.preguntas = data;
                 })

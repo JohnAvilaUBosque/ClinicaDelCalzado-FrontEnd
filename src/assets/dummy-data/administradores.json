@@ -8,6 +8,13 @@
             "rol": "PRINCIPAL"
         },
         {
+            "identification": 654987321,
+            "name": "Ana Nuñez",
+            "cellphone": "3197624850",
+            "status": "INACTIVO",
+            "rol": "PRINCIPAL"
+        },
+        {
             "identification": 987654321,
             "name": "Eduardo Avila",
             "cellphone": "3123456789",

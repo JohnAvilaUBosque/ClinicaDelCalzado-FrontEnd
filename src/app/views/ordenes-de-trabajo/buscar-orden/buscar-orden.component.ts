@@ -28,7 +28,7 @@ export class BuscarOrdenComponent {
   idOrdenNoEncontrada: string = "";
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.TITLE + ' - ' + 'Buscar orden de trabajo');
+    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Buscar orden de trabajo');
 
     this.route.queryParams.pipe(map((p) => p['ordenNoEncontrada'])).subscribe(
       ordenNoEncontrada => {

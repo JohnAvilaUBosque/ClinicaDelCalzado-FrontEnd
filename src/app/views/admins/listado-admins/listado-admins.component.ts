@@ -4,11 +4,10 @@ import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule } fro
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { ConstantsService } from '../../../constants.service'
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AdministradorModel } from '../administrador.model';
 import { AdministradorService } from '../administrador.service';
 import { Title } from '@angular/platform-browser';
-import { TITLE } from 'src/app/globals';
 
 @Component({
   selector: 'listado-admins',
@@ -21,17 +20,16 @@ export class ListadoAdminsComponent implements OnInit {
 
   private administradorService = inject(AdministradorService);
   private titleService = inject(Title);
-  private router = inject(Router);
 
   public constService = inject(ConstantsService);
 
   public administradores: AdministradorModel[] = [];
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.TITLE + ' - ' + 'Administradores');
+    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Administradores');
 
     this.administradorService.obtenerAdministradores().subscribe(data => {
       this.administradores = data;
-    })
+    });
   }
 }

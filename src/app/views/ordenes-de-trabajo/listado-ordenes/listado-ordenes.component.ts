@@ -26,7 +26,7 @@ export class ListadoOrdenesComponent implements OnInit {
   public ordenes: OrdenDeTrabajoModel[] = [];
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.TITLE + ' - ' + 'Órdenes de trabajo');
+    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Órdenes de trabajo');
 
     this.ordenDeTrabajoService.obtenerOrdenes().subscribe(data => {
       this.ordenes = data;

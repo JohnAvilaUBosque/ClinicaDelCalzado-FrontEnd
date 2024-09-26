@@ -16,6 +16,6 @@ export class InformeGeneralComponent {
   public constService = inject(ConstantsService);
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.TITLE + ' - ' + 'Informe general');
+    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Informe general');
   }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AdministradorModel } from '../admins/administrador.model';
 import { UsuarioModel } from './usuario.model';
 
 @Injectable({
@@ -10,25 +11,17 @@ export class UsuarioService {
     user: 'USER'
   };
 
-  constructor() {
-    this.crearUsuarioLocalFake(); // TO DO: Cambiar el usuario local en el login
+  iniciarSesion(usuario: UsuarioModel) {
+    throw new Error('Method not implemented');
   }
 
-  private crearUsuarioLocalFake() {
-    var usuario = new UsuarioModel();
-    usuario.id = '123456789';
-    usuario.name = 'Liliana Morantes';
-    usuario.rol = 'PRINCIPAL';
-    this.cambiarUsuarioLocal(usuario);
+  cambiarAdminLocal(admin: AdministradorModel) {
+    var admin_json = admin ? JSON.stringify(admin) : '';
+    localStorage.setItem(this.localStorageKeys.user, admin_json)
   }
 
-  cambiarUsuarioLocal(usuario: UsuarioModel) {
-    var usuario_json = usuario ? JSON.stringify(usuario) : '';
-    localStorage.setItem(this.localStorageKeys.user, usuario_json)
-  }
-
-  obtenerUsuarioLocal(): UsuarioModel {
-    var usuario_json = localStorage.getItem(this.localStorageKeys.user);
-    return usuario_json ? JSON.parse(usuario_json) : null;
+  obtenerAdminLocal(): AdministradorModel {
+    var admin_json = localStorage.getItem(this.localStorageKeys.user);
+    return admin_json ? JSON.parse(admin_json ? admin_json : '') : null;
   }
 }

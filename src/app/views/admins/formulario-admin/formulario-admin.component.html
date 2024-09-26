@@ -2,7 +2,7 @@
     <c-card-header>
         <c-row>
             <c-col xs="auto" class="col-title">
-                <h5 class="me-2"> {{ titulo }} {{adminLocal.id == admin.identification ? 'información personal' :
+                <h5 class="me-2"> {{ titulo }} {{esInformacionPersonal ? 'información personal' :
                     'administrador'}} </h5>
             </c-col>
             @if (esModoLectura) {
@@ -86,7 +86,7 @@
                     <label cLabel="col" sizing="sm">Rol:</label>
                     <select cSelect [(ngModel)]="admin.rol" name="rol" #rol="ngModel" required
                         [valid]="rol.touched && rol.invalid ? false : undefined"
-                        [disabled]="esModoLectura || (esModoEdicion && adminLocal.rol == constService.ROL_ADMIN.SECUNDARIO)">
+                        [disabled]="esModoLectura || (esModoEdicion && (esInformacionPersonal || adminLocal.rol == constService.ROL_ADMIN.SECUNDARIO))">
                         <option [value]="constService.ROL_ADMIN.PRINCIPAL">{{constService.ROL_ADMIN.PRINCIPAL}}
                         </option>
                         <option [value]="constService.ROL_ADMIN.SECUNDARIO">{{constService.ROL_ADMIN.SECUNDARIO}}
@@ -99,35 +99,29 @@
                 <c-col sm="6" class="mb-3 align-self-end">
                     <label cLabel="col" sizing="sm">Estado:</label>
                     <c-button-group [formGroup]="btnRadioGroup" class="ms-4">
-                        @if (esModoCreacion || (esModoLectura && constService.ESTADO_ADMIN.ACTIVO == admin.status) ||
-                        (esModoEdicion && adminLocal.rol == constService.ROL_ADMIN.PRINCIPAL) ||
-                        (esModoEdicion && adminLocal.rol == constService.ROL_ADMIN.SECUNDARIO &&
-                        constService.ESTADO_ADMIN.ACTIVO == admin.status)) {
+                        @if (btnRadioGroup.enabled || (btnRadioGroup.disabled && admin.status ==
+                        constService.ESTADO_ADMIN.ACTIVO)) {
                         <input class="btn-check" formControlName="radioEstado" id="radio1" type="radio"
                             [value]="constService.ESTADO_ADMIN.ACTIVO" />
                         <label (click)="cambiarEstado(constService.ESTADO_ADMIN.ACTIVO)" cButton cFormCheckLabel
-                            color="info" for="radio1" variant="outline"
-                            [disabled]="esModoLectura || (esModoEdicion && adminLocal.rol == constService.ROL_ADMIN.SECUNDARIO)">
+                            color="info" for="radio1" variant="outline">
                             {{ constService.ESTADO_ADMIN.ACTIVO }}
                         </label>
                         }
 
-                        @if (esModoCreacion || (esModoLectura && constService.ESTADO_ADMIN.INACTIVO == admin.status) ||
-                        (esModoEdicion && adminLocal.rol == constService.ROL_ADMIN.PRINCIPAL) ||
-                        (esModoEdicion && adminLocal.rol == constService.ROL_ADMIN.SECUNDARIO &&
-                        constService.ESTADO_ADMIN.INACTIVO == admin.status)) {
+                        @if (btnRadioGroup.enabled || (btnRadioGroup.disabled && admin.status ==
+                        constService.ESTADO_ADMIN.INACTIVO)) {
                         <input class="btn-check" formControlName="radioEstado" id="radio2" type="radio"
                             [value]="constService.ESTADO_ADMIN.INACTIVO" />
                         <label (click)="cambiarEstado(constService.ESTADO_ADMIN.INACTIVO)" cButton cFormCheckLabel
-                            color="danger" for="radio2" variant="outline"
-                            [disabled]="esModoLectura || (esModoEdicion && adminLocal.rol == constService.ROL_ADMIN.SECUNDARIO)">
+                            color="danger" for="radio2" variant="outline">
                             {{ constService.ESTADO_ADMIN.INACTIVO }}
                         </label>
                         }
                     </c-button-group>
                 </c-col>
             </c-row>
-            @if (esModoEdicion && adminLocal.id == admin.identification) {
+            @if (esModoEdicion && esInformacionPersonal) {
             <c-row>
                 <c-col sm="6" class="mb-3">
                     <c-form-check sizing="lg" switch>

@@ -16,6 +16,6 @@ export class InformeDetalladoComponent implements OnInit {
   public constService = inject(ConstantsService);
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.TITLE + ' - ' + 'Informe detallado');
+    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Informe detallado');
   }
 }

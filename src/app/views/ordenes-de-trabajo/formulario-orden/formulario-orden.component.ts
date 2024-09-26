@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BadgeComponent, ButtonModule, CardModule, FormModule, GridModule, ModalComponent, ModalModule, TooltipModule } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { OrdenDeTrabajoService } from '../orden-de-trabajo.service';
@@ -42,12 +42,12 @@ export class FormularioOrdenComponent implements OnInit {
   ngOnInit(): void {
     const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
-        this.titleService.setTitle(this.constService.TITLE + ' - ' + title + ' orden de trabajo');
+        this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + title + ' orden de trabajo');
 
         if (title == 'Crear') {
           this.orden.orderNumber = this.constService.ORDEN_NUMBER_DEFAULT;
-          this.orden.attendedById = this.usuarioService.obtenerUsuarioLocal()?.id;
-          this.orden.attendedBy = this.usuarioService.obtenerUsuarioLocal()?.name;
+          this.orden.attendedById = this.usuarioService.obtenerAdminLocal()?.identification;
+          this.orden.attendedBy = this.usuarioService.obtenerAdminLocal()?.name;
           this.orden.createDate = this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME);
           this.orden.orderStatus = this.constService.ESTADO_ORDEN.VIGENTE;
           this.orden.paymentStatus = this.constService.ESTADO_PAGO.PENDIENTE;
@@ -112,7 +112,7 @@ export class FormularioOrdenComponent implements OnInit {
   private agregarComentarioAOrden(comentario: string) {
     var commentarioObject: ComentarioModel = {
       comment: comentario,
-      adminName: this.usuarioService.obtenerUsuarioLocal()?.name,
+      adminName: this.usuarioService.obtenerAdminLocal()?.name,
       date: this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME)
     }
     this.orden.comments.push(commentarioObject);
