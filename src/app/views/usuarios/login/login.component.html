@@ -5,7 +5,7 @@
         <c-card class="p-4">
           <c-card-body>
             <form cForm #loginForm="ngForm" (ngSubmit)="onSubmit()">
-              <h1>Clínica del Calzado</h1>
+              <h1>{{ constService.NOMBRE_EMPRESA }}</h1>
               <p class="text-body-secondary">Ingresa tus credenciales</p>
               <c-row>
                 <c-col xs="12" class="mb-3">
@@ -27,7 +27,7 @@
                       <svg cIcon name="cilLockLocked"></svg>
                     </span>
                     <input cFormControl type="password" [(ngModel)]="usuario.clave" name="password" #password="ngModel"
-                      placeholder="Clave" maxlength="20" required
+                      placeholder="Contraseña" maxlength="20" required
                       [valid]="password.touched && password.invalid ? false : undefined" />
                     <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
                       Este campo es requerido!
@@ -35,15 +35,13 @@
                   </c-input-group>
                 </c-col>
               </c-row>
-              <c-row>
-                <c-col>
-                  <button cButton type="submit" color="primary" [disabled]="loginForm.invalid">
-                    Iniciar sesión
-                  </button>
+              <c-row class="justify-content-between">
+                <c-col xs="auto">
+                  <input cButton color="primary" type="submit" value="Iniciar sesión" [disabled]="loginForm.invalid">
                 </c-col>
-                <c-col>
-                  <a cButton color="link" class="w-100" style="text-align: right;" [routerLink]="['/recuperacion']">
-                    Recuperar clave
+                <c-col xs="auto">
+                  <a cButton color="link" class="w-100" [routerLink]="['/recuperacion']">
+                    Recuperar contraseña
                   </a>
                 </c-col>
               </c-row>

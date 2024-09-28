@@ -8,13 +8,13 @@ import { RecuperacionModel as RecuperacionModel } from '../usuario.model';
 import { PreguntaService } from '../pregunta.service';
 import { PreguntaModel } from '../pregunta.model';
 import { ConstantsService } from 'src/app/constants.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-recuperacion',
   standalone: true,
-  imports: [CommonModule, GridModule, FormModule, FormsModule, CardModule, ButtonModule, IconDirective],
+  imports: [CommonModule, GridModule, FormModule, FormsModule, CardModule, ButtonModule, RouterModule, IconDirective],
   templateUrl: './recuperacion.component.html',
   styleUrl: './recuperacion.component.scss'
 })

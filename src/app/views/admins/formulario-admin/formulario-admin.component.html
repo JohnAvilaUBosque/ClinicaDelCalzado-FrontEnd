@@ -13,7 +13,7 @@
                         <svg cIcon name="cil-pencil"></svg>
                     </a>
                     <button cButton color="warning" variant="ghost" size="sm" shape="rounded-pill"
-                        cTooltip="Cambiar clave" [cModalToggle]="cambiarClaveModal.id">
+                        cTooltip="Cambiar contraseña" [cModalToggle]="cambiarClaveModal.id">
                         <svg cIcon name="cil-lock-locked"></svg>
                     </button>
                 </div>
@@ -236,7 +236,7 @@
 <c-modal #cambiarClaveModal backdrop="static" id="cambiarClaveModal">
     <form cForm #cambiarClaveForm="ngForm">
         <c-modal-header>
-            <h5 cModalTitle>Cambiar clave personal</h5>
+            <h5 cModalTitle>Cambiar contraseña personal</h5>
             <button [cModalToggle]="cambiarClaveModal.id" cButtonClose></button>
         </c-modal-header>
         <c-modal-body>
@@ -282,7 +282,7 @@
             </button>
             <button cButton color="warning" (click)="cambiarClave(cambiarClaveModal)"
                 [disabled]="cambiarClaveForm.invalid">
-                Cambiar clave
+                Cambiar contraseña
                 <svg cIcon name="cil-asterisk-circle"></svg>
             </button>
         </c-modal-footer>
