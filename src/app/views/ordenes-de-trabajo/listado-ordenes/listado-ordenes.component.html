@@ -25,7 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (orden of ordenes; track orden.orderNumber) {
+                    @for (orden of ordenes; track orden.numeroOrden) {
                     <tr>
                         <td>
                             <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
@@ -35,27 +35,27 @@
                         </td>
                         <td>
                             <c-badge
-                                color="{{orden.orderStatus == constService.ESTADO_ORDEN.VIGENTE ? 'info' : orden.orderStatus == constService.ESTADO_ORDEN.ANULADA ? 'danger' : 'success' }}"
+                                color="{{orden.estadoOrden == constService.ESTADO_ORDEN.VIGENTE ? 'info' : orden.estadoOrden == constService.ESTADO_ORDEN.ANULADA ? 'danger' : 'success' }}"
                                 shape="rounded-pill">
-                                {{orden.orderStatus | uppercase}}
+                                {{orden.estadoOrden | uppercase}}
                             </c-badge>
                         </td>
-                        <th scope="row">{{orden.orderNumber}}</th>
-                        <td>{{orden.attendedBy}}</td>
-                        <td>{{orden.createDate | date:constService.FORMATS_VIEW.DATETIME }}</td>
-                        <td>{{orden.client.identification}}</td>
-                        <td>{{orden.client.name}}</td>
-                        <td>{{orden.client.cellphone}}</td>
-                        <td>{{orden.servicesCount}}</td>
-                        <td>{{orden.deliveryDate | date:constService.FORMATS_VIEW.DATE}}</td>
-                        <td>{{orden.totalValue | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
-                        <td>{{orden.downPayment | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
-                        <td>{{orden.balance | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
+                        <th scope="row">{{orden.numeroOrden}}</th>
+                        <td>{{orden.atendidoPor}}</td>
+                        <td>{{orden.fechaCreacion | date:constService.FORMATS_VIEW.DATETIME }}</td>
+                        <td>{{orden.cliente.identificacion}}</td>
+                        <td>{{orden.cliente.nombre}}</td>
+                        <td>{{orden.cliente.celular}}</td>
+                        <td>{{orden.cantidadServicios}}</td>
+                        <td>{{orden.fechaEntrega | date:constService.FORMATS_VIEW.DATE}}</td>
+                        <td>{{orden.precioTotal | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
+                        <td>{{orden.abono | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
+                        <td>{{orden.saldo | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
                         <td>
                             <c-badge
-                                color="{{orden.paymentStatus == constService.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
+                                color="{{orden.estadoPago == constService.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
                                 shape="rounded-pill">
-                                {{orden.paymentStatus | uppercase}}
+                                {{orden.estadoPago | uppercase}}
                             </c-badge>
                         </td>
                     </tr>

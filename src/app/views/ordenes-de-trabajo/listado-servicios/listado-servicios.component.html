@@ -15,11 +15,11 @@
             </thead>
             <tbody>
 
-                @for (service of services; track $index) {
+                @for (service of servicios; track $index) {
                 <tr>
                     <td>
                         <textarea #textareaElement (input)="adjustTextareaHeight(textareaElement)" cFormControl rows="1"
-                            [(ngModel)]="service.name" name="nameService{{$index}}" #nameService="ngModel"
+                            [(ngModel)]="service.descripcion" name="nameService{{$index}}" #nameService="ngModel"
                             maxlength="100" required
                             [valid]="nameService.touched && nameService.invalid ? false : undefined"
                             [readonly]="esSoloLectura" [plaintext]="esSoloLectura"
@@ -30,7 +30,7 @@
                     </td>
                     <td>
                         <input cFormControl type="text"
-                            [ngModel]="service.price | currency: 'COP' : 'symbol-narrow' : '1.0'"
+                            [ngModel]="service.precio | currency: 'COP' : 'symbol-narrow' : '1.0'"
                             (ngModelChange)="cambiarPrecioIndividual($event, $index)" name="price{{$index}}"
                             #price="ngModel" maxlength="11" required [pattern]="constService.REGULAR_EXP.CURRENCY"
                             [valid]="price.touched && price.invalid ? false : undefined" [readonly]="esSoloLectura"
@@ -42,9 +42,9 @@
                     @if (esSoloLectura) {
                     <td>
                         <c-badge
-                            color="{{service.status == constService.ESTADO_SERVICIO.RECIBIDO ? 'warning' : service.status == constService.ESTADO_SERVICIO.TERMINADO ?  'info' : 'success'}}"
+                            color="{{service.estado == constService.ESTADO_SERVICIO.RECIBIDO ? 'warning' : service.estado == constService.ESTADO_SERVICIO.TERMINADO ?  'info' : 'success'}}"
                             shape="rounded-pill" class="mt-2">
-                            {{service.status | uppercase}}
+                            {{service.estado | uppercase}}
                         </c-badge>
                     </td>
                     }

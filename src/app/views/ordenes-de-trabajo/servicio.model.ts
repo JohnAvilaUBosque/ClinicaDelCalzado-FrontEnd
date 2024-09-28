@@ -1,5 +1,5 @@
 export class ServicioModel {
-    name: string = '';
-    price: number = 0;
-    status: string = '';
+    descripcion: string = '';
+    precio: number = 0;
+    estado: string = '';
 }

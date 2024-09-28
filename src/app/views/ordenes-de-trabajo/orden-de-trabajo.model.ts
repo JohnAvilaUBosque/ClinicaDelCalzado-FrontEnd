@@ -1,25 +1,24 @@
 import { ServicioModel } from './servicio.model';
-import { ClienteModel } from './client.model';
+import { ClienteModel } from './cliente.model';
 
 export class OrdenDeTrabajoModel {
-    orderNumber: string = '';
-    attendedById: string = '';
-    attendedBy: string = '';
-    createDate: string = '';
-    orderStatus: string = '';
-    client: ClienteModel = new ClienteModel();
-    totalValue: number = 0;
-    downPayment: number = 0;
-    balance: number = 0;
-    paymentStatus: string = '';
-    comments: ComentarioModel[] = [];
-    deliveryDate: string = '';
-    services: ServicioModel[] = [];
-    servicesCount: number = 0;
+    numeroOrden: string = '';
+    atendidoPor: string = '';
+    fechaCreacion: string = '';
+    estadoOrden: string = '';
+    cliente: ClienteModel = new ClienteModel();
+    precioTotal: number = 0;
+    abono: number = 0;
+    saldo: number = 0;
+    estadoPago: string = '';
+    fechaEntrega: string = '';
+    servicios: ServicioModel[] = [];
+    cantidadServicios: number = 0;
+    comentarios: ComentarioModel[] = [];
 }
 
 export class ComentarioModel {
-    comment: string = '';
-    adminName?: string = '';
-    date: string = '';
+    descripcion: string = '';
+    nombreAdmin: string = '';
+    fecha: string = '';
 }

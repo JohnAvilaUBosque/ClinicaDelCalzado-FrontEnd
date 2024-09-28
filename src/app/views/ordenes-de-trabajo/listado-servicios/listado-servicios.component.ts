@@ -18,7 +18,7 @@ export class ListadoServiciosComponent implements OnInit, OnChanges {
   public constService = inject(ConstantsService);
 
   @Input() esSoloLectura: boolean = false;
-  @Input() services: ServicioModel[] = [];
+  @Input() servicios: ServicioModel[] = [];
 
   @Output() cambiaronPreciosEvent = new EventEmitter<string>();
 
@@ -30,7 +30,7 @@ export class ListadoServiciosComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['services'].currentValue?.length && this.esSoloLectura)
+    if (changes['servicios'].currentValue?.length && this.esSoloLectura)
       setTimeout(() =>
         this.textareas.forEach((textarea: ElementRef) =>
           this.adjustTextareaHeight(textarea.nativeElement)
@@ -38,17 +38,17 @@ export class ListadoServiciosComponent implements OnInit, OnChanges {
   }
 
   agregarServicioAOrden() {
-    this.services.push(new ServicioModel());
+    this.servicios.push(new ServicioModel());
   }
 
   cambiarPrecioIndividual(value: string, index: number) {
     var valorIndividual = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NOT_NUMBER, ''));
-    this.services[index].price = Number.isNaN(valorIndividual) ? 0 : valorIndividual;
+    this.servicios[index].precio = Number.isNaN(valorIndividual) ? 0 : valorIndividual;
     this.cambiaronPreciosEvent.emit();
   }
 
   borrarServicio(index: number) {
-    this.services.splice(index, 1);
+    this.servicios.splice(index, 1);
     this.cambiaronPreciosEvent.emit();
   }
 

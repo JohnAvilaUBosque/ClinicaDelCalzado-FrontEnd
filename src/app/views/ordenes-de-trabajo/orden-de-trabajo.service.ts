@@ -13,13 +13,13 @@ export class OrdenDeTrabajoService {
   url: string = '/assets/dummy-data/ordenes-de-trabajo.json';
 
   obtenerOrdenes(): Observable<OrdenDeTrabajoModel[]> {
-    return this.http.get<any>(this.url).pipe(map(x => x['orders']));
+    return this.http.get<any>(this.url).pipe(map(x => x['ordenes']));
   }
 
   obtenerOrden(idOrden: string): Observable<OrdenDeTrabajoModel | undefined> {
     // return this.http.get<any>(this.url + '/' + idOrden);
     return this.obtenerOrdenes().pipe(map(
-      ordenes => ordenes.find(orden => orden.orderNumber == idOrden)
+      ordenes => ordenes.find(orden => orden.numeroOrden == idOrden)
     ))
   }
 

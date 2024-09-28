@@ -1,127 +1,127 @@
 {
-    "orders": [
+    "ordenes": [
         {
-            "orderNumber": "ORD-2024-00001",
-            "attendedBy": "Liliana Morantes",
-            "createDate": "2024-06-18 09:22",
-            "orderStatus": "ANULADA",
-            "client": {
-                "identification": "1234567890",
-                "name": "Client Example",
-                "cellphone": "3124567890"
+            "numeroOrden": "ORD-2024-00001",
+            "atendidoPor": "Liliana Morantes",
+            "fechaCreacion": "2024-06-18 09:22",
+            "estadoOrden": "ANULADA",
+            "cliente": {
+                "identificacion": "1234567890",
+                "nombre": "Ricardo Lopez",
+                "celular": "3124567890"
             },
-            "totalValue": 20000,
-            "downPayment": 0,
-            "balance": 20000,
-            "paymentStatus": "PENDIENTE",
-            "deliveryDate": "2024-07-25",
-            "comments": [
+            "precioTotal": 20000,
+            "abono": 0,
+            "saldo": 20000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-07-25",
+            "comentarios": [
                 {
-                    "comment": "Se requiere lo más pronto",
-                    "adminName": "Liliana Morantes",
-                    "date": "2024-06-18 09:22"
+                    "descripcion": "Se requiere lo más pronto",
+                    "nombreAdmin": "Liliana Morantes",
+                    "fecha": "2024-06-18 09:22"
                 }
             ],
-            "services": [
+            "servicios": [
                 {
-                    "name": "Arreglar botas",
-                    "price": 20000,
-                    "status": "RECIBIDO"
+                    "descripcion": "Arreglar botas",
+                    "precio": 20000,
+                    "estado": "RECIBIDO"
                 }
             ],
-            "servicesCount": 1
+            "cantidadServicios": 1
         },
         {
-            "orderNumber": "ORD-2024-00002",
-            "attendedBy": "Liliana Morantes",
-            "createDate": "2024-06-29 15:48",
-            "orderStatus": "FINALIZADA",
-            "client": {
-                "identification": "9876543210",
-                "name": "Pepito Perez",
-                "cellphone": "3194218651"
+            "numeroOrden": "ORD-2024-00002",
+            "atendidoPor": "Liliana Morantes",
+            "fechaCreacion": "2024-06-29 15:48",
+            "estadoOrden": "FINALIZADA",
+            "cliente": {
+                "identificacion": "9876543210",
+                "nombre": "Pepito Perez",
+                "celular": "3194218651"
             },
-            "totalValue": 15000,
-            "downPayment": 15000,
-            "balance": 0,
-            "paymentStatus": "PAGADO",
-            "deliveryDate": "2024-07-10",
-            "comments": [
+            "precioTotal": 15000,
+            "abono": 15000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-07-10",
+            "comentarios": [
                 {
-                    "comment": "Se requiere lo más pronto",
-                    "adminName": "Liliana Morantes",
-                    "date": "2024-06-18 09:22"
+                    "descripcion": "Se requiere lo más pronto",
+                    "nombreAdmin": "Liliana Morantes",
+                    "fecha": "2024-06-18 09:22"
                 },
                 {
-                    "comment": "El cliente realizó un abono de $10,000, quedando un saldo de $0",
-                    "adminName": "Liliana Morantes",
-                    "date": "2024-06-19 14:00"
+                    "descripcion": "El cliente realizó un abono de $10,000, quedando un saldo de $0",
+                    "nombreAdmin": "Liliana Morantes",
+                    "fecha": "2024-06-19 14:00"
                 },
                 {
-                    "comment": "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas 'Letraset', las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
-                    "adminName": "Liliana Morantes",
-                    "date": "2024-06-20 18:00"
+                    "descripcion": "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas 'Letraset', las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
+                    "nombreAdmin": "Liliana Morantes",
+                    "fecha": "2024-06-20 18:00"
                 }
             ],
-            "services": [
+            "servicios": [
                 {
-                    "name": "Pegar suela de tenis",
-                    "price": 18000,
-                    "status": "DESPACHADO"
+                    "nombre": "Pegar suela de tenis",
+                    "precio": 18000,
+                    "estado": "DESPACHADO"
                 },
                 {
-                    "name": "Cocer chaqueta de cuero",
-                    "price": 12000,
-                    "status": "DESPACHADO"
+                    "nombre": "Cocer chaqueta de cuero",
+                    "precio": 12000,
+                    "estado": "DESPACHADO"
                 }
             ],
-            "servicesCount": 2
+            "cantidadServicios": 2
         },
         {
-            "orderNumber": "ORD-2024-00003",
-            "attendedBy": "Yesid Rivera",
-            "createDate": "2024-07-15 20:05",
-            "orderStatus": "VIGENTE",
-            "client": {
-                "identification": "654987321",
-                "name": "Helena Rodriguez",
-                "cellphone": "3503779573"
+            "numeroOrden": "ORD-2024-00003",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-07-15 20:05",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "654987321",
+                "nombre": "Helena Rodriguez",
+                "celular": "3503779573"
             },
-            "totalValue": 32000,
-            "downPayment": 10000,
-            "balance": 22000,
-            "paymentStatus": "PENDIENTE",
-            "deliveryDate": "2024-07-25",
-            "comments": [
+            "precioTotal": 32000,
+            "abono": 10000,
+            "saldo": 22000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-07-25",
+            "comentarios": [
                 {
-                    "comment": "Se requiere lo más pronto",
-                    "adminName": "Yesid Rivera",
-                    "date": "2024-06-18 09:22"
+                    "descripcion": "Se requiere lo más pronto",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-06-18 09:22"
                 },
                 {
-                    "comment": "El cliente realizó un abono de $10,000, quedando un saldo de $22,000",
-                    "adminName": "Liliana Morantes",
-                    "date": "2024-06-19 14:00"
+                    "descripcion": "El cliente realizó un abono de $10,000, quedando un saldo de $22,000",
+                    "nombreAdmin": "Liliana Morantes",
+                    "fecha": "2024-06-19 14:00"
                 }
             ],
-            "services": [
+            "servicios": [
                 {
-                    "name": "Cambiar cordones zapatos",
-                    "price": 4000,
-                    "status": "RECIBIDO"
+                    "descripcion": "Cambiar cordones zapatos",
+                    "precio": 4000,
+                    "estado": "RECIBIDO"
                 },
                 {
-                    "name": "Limpieza de chaqueta",
-                    "price": 10000,
-                    "status": "TERMINADO"
+                    "descripcion": "Limpieza de chaqueta",
+                    "precio": 10000,
+                    "estado": "TERMINADO"
                 },
                 {
-                    "name": "Cambiar cremallera bolso del mismo color de los accesorios",
-                    "price": 15000,
-                    "status": "DESPACHADO"
+                    "descripcion": "Cambiar cremallera bolso del mismo color de los accesorios",
+                    "precio": 15000,
+                    "estado": "DESPACHADO"
                 }
             ],
-            "servicesCount": 3
+            "cantidadServicios": 3
         }
     ]
 }

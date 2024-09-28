@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
-import { ClienteModel } from '../client.model';
+import { ClienteModel } from '../cliente.model';
 import { FormModule, TableModule } from '@coreui/angular';
 import { ClienteService } from '../cliente.service';
 import { FormsModule } from '@angular/forms';
@@ -33,9 +33,9 @@ export class ListadoClientesComponent implements OnInit {
 
   filtrar() {
     this.clientesFiltrados = this.clientes.filter(x =>
-      x.identification.toLowerCase().includes(this.filtro.identification.toLowerCase()) &&
-      x.name.toLowerCase().includes(this.filtro.name.toLowerCase()) &&
-      x.cellphone.toLowerCase().includes(this.filtro.cellphone.toLowerCase())
+      x.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
+      x.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&
+      x.celular.toLowerCase().includes(this.filtro.celular.toLowerCase())
     )
   }
 

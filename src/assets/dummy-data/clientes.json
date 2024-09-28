@@ -1,19 +1,19 @@
 {
-    "clients": [
+    "clientes": [
         {
-            "identification": "654987321",
-            "name": "Helena Rodriguez",
-            "cellphone": "3503779573"
+            "identificacion": "654987321",
+            "nombre": "Helena Rodriguez",
+            "celular": "3503779573"
         },
         {
-            "identification": "9876543210",
-            "name": "Pepito Perez",
-            "cellphone": "3194218651"
+            "identificacion": "9876543210",
+            "nombre": "Pepito Perez",
+            "celular": "3194218651"
         },
         {
-            "identification": "1234567890",
-            "name": "Client Example",
-            "cellphone": "3124567890"
+            "identificacion": "1234567890",
+            "nombre": "Ricardo Lopez",
+            "celular": "3124567890"
         }
     ]
 }

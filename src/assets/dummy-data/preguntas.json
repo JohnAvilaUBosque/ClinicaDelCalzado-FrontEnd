@@ -2,31 +2,31 @@
     "preguntas": [
         {
             "id": "1",
-            "label": "¿Cuál es su deporte favorito?"
+            "etiqueta": "¿Cuál es su deporte favorito?"
         },
         {
             "id": "2",
-            "label": "¿Qué raza de gato te gusta más?"
+            "etiqueta": "¿Qué raza de gato te gusta más?"
         },
         {
             "id": "3",
-            "label": "¿En qué ciudad se conocieron sus padres?"
+            "etiqueta": "¿En qué ciudad se conocieron sus padres?"
         },
         {
             "id": "4",
-            "label": "¿Cuál era el apodo de tu mejor amigo de la infancia?"
+            "etiqueta": "¿Cuál era el apodo de tu mejor amigo de la infancia?"
         },
         {
             "id": "5",
-            "label": "¿Cómo se llamaba su mascota favorita de la infancia?"
+            "etiqueta": "¿Cómo se llamaba su mascota favorita de la infancia?"
         },
         {
             "id": "6",
-            "label": "¿A qué universidad intentaste entrar pero finalmente no fuiste?"
+            "etiqueta": "¿A qué universidad intentaste entrar pero finalmente no fuiste?"
         },
         {
             "id": "7",
-            "label": "¿Cuál es el apellido de la profesora del colegio que más se acuerde?"
+            "etiqueta": "¿Cuál es el apellido de la profesora del colegio que más se acuerde?"
         }
     ]
 }

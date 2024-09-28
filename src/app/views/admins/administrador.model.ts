@@ -1,10 +1,10 @@
 export class AdministradorModel {
-    identification: string = '';
-    name: string = '';
-    cellphone: string = '';
-    password: string = '';
-    passwordConfirm: string = '';
-    status: string = '';
+    identificacion: string = '';
+    nombre: string = '';
+    celular: string = '';
+    clave: string = '';
+    claveConfirmacion: string = '';
+    estado: string = '';
     rol: string = '';
     pregunta1: string = '';
     respuesta1: string = '';

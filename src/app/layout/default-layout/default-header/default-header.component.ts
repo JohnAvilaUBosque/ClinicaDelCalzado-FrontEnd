@@ -81,7 +81,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
   }
 
   irAPerfil() {
-    var idUser = this.usuarioService.obtenerAdminLocal()?.identification;
+    var idUser = this.usuarioService.obtenerAdminLocal()?.identificacion;
     this.router.navigate(['admins/ver/' + idUser]);
   }
 

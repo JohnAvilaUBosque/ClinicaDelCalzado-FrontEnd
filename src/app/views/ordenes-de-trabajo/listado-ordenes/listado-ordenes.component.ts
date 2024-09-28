@@ -34,6 +34,6 @@ export class ListadoOrdenesComponent implements OnInit {
   }
 
   verOrden(orden: OrdenDeTrabajoModel) {
-    this.router.navigate(['ordenesdetrabajo/ver/' + orden.orderNumber]);
+    this.router.navigate(['ordenesdetrabajo/ver/' + orden.numeroOrden]);
   }
 }

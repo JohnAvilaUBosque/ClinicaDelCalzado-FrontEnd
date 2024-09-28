@@ -1,31 +1,31 @@
 {
     "admins": [
         {
-            "identification": 123456789,
-            "name": "Liliana Morantes",
-            "cellphone": "3216549870",
-            "status": "ACTIVO",
+            "identificacion": 123456789,
+            "nombre": "Liliana Morantes",
+            "celular": "3216549870",
+            "estado": "ACTIVO",
             "rol": "PRINCIPAL"
         },
         {
-            "identification": 654987321,
-            "name": "Ana Nuñez",
-            "cellphone": "3197624850",
-            "status": "INACTIVO",
+            "identificacion": 321654987,
+            "nombre": "Ana Nuñez",
+            "celular": "3197624850",
+            "estado": "INACTIVO",
             "rol": "PRINCIPAL"
         },
         {
-            "identification": 987654321,
-            "name": "Eduardo Avila",
-            "cellphone": "3123456789",
-            "status": "INACTIVO",
+            "identificacion": 987654321,
+            "nombre": "Eduardo Avila",
+            "celular": "3123456789",
+            "estado": "INACTIVO",
             "rol": "SECUNDARIO"
         },
         {
-            "identification": 789456123,
-            "name": "Yesid Rivera",
-            "cellphone": "3456789120",
-            "status": "ACTIVO",
+            "identificacion": 789456123,
+            "nombre": "Yesid Rivera",
+            "celular": "3456789120",
+            "estado": "ACTIVO",
             "rol": "SECUNDARIO"
         }
     ]

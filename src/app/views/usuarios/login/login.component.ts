@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     // this.usuarioService.iniciarSesion(this.usuario);
 
     this.administradorService.obtenerAdministradores().subscribe(data => {
-      var admin = data.find(admin => admin.identification == this.usuario.identificacion);
+      var admin = data.find(admin => admin.identificacion == this.usuario.identificacion);
       if (admin) {
         this.usuarioService.cambiarAdminLocal(admin);
         this.router.navigate(['ordenesdetrabajo/listado']);

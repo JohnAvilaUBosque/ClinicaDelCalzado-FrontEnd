@@ -1,8 +1,8 @@
 {
-    "name": "Tech Solutions",
+    "nombre": "Tech Solutions",
     "nit": "1234567890",
-    "address": "123 Main St, Tech City",
-    "phones": [
+    "direccion": "123 Main St, Tech City",
+    "telefonos": [
         "555-1234",
         "555-5678"
     ]

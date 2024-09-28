@@ -9,23 +9,23 @@
     <tbody>
         <tr>
             <td>
-                <input cFormControl type="text" [(ngModel)]="filtro.identification" (ngModelChange)="filtrar()"
-                    name="identificacion" #identificacion="ngModel" maxlength="20">
+                <input cFormControl type="text" [(ngModel)]="filtro.identificacion" (ngModelChange)="filtrar()"
+                    name="identification" #identification="ngModel" maxlength="20">
             </td>
             <td>
-                <input cFormControl type="text" [(ngModel)]="filtro.name" (ngModelChange)="filtrar()" name="nombre"
-                    #nombre="ngModel" maxlength="20">
+                <input cFormControl type="text" [(ngModel)]="filtro.nombre" (ngModelChange)="filtrar()" name="nameClient"
+                    #nameClient="ngModel" maxlength="20">
             </td>
             <td>
-                <input cFormControl type="text" [(ngModel)]="filtro.cellphone" (ngModelChange)="filtrar()"
-                    name="celular" #celular="ngModel" maxlength="20">
+                <input cFormControl type="text" [(ngModel)]="filtro.celular" (ngModelChange)="filtrar()"
+                    name="cellphone" #cellphone="ngModel" maxlength="20">
             </td>
         </tr>
         @for (cliente of clientesFiltrados; track $index) {
         <tr (click)="seleccionarCliente(cliente)">
-            <td>{{cliente.identification}}</td>
-            <td>{{cliente.name}}</td>
-            <td>{{cliente.cellphone}}</td>
+            <td>{{cliente.identificacion}}</td>
+            <td>{{cliente.nombre}}</td>
+            <td>{{cliente.celular}}</td>
         </tr>
         }
     </tbody>

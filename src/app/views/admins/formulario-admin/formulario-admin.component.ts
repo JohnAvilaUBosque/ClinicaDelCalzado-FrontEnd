@@ -62,8 +62,8 @@ export class FormularioAdminComponent implements OnInit {
 
         this.titulo = title;
         if (title == 'Agregar') {
-          this.admin.status = this.constService.ESTADO_ADMIN.ACTIVO;
-          this.btnRadioGroup.setValue({ radioEstado: this.admin.status });
+          this.admin.estado = this.constService.ESTADO_ADMIN.ACTIVO;
+          this.btnRadioGroup.setValue({ radioEstado: this.admin.estado });
           this.habilitarModoCreacion();
         }
         else if (title == 'Editar') {
@@ -86,9 +86,9 @@ export class FormularioAdminComponent implements OnInit {
           adminEncontrado => {
             if (adminEncontrado) {
               this.admin = adminEncontrado;
-              this.esInformacionPersonal = this.adminLocal.identification == this.admin.identification;
+              this.esInformacionPersonal = this.adminLocal.identificacion == this.admin.identificacion;
 
-              this.btnRadioGroup.setValue({ radioEstado: this.admin.status });
+              this.btnRadioGroup.setValue({ radioEstado: this.admin.estado });
               if (this.esModoCreacion || this.esModoLectura || (this.esModoEdicion && (this.esInformacionPersonal || this.adminLocal.rol == this.constService.ROL_ADMIN.SECUNDARIO))) {
                 this.btnRadioGroup.disable();
               }
@@ -110,7 +110,7 @@ export class FormularioAdminComponent implements OnInit {
   onSubmit() {
     if (this.esModoEdicion) {
       this.administradorService.editarAdministrador(this.admin);
-      this.router.navigate(['admins/ver/' + this.admin.identification]);
+      this.router.navigate(['admins/ver/' + this.admin.identificacion]);
     } else {
       this.administradorService.crearAdministrador(this.admin);
       this.router.navigate(['admins/ver/' + '123456789']); // TO DO: Hacer esto dentro del suscribe del crear admin
@@ -137,11 +137,11 @@ export class FormularioAdminComponent implements OnInit {
 
   cambiarEstado(value: string): void {
     this.btnRadioGroup.setValue({ radioEstado: value });
-    this.admin.status = value;
+    this.admin.estado = value;
   }
 
   confirmarClave() {
-    this.lasClavesCoinciden = this.admin.password == this.admin.passwordConfirm;
+    this.lasClavesCoinciden = this.admin.clave == this.admin.claveConfirmacion;
   }
 
   confirmarClaveEnCambioDeClave() {

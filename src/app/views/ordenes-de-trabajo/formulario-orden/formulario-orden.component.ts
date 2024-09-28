@@ -12,7 +12,7 @@ import { ConstantsService } from 'src/app/constants.service';
 import { ListadoServiciosComponent } from '../listado-servicios/listado-servicios.component';
 import { ListadoClientesComponent } from '../listado-clientes/listado-clientes.component';
 import { Title } from '@angular/platform-browser';
-import { ClienteModel } from '../client.model';
+import { ClienteModel } from '../cliente.model';
 
 @Component({
   selector: 'formulario-orden',
@@ -45,12 +45,11 @@ export class FormularioOrdenComponent implements OnInit {
         this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + title + ' orden de trabajo');
 
         if (title == 'Crear') {
-          this.orden.orderNumber = this.constService.ORDEN_NUMBER_DEFAULT;
-          this.orden.attendedById = this.usuarioService.obtenerAdminLocal()?.identification;
-          this.orden.attendedBy = this.usuarioService.obtenerAdminLocal()?.name;
-          this.orden.createDate = this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME);
-          this.orden.orderStatus = this.constService.ESTADO_ORDEN.VIGENTE;
-          this.orden.paymentStatus = this.constService.ESTADO_PAGO.PENDIENTE;
+          this.orden.numeroOrden = this.constService.ORDEN_NUMBER_DEFAULT;
+          this.orden.atendidoPor = this.usuarioService.obtenerAdminLocal()?.nombre;
+          this.orden.fechaCreacion = this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME);
+          this.orden.estadoOrden = this.constService.ESTADO_ORDEN.VIGENTE;
+          this.orden.estadoPago = this.constService.ESTADO_PAGO.PENDIENTE;
         }
         else if (title == 'Ver') {
           this.esSoloLectura = true;
@@ -62,7 +61,7 @@ export class FormularioOrdenComponent implements OnInit {
                 ordenEncontrada => {
                   if (ordenEncontrada) {
                     this.orden = ordenEncontrada;
-                    this.whatsAppNumber = ordenEncontrada.client.cellphone;
+                    this.whatsAppNumber = ordenEncontrada.cliente.celular;
                   }
                   else
                     this.router.navigate(['ordenesdetrabajo/buscar'], { queryParams: { ordenNoEncontrada: idOrden } });
@@ -76,7 +75,7 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   crearOrden() {
-    this.orden.deliveryDate = this.constService.fechaATexto(this.orden.deliveryDate, this.constService.FORMATS_API.DATE);
+    this.orden.fechaEntrega = this.constService.fechaATexto(this.orden.fechaEntrega, this.constService.FORMATS_API.DATE);
     if (this.commentarioNuevo)
       this.agregarComentarioAOrden(this.commentarioNuevo);
 
@@ -86,17 +85,17 @@ export class FormularioOrdenComponent implements OnInit {
 
   cambiarAbono(value: string) {
     var abono = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NOT_NUMBER, ''));
-    this.orden.downPayment = Number.isNaN(abono) ? 0 : abono;
+    this.orden.abono = Number.isNaN(abono) ? 0 : abono;
     this.calcularSaldo();
   }
 
   calcularTotal() {
-    this.orden.totalValue = this.orden.services?.length ? this.orden.services.map(x => x.price).reduce((a, c) => a + c) : 0;
+    this.orden.precioTotal = this.orden.servicios?.length ? this.orden.servicios.map(s => s.precio).reduce((a, c) => a + c) : 0;
     this.calcularSaldo();
   }
 
   calcularSaldo() {
-    this.orden.balance = this.orden.totalValue - this.orden.downPayment;
+    this.orden.saldo = this.orden.precioTotal - this.orden.abono;
   }
 
   cambiarAbonoNuevo(value: string) {
@@ -106,38 +105,38 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   calcularSaldoNuevo() {
-    this.saldoNuevo = this.orden.totalValue - (this.orden.downPayment + this.abonoNuevo);
+    this.saldoNuevo = this.orden.precioTotal - (this.orden.abono + this.abonoNuevo);
   }
 
   private agregarComentarioAOrden(comentario: string) {
     var commentarioObject: ComentarioModel = {
-      comment: comentario,
-      adminName: this.usuarioService.obtenerAdminLocal()?.name,
-      date: this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME)
+      descripcion: comentario,
+      nombreAdmin: this.usuarioService.obtenerAdminLocal()?.nombre,
+      fecha: this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME)
     }
-    this.orden.comments.push(commentarioObject);
+    this.orden.comentarios.push(commentarioObject);
   }
 
   // Funciones de modales
 
   cambiarCliente(cliente: ClienteModel) {
-    this.orden.client.identification = cliente.identification;
-    this.orden.client.name = cliente.name;
-    this.orden.client.cellphone = cliente.cellphone;
+    this.orden.cliente.identificacion = cliente.identificacion;
+    this.orden.cliente.nombre = cliente.nombre;
+    this.orden.cliente.celular = cliente.celular;
   }
 
   enviarPorWhatsApp(whatsAppModal: ModalComponent) {
     var mensaje =
-      'Orden de trabajo: *' + this.orden.orderNumber + '* %0A' +
-      this.constService.fechaATexto(this.orden.createDate, this.constService.FORMATS_VIEW.DATETIME) + '%0A %0A' +
+      'Orden de trabajo: *' + this.orden.numeroOrden + '* %0A' +
+      this.constService.fechaATexto(this.orden.fechaCreacion, this.constService.FORMATS_VIEW.DATETIME) + '%0A %0A' +
       'Servicios: ' + '%0A';
 
-    this.orden.services.forEach(x => mensaje += '- ' + x.name + ' (' + this.constService.monedaATexto(x.price) + ') %0A');
+    this.orden.servicios.forEach(s => mensaje += '- ' + s.descripcion + ' (' + this.constService.monedaATexto(s.precio) + ') %0A');
 
-    mensaje += '%0A' + 'Precio total: ' + this.constService.monedaATexto(this.orden.totalValue) + '%0A' +
-      'Abono: ' + this.constService.monedaATexto(this.orden.downPayment) + '%0A' +
-      'Saldo: ' + this.constService.monedaATexto(this.orden.balance) + '%0A %0A' +
-      'Fecha de entrega: ' + this.constService.fechaATexto(this.orden.deliveryDate, this.constService.FORMATS_VIEW.DATE);
+    mensaje += '%0A' + 'Precio total: ' + this.constService.monedaATexto(this.orden.precioTotal) + '%0A' +
+      'Abono: ' + this.constService.monedaATexto(this.orden.abono) + '%0A' +
+      'Saldo: ' + this.constService.monedaATexto(this.orden.saldo) + '%0A %0A' +
+      'Fecha de entrega: ' + this.constService.fechaATexto(this.orden.fechaEntrega, this.constService.FORMATS_VIEW.DATE);
 
     window.open(this.constService.WHATSAPP_URL + this.whatsAppNumber + '?text=' + mensaje);
 
@@ -150,12 +149,12 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   abonar(abonarModal: ModalComponent) {
-    this.orden.downPayment += this.abonoNuevo;
-    this.orden.balance = this.saldoNuevo;
+    this.orden.abono += this.abonoNuevo;
+    this.orden.saldo = this.saldoNuevo;
     this.agregarComentarioAOrden("El cliente realizó un abono de " +
-      this.constService.monedaATexto(this.orden.downPayment) +
+      this.constService.monedaATexto(this.orden.abono) +
       ", quedando un saldo de " +
-      this.constService.monedaATexto(this.orden.balance)
+      this.constService.monedaATexto(this.orden.saldo)
     );
 
     this.abonoNuevo = 0;
@@ -179,7 +178,7 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   anular(anularModal: ModalComponent) {
-    this.orden.orderStatus = this.constService.ESTADO_ORDEN.ANULADA
+    this.orden.estadoOrden = this.constService.ESTADO_ORDEN.ANULADA
     this.agregarComentarioAOrden("Se canceló la orden de trabajo");
 
     anularModal.visible = false;
