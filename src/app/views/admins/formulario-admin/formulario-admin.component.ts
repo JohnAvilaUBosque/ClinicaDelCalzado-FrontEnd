@@ -12,7 +12,7 @@ import { map } from 'rxjs';
 import { ConstantsService } from 'src/app/constants.service';
 import { Title } from '@angular/platform-browser';
 import { UsuarioService } from '../../usuarios/usuario.service';
-import { CambioDeClaveModel } from '../../usuarios/usuario.model';
+import { CambioDeClaveModel, SeguridadModel } from '../../usuarios/usuario.model';
 
 @Component({
   selector: 'formulario-admin',
@@ -36,14 +36,13 @@ export class FormularioAdminComponent implements OnInit {
   public titulo: string = '';
   public adminLocal: AdministradorModel = new AdministradorModel();
 
-  public admin: AdministradorModel = new AdministradorModel();
-  public lasClavesCoinciden: boolean = false;
-
   public esModoCreacion: boolean = false;
   public esModoEdicion: boolean = false;
   public esModoLectura: boolean = false;
   public esInformacionPersonal: boolean = false;
 
+  public admin: AdministradorModel = new AdministradorModel();
+  public lasClavesCoinciden: boolean = false;
   public editarDatosSeguridad: boolean = false;
   public preguntas: Array<PreguntaModel> = [];
 
@@ -86,6 +85,7 @@ export class FormularioAdminComponent implements OnInit {
           adminEncontrado => {
             if (adminEncontrado) {
               this.admin = adminEncontrado;
+              this.admin.seguridad = new SeguridadModel;
               this.esInformacionPersonal = this.adminLocal.identificacion == this.admin.identificacion;
 
               this.btnRadioGroup.setValue({ radioEstado: this.admin.estado });
@@ -96,7 +96,7 @@ export class FormularioAdminComponent implements OnInit {
               if (this.esModoEdicion && this.esInformacionPersonal) {
                 this.preguntaService.obtenerPreguntas().subscribe(data => {
                   this.preguntas = data;
-                })
+                });
               }
             }
             else

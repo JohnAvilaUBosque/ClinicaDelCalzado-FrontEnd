@@ -1,8 +1,8 @@
-import { Component, inject, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { GridModule, FormModule, CardModule, ButtonModule, ToastModule, ToastComponent } from '@coreui/angular';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { UsuarioModel } from '../usuario.model';
 import { FormsModule } from '@angular/forms';
 import { ConstantsService } from 'src/app/constants.service';
@@ -15,16 +15,17 @@ import { AdministradorService } from '../../admins/administrador.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [CommonModule, GridModule, FormModule, FormsModule, CardModule, ButtonModule, ToastModule, IconDirective]
+  imports: [CommonModule, GridModule, FormModule, FormsModule, CardModule, ButtonModule, ToastModule, RouterModule, IconDirective]
 })
 export class LoginComponent implements OnInit {
 
   private router = inject(Router);
   private titleService = inject(Title);
 
+  private usuarioService = inject(UsuarioService);
+  private administradorService = inject(AdministradorService);
+  
   public constService = inject(ConstantsService);
-  public usuarioService = inject(UsuarioService);
-  public administradorService = inject(AdministradorService);
 
   usuario: UsuarioModel = new UsuarioModel();
 

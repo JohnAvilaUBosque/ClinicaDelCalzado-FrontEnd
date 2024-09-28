@@ -1,3 +1,5 @@
+import { SeguridadModel as SeguridadModel } from "../usuarios/usuario.model";
+
 export class AdministradorModel {
     identificacion: string = '';
     nombre: string = '';
@@ -6,10 +8,5 @@ export class AdministradorModel {
     claveConfirmacion: string = '';
     estado: string = '';
     rol: string = '';
-    pregunta1: string = '';
-    respuesta1: string = '';
-    pregunta2: string = '';
-    respuesta2: string = '';
-    pregunta3: string = '';
-    respuesta3: string = '';
+    seguridad: SeguridadModel = new SeguridadModel();
 }

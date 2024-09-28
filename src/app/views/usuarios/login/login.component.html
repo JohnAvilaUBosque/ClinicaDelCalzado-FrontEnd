@@ -1,7 +1,7 @@
 <div class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center">
   <c-container breakpoint="md">
     <c-row class="justify-content-center">
-      <c-col sm="9" md="7" xl="5">
+      <c-col sm="9" lg="7" xl="5">
         <c-card class="p-4">
           <c-card-body>
             <form cForm #loginForm="ngForm" (ngSubmit)="onSubmit()">
@@ -42,9 +42,9 @@
                   </button>
                 </c-col>
                 <c-col>
-                  <button cButton color="link" class="w-100" style="text-align: right;">
+                  <a cButton color="link" class="w-100" style="text-align: right;" [routerLink]="['/recuperacion']">
                     Recuperar clave
-                  </button>
+                  </a>
                 </c-col>
               </c-row>
             </form>

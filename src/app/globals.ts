@@ -6,15 +6,15 @@ export const WHATSAPP_URL = 'https://wa.me/+57';
 export const ORDEN_NUMBER_DEFAULT = 'ORD-####-#####';
 
 export enum FORMATS_API {
-    DATETIME = 'yyyy-MM-dd hh:mm',
+    DATETIME = 'yyyy-MM-dd HH:mm',
     DATE = 'yyyy-MM-dd',
-    TIME = 'hh:mm'
+    TIME = 'HH:mm'
 }
 
 export enum FORMATS_VIEW {
-    DATETIME = 'dd/MM/yyyy hh:mm',
+    DATETIME = 'dd/MM/yyyy hh:mm a',
     DATE = 'dd/MM/yyyy',
-    TIME = 'hh:mm'
+    TIME = 'hh:mm a'
 }
 
 export class REGULAR_EXP {

@@ -46,7 +46,14 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./views/usuarios/login/login.component').then(m => m.LoginComponent),
     data: {
-      title: 'Login Page'
+      title: 'Login'
+    }
+  },
+  {
+    path: 'recuperacion',
+    loadComponent: () => import('./views/usuarios/recuperacion/recuperacion.component').then(m => m.RecuperacionComponent),
+    data: {
+      title: 'Recuperacion'
     }
   },
   { path: '**', redirectTo: 'ordenesdetrabajo' }

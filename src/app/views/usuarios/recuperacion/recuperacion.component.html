@@ -1,0 +1,159 @@
+<div class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center">
+    <c-container breakpoint="md">
+        <c-row class="justify-content-center">
+            <c-col md="10">
+                <c-card class="p-4">
+                    <c-card-body>
+                        <form cForm #recuperacionForm="ngForm" (ngSubmit)="onSubmit()">
+                            <h1>Clínica del Calzado</h1>
+                            <p class="text-body-secondary">Ingresa tus credenciales</p>
+                            <c-row>
+                                <c-col xs="12" class="mb-3">
+                                  <c-input-group>
+                                    <span cInputGroupText>
+                                      <svg cIcon name="cilUser"></svg>
+                                    </span>
+                                    <input cFormControl type="text" [(ngModel)]="recuperacion.identificacion" name="identification"
+                                      #identification="ngModel" placeholder="Identificación" maxlength="20" required
+                                      [valid]="identification.touched && identification.invalid ? false : undefined" />
+                                    <c-form-feedback *ngIf="!!(identification.touched && identification.invalid)" [valid]="false">
+                                      Este campo es requerido!
+                                    </c-form-feedback>
+                                  </c-input-group>
+                                </c-col>
+                            </c-row>
+                            <c-row>
+                                <c-col class="mb-3">
+                                    <c-card>
+                                        <c-card-header>
+                                            <c-row>
+                                                <c-col xs="auto">
+                                                    <h6>Datos de seguridad</h6>
+                                                </c-col>
+                                            </c-row>
+                                        </c-card-header>
+                                        <c-card-body>
+                                            <c-row>
+                                                <c-col sm="6" class="mb-3">
+                                                    <label cLabel="col" sizing="sm">Pregunta 1:</label>
+                                                    <select cSelect [(ngModel)]="recuperacion.seguridad.pregunta1" name="pregunta1"
+                                                        #pregunta1="ngModel" required
+                                                        [valid]="pregunta1.touched && pregunta1.invalid ? false : undefined">
+                                                        @for (pregunta of preguntas; track $index) {
+                                                        <option [value]="pregunta.etiqueta">{{pregunta.etiqueta}}
+                                                        </option>
+
+                                                        }
+                                                    </select>
+                                                    <c-form-feedback *ngIf="!!(pregunta1.touched && pregunta1.invalid)"
+                                                        [valid]="false">
+                                                        Este campo es requerido!
+                                                    </c-form-feedback>
+                                                </c-col>
+                                                <c-col sm="6" class="mb-3">
+                                                    <label cLabel="col" sizing="sm">Respuesta 1:</label>
+                                                    <input cFormControl type="text" [(ngModel)]="recuperacion.seguridad.respuesta1"
+                                                        name="respuesta1" #respuesta1="ngModel" maxlength="20" required
+                                                        [valid]="respuesta1.touched && respuesta1.invalid ? false : undefined">
+                                                    <c-form-feedback
+                                                        *ngIf="!!(respuesta1.touched && respuesta1.invalid)"
+                                                        [valid]="false">
+                                                        Este campo es requerido!
+                                                    </c-form-feedback>
+                                                </c-col>
+                                            </c-row>
+                                            <c-row>
+                                                <c-col sm="6" class="mb-3">
+                                                    <label cLabel="col" sizing="sm">Pregunta 2:</label>
+                                                    <select cSelect [(ngModel)]="recuperacion.seguridad.pregunta2" name="pregunta2"
+                                                        #pregunta2="ngModel" required
+                                                        [valid]="pregunta2.touched && pregunta2.invalid ? false : undefined">
+                                                        @for (pregunta of preguntas; track $index) {
+                                                        <option [value]="pregunta.etiqueta">{{pregunta.etiqueta}}
+                                                        </option>
+                                                        }
+                                                    </select>
+                                                    <c-form-feedback *ngIf="!!(pregunta2.touched && pregunta2.invalid)"
+                                                        [valid]="false">
+                                                        Este campo es requerido!
+                                                    </c-form-feedback>
+                                                </c-col>
+                                                <c-col sm="6" class="mb-3">
+                                                    <label cLabel="col" sizing="sm">Respuesta 2:</label>
+                                                    <input cFormControl type="text" [(ngModel)]="recuperacion.seguridad.respuesta2"
+                                                        name="respuesta2" #respuesta2="ngModel" maxlength="20" required
+                                                        [valid]="respuesta2.touched && respuesta2.invalid ? false : undefined">
+                                                    <c-form-feedback
+                                                        *ngIf="!!(respuesta2.touched && respuesta2.invalid)"
+                                                        [valid]="false">
+                                                        Este campo es requerido!
+                                                    </c-form-feedback>
+                                                </c-col>
+                                            </c-row>
+                                            <c-row>
+                                                <c-col sm="6" class="mb-3">
+                                                    <label cLabel="col" sizing="sm">Pregunta 3:</label>
+                                                    <select cSelect [(ngModel)]="recuperacion.seguridad.pregunta3" name="pregunta3"
+                                                        #pregunta3="ngModel" required
+                                                        [valid]="pregunta3.touched && pregunta3.invalid ? false : undefined">
+                                                        @for (pregunta of preguntas; track $index) {
+                                                        <option [value]="pregunta.etiqueta">{{pregunta.etiqueta}}
+                                                        </option>
+                                                        }
+                                                    </select>
+                                                    <c-form-feedback *ngIf="!!(pregunta3.touched && pregunta3.invalid)"
+                                                        [valid]="false">
+                                                        Este campo es requerido!
+                                                    </c-form-feedback>
+                                                </c-col>
+                                                <c-col sm="6" class="mb-3">
+                                                    <label cLabel="col" sizing="sm">Respuesta 3:</label>
+                                                    <input cFormControl type="text" [(ngModel)]="recuperacion.seguridad.respuesta3"
+                                                        name="respuesta3" #respuesta3="ngModel" maxlength="20" required
+                                                        [valid]="respuesta3.touched && respuesta3.invalid ? false : undefined">
+                                                    <c-form-feedback
+                                                        *ngIf="!!(respuesta3.touched && respuesta3.invalid)"
+                                                        [valid]="false">
+                                                        Este campo es requerido!
+                                                    </c-form-feedback>
+                                                </c-col>
+                                            </c-row>
+                                        </c-card-body>
+                                    </c-card>
+                                </c-col>
+                            </c-row>
+                            <c-row>
+                                <c-col sm="6" class="mb-3">
+                                    <label cLabel="col" sizing="sm">Contraseña:</label>
+                                    <input cFormControl type="password" [(ngModel)]="recuperacion.claveNueva" name="password"
+                                        #password="ngModel" (ngModelChange)="confirmarClave()" maxlength="20"
+                                        [pattern]="constService.REGULAR_EXP.PASSWORD" required
+                                        [valid]="password.touched && password.invalid ? false : undefined">
+                                    <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
+                                        La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra
+                                        minúscula, 1
+                                        número y 1 símbolo!
+                                    </c-form-feedback>
+                                </c-col>
+                                <c-col sm="6" class="mb-3">
+                                    <label cLabel="col" sizing="sm">Confimación de contraseña:</label>
+                                    <input cFormControl type="password" [(ngModel)]="recuperacion.claveConfirmacion"
+                                        name="passwordConfirm" #passwordConfirm="ngModel"
+                                        (ngModelChange)="confirmarClave()" maxlength="20" required
+                                        [valid]="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden) ? false : undefined">
+                                    <c-form-feedback
+                                        *ngIf="!!(passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden))"
+                                        [valid]="false">
+                                        Las contraseñas no coinciden!
+                                    </c-form-feedback>
+                                </c-col>
+                            </c-row>
+                            <input cButton color="primary" type="submit" value="Recuperar"
+                                [disabled]="recuperacionForm.invalid || !lasClavesCoinciden">
+                        </form>
+                    </c-card-body>
+                </c-card>
+            </c-col>
+        </c-row>
+    </c-container>
+</div>
