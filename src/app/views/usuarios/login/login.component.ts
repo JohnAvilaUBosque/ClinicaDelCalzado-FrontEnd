@@ -24,32 +24,43 @@ export class LoginComponent implements OnInit {
 
   private usuarioService = inject(UsuarioService);
   private administradorService = inject(AdministradorService);
-  
+
   public constService = inject(ConstantsService);
 
   usuario: UsuarioModel = new UsuarioModel();
 
-  @ViewChild("toast") toast!: ToastComponent;
+  @ViewChild('toastCredencialesIncorrectas') toastCredencialesIncorrectas!: ToastComponent;
+  @ViewChild('toastUsuarioInactivo') toastUsuarioInactivo!: ToastComponent;
 
   ngOnInit(): void {
     this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Login');
   }
 
-  onSubmit() {
+  iniciarSesion() {
+    this.toastCredencialesIncorrectas.visible = false;
+    this.toastUsuarioInactivo.visible = false;
+
     // this.usuarioService.iniciarSesion(this.usuario);
+    if (this.usuario.clave.length < 8) {
+      this.toastCredencialesIncorrectas.visible = true;
+      return;
+    }
 
     this.administradorService.obtenerAdministradores().subscribe(data => {
       var admin = data.find(admin => admin.identificacion == this.usuario.identificacion);
-      if (admin) {
-        this.usuarioService.cambiarAdminLocal(admin);
-        this.router.navigate(['ordenesdetrabajo/listado']);
-      } else {
-        this.toggleToast();
+      if (!admin) {
+        this.toastCredencialesIncorrectas.visible = true;
+        return;
       }
+
+      if (admin.estado == this.constService.ESTADO_ADMIN.INACTIVO) {
+        this.toastUsuarioInactivo.visible = true;
+        return;
+      }
+
+      this.usuarioService.cambiarAdminLocal(admin);
+      this.router.navigate(['ordenesdetrabajo/listado']);
     });
   }
 
-  toggleToast() {
-    this.toast.visible = true;
-  }
 }

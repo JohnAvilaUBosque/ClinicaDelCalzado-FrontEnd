@@ -36,7 +36,7 @@ export enum ROL_ADMIN {
 
 export const WHATSAPP_URL = 'https://wa.me/+57';
 
-export const ORDEN_NUMBER_DEFAULT = 'ORD-YYYY-#####';
+export const ORDEN_NUMBER_DEFAULT = 'ORD-YYYYMMDD-#####';
 
 export enum FORMATS_API {
     DATETIME = 'yyyy-MM-dd HH:mm',

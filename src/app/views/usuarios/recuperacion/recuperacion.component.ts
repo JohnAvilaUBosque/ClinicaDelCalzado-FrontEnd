@@ -4,43 +4,36 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule, CardModule, FormModule, GridModule } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { UsuarioService } from '../usuario.service';
-import { RecuperacionModel as RecuperacionModel } from '../usuario.model';
-import { PreguntaService } from '../pregunta.service';
-import { PreguntaModel } from '../pregunta.model';
+import { RecuperacionModel } from '../usuario.model';
+import { DatosSeguridadComponent } from '../datos-seguridad/datos-seguridad.component';
 import { ConstantsService } from 'src/app/constants.service';
 import { Router, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-recuperacion',
+  selector: 'recuperacion',
   standalone: true,
-  imports: [CommonModule, GridModule, FormModule, FormsModule, CardModule, ButtonModule, RouterModule, IconDirective],
+  imports: [CommonModule, GridModule, FormModule, FormsModule, CardModule, ButtonModule, RouterModule, IconDirective, DatosSeguridadComponent],
   templateUrl: './recuperacion.component.html',
   styleUrl: './recuperacion.component.scss'
 })
 export class RecuperacionComponent implements OnInit {
 
-  private preguntaService = inject(PreguntaService);
   private usuarioService = inject(UsuarioService);
   private titleService = inject(Title);
   private router = inject(Router);
 
   public constService = inject(ConstantsService);
 
-  public preguntas: Array<PreguntaModel> = [];
-
   public recuperacion: RecuperacionModel = new RecuperacionModel();
   public lasClavesCoinciden: boolean = false;
+  public sonValidosDatosSeguridad: boolean = false;
 
   ngOnInit(): void {
     this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Recuperacion');
-
-    this.preguntaService.obtenerPreguntas().subscribe(data => {
-      this.preguntas = data;
-    });
   }
 
-  onSubmit() {
+  recuperarClave() {
     // this.usuarioService.recuperarClave(this.recuperacion);
 
     this.router.navigate(['login']);

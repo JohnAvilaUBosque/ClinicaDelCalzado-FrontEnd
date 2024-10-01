@@ -4,7 +4,7 @@
       <c-col sm="9" lg="7" xl="5">
         <c-card class="p-4">
           <c-card-body>
-            <form cForm #loginForm="ngForm" (ngSubmit)="onSubmit()">
+            <form cForm #loginForm="ngForm" (ngSubmit)="iniciarSesion()">
               <h1>{{ constService.NOMBRE_EMPRESA }}</h1>
               <p class="text-body-secondary">Ingresa tus credenciales</p>
               <c-row>
@@ -54,12 +54,23 @@
 </div>
 
 <c-toaster [placement]="'bottom-end'" class="p-3" position="fixed">
-  <c-toast #toast="cToast" [visible]="false" color="danger" class="text-white">
+  <c-toast #toastCredencialesIncorrectas="cToast" [visible]="false" color="danger" class="text-white">
     <div class="d-flex">
       <c-toast-body>
         <span>Credenciales incorrectas.</span>
       </c-toast-body>
-      <button cButtonClose white class="me-2 m-auto" (click)="toast.visible = false"></button>
+      <button cButtonClose white class="me-2 m-auto" (click)="toastCredencialesIncorrectas.visible = false"></button>
+    </div>
+  </c-toast>
+</c-toaster>
+
+<c-toaster [placement]="'bottom-end'" class="p-3" position="fixed">
+  <c-toast #toastUsuarioInactivo="cToast" [visible]="false" color="warning">
+    <div class="d-flex">
+      <c-toast-body>
+        <span>Usuario inactivo, comuniquese con el administrador.</span>
+      </c-toast-body>
+      <button cButtonClose class="me-2 m-auto" (click)="toastUsuarioInactivo.visible = false"></button>
     </div>
   </c-toast>
 </c-toaster>

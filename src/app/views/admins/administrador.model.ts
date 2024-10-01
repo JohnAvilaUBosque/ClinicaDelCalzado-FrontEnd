@@ -1,4 +1,4 @@
-import { SeguridadModel as SeguridadModel } from "../usuarios/usuario.model";
+import { DatosSeguridadModel } from '../usuarios/usuario.model';
 
 export class AdministradorModel {
     identificacion: string = '';
@@ -8,5 +8,5 @@ export class AdministradorModel {
     claveConfirmacion: string = '';
     estado: string = '';
     rol: string = '';
-    seguridad: SeguridadModel = new SeguridadModel();
+    datosSeguridad: DatosSeguridadModel = new DatosSeguridadModel();
 }

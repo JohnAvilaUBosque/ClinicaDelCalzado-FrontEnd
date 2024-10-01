@@ -11,12 +11,12 @@ export class CambioDeClaveModel {
 
 export class RecuperacionModel {
     identificacion: string = '';
-    seguridad: SeguridadModel = new SeguridadModel();
     claveNueva: string = '';
     claveConfirmacion: string = '';
+    datosSeguridad: DatosSeguridadModel = new DatosSeguridadModel();
 }
 
-export class SeguridadModel {
+export class DatosSeguridadModel {
     pregunta1: string = '';
     respuesta1: string = '';
     pregunta2: string = '';

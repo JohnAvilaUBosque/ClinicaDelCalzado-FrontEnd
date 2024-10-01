@@ -96,7 +96,7 @@
                         Este campo es requerido!
                     </c-form-feedback>
                 </c-col>
-                <c-col sm="6" class="mb-3 align-self-end">
+                <c-col sm="6" class="mb-3" style="margin-top: 31px">
                     <label cLabel="col" sizing="sm">Estado:</label>
                     <c-button-group [formGroup]="btnRadioGroup" class="ms-4">
                         @if (btnRadioGroup.enabled || (btnRadioGroup.disabled && admin.estado ==
@@ -125,8 +125,8 @@
             <c-row>
                 <c-col sm="6" class="mb-3">
                     <c-form-check sizing="lg" switch>
-                        <input cFormCheckInput type="checkbox" [(ngModel)]="editarDatosSeguridad"
-                            name="checkSecurity" style="cursor: pointer;" />
+                        <input cFormCheckInput type="checkbox" [(ngModel)]="editarDatosSeguridad" name="checkSecurity"
+                            style="cursor: pointer;" />
                         <label cFormCheckLabel>Editar datos de seguridad</label>
                     </c-form-check>
                 </c-col>
@@ -134,100 +134,15 @@
             @if (editarDatosSeguridad) {
             <c-row>
                 <c-col class="mb-3">
-                    <c-card>
-                        <c-card-header>
-                            <c-row>
-                                <c-col xs="auto">
-                                    <h6>Datos de seguridad</h6>
-                                </c-col>
-                            </c-row>
-                        </c-card-header>
-                        <c-card-body>
-                            <c-row>
-                                <c-col sm="6" class="mb-3">
-                                    <label cLabel="col" sizing="sm">Pregunta 1:</label>
-                                    <select cSelect [(ngModel)]="admin.seguridad.pregunta1" name="pregunta1" #pregunta1="ngModel"
-                                        required [valid]="pregunta1.touched && pregunta1.invalid ? false : undefined">
-                                        @for (pregunta of preguntas; track $index) {
-                                        <option [value]="pregunta.etiqueta">{{pregunta.etiqueta}}
-                                        </option>
-
-                                        }
-                                    </select>
-                                    <c-form-feedback *ngIf="!!(pregunta1.touched && pregunta1.invalid)" [valid]="false">
-                                        Este campo es requerido!
-                                    </c-form-feedback>
-                                </c-col>
-                                <c-col sm="6" class="mb-3">
-                                    <label cLabel="col" sizing="sm">Respuesta 1:</label>
-                                    <input cFormControl type="text" [(ngModel)]="admin.seguridad.respuesta1" name="respuesta1"
-                                        #respuesta1="ngModel" maxlength="20" required
-                                        [valid]="respuesta1.touched && respuesta1.invalid ? false : undefined">
-                                    <c-form-feedback *ngIf="!!(respuesta1.touched && respuesta1.invalid)"
-                                        [valid]="false">
-                                        Este campo es requerido!
-                                    </c-form-feedback>
-                                </c-col>
-                            </c-row>
-                            <c-row>
-                                <c-col sm="6" class="mb-3">
-                                    <label cLabel="col" sizing="sm">Pregunta 2:</label>
-                                    <select cSelect [(ngModel)]="admin.seguridad.pregunta2" name="pregunta2" #pregunta2="ngModel"
-                                        required [valid]="pregunta2.touched && pregunta2.invalid ? false : undefined">
-                                        @for (pregunta of preguntas; track $index) {
-                                        <option [value]="pregunta.etiqueta">{{pregunta.etiqueta}}
-                                        </option>
-                                        }
-                                    </select>
-                                    <c-form-feedback *ngIf="!!(pregunta2.touched && pregunta2.invalid)" [valid]="false">
-                                        Este campo es requerido!
-                                    </c-form-feedback>
-                                </c-col>
-                                <c-col sm="6" class="mb-3">
-                                    <label cLabel="col" sizing="sm">Respuesta 2:</label>
-                                    <input cFormControl type="text" [(ngModel)]="admin.seguridad.respuesta2" name="respuesta2"
-                                        #respuesta2="ngModel" maxlength="20" required
-                                        [valid]="respuesta2.touched && respuesta2.invalid ? false : undefined">
-                                    <c-form-feedback *ngIf="!!(respuesta2.touched && respuesta2.invalid)"
-                                        [valid]="false">
-                                        Este campo es requerido!
-                                    </c-form-feedback>
-                                </c-col>
-                            </c-row>
-                            <c-row>
-                                <c-col sm="6" class="mb-3">
-                                    <label cLabel="col" sizing="sm">Pregunta 3:</label>
-                                    <select cSelect [(ngModel)]="admin.seguridad.pregunta3" name="pregunta3" #pregunta3="ngModel"
-                                        required [valid]="pregunta3.touched && pregunta3.invalid ? false : undefined">
-                                        @for (pregunta of preguntas; track $index) {
-                                        <option [value]="pregunta.etiqueta">{{pregunta.etiqueta}}
-                                        </option>
-                                        }
-                                    </select>
-                                    <c-form-feedback *ngIf="!!(pregunta3.touched && pregunta3.invalid)" [valid]="false">
-                                        Este campo es requerido!
-                                    </c-form-feedback>
-                                </c-col>
-                                <c-col sm="6" class="mb-3">
-                                    <label cLabel="col" sizing="sm">Respuesta 3:</label>
-                                    <input cFormControl type="text" [(ngModel)]="admin.seguridad.respuesta3" name="respuesta3"
-                                        #respuesta3="ngModel" maxlength="20" required
-                                        [valid]="respuesta3.touched && respuesta3.invalid ? false : undefined">
-                                    <c-form-feedback *ngIf="!!(respuesta3.touched && respuesta3.invalid)"
-                                        [valid]="false">
-                                        Este campo es requerido!
-                                    </c-form-feedback>
-                                </c-col>
-                            </c-row>
-                        </c-card-body>
-                    </c-card>
+                    <datos-seguridad [datosSeguridad]="admin.datosSeguridad"
+                        (esFormularioValido)="sonValidosDatosSeguridad = $event"></datos-seguridad>
                 </c-col>
             </c-row>
             }
             }
             @if (esModoCreacion || esModoEdicion) {
             <input cButton color="primary" type="submit" [value]="titulo"
-                [disabled]="adminForm.invalid || (esModoCreacion && !lasClavesCoinciden)">
+                [disabled]="adminForm.invalid || (esModoCreacion && !lasClavesCoinciden) || (editarDatosSeguridad && !sonValidosDatosSeguridad)">
             }
         </form>
     </c-card-body>

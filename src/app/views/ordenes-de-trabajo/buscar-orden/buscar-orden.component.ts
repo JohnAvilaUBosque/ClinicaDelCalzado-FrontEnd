@@ -23,9 +23,11 @@ export class BuscarOrdenComponent {
 
   public constService = inject(ConstantsService);
 
-  numeroOrden: string = "";
+  numeroOrden: string = '';
+
   alertVisible: boolean = false;
-  idOrdenNoEncontrada: string = "";
+  
+  idOrdenNoEncontrada: string = '';
 
   ngOnInit(): void {
     this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Buscar orden de trabajo');
@@ -39,7 +41,7 @@ export class BuscarOrdenComponent {
       });
   }
 
-  onSubmit() {
+  buscarOrden() {
     this.router.navigate(['ordenesdetrabajo/ver/' + this.numeroOrden]);
   }
 }

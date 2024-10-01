@@ -1,7 +1,7 @@
 {
     "ordenes": [
         {
-            "numeroOrden": "ORD-2024-00001",
+            "numeroOrden": "ORD-20240618-00001",
             "atendidoPor": "Liliana Morantes",
             "fechaCreacion": "2024-06-18 09:22",
             "estadoOrden": "ANULADA",
@@ -32,7 +32,7 @@
             "cantidadServicios": 1
         },
         {
-            "numeroOrden": "ORD-2024-00002",
+            "numeroOrden": "ORD-20240629-00002",
             "atendidoPor": "Liliana Morantes",
             "fechaCreacion": "2024-06-29 15:48",
             "estadoOrden": "FINALIZADA",
@@ -78,7 +78,7 @@
             "cantidadServicios": 2
         },
         {
-            "numeroOrden": "ORD-2024-00003",
+            "numeroOrden": "ORD-20240715-00003",
             "atendidoPor": "Yesid Rivera",
             "fechaCreacion": "2024-07-15 20:05",
             "estadoOrden": "VIGENTE",

@@ -2,7 +2,7 @@
     "admins": [
         {
             "identificacion": 123456789,
-            "nombre": "Liliana Morantes",
+            "nombre": "Liliana Rodriguez",
             "celular": "3216549870",
             "estado": "ACTIVO",
             "rol": "PRINCIPAL"
@@ -15,17 +15,17 @@
             "rol": "PRINCIPAL"
         },
         {
-            "identificacion": 987654321,
-            "nombre": "Eduardo Avila",
-            "celular": "3123456789",
-            "estado": "INACTIVO",
-            "rol": "SECUNDARIO"
-        },
-        {
             "identificacion": 789456123,
             "nombre": "Yesid Rivera",
             "celular": "3456789120",
             "estado": "ACTIVO",
+            "rol": "SECUNDARIO"
+        },
+        {
+            "identificacion": 987654321,
+            "nombre": "Eduardo Fonseca",
+            "celular": "3123456789",
+            "estado": "INACTIVO",
             "rol": "SECUNDARIO"
         }
     ]

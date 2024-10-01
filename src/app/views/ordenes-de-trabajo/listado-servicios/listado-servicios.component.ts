@@ -1,8 +1,8 @@
-import { Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { BadgeComponent, ButtonModule, FormModule, GridModule, TableModule, TooltipModule } from '@coreui/angular';
 import { ServicioModel } from '../servicio.model';
 import { ConstantsService } from 'src/app/constants.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 
@@ -13,7 +13,7 @@ import { IconDirective } from '@coreui/icons-angular';
   templateUrl: './listado-servicios.component.html',
   styleUrl: './listado-servicios.component.scss'
 })
-export class ListadoServiciosComponent implements OnInit, OnChanges {
+export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewInit {
 
   public constService = inject(ConstantsService);
 
@@ -21,12 +21,22 @@ export class ListadoServiciosComponent implements OnInit, OnChanges {
   @Input() servicios: ServicioModel[] = [];
 
   @Output() cambiaronPreciosEvent = new EventEmitter<string>();
+  @Output() esFormularioValido = new EventEmitter<boolean>();
+
+  @ViewChild('serviciosForm') form?: NgForm;
 
   @ViewChildren('textareaElement') textareas!: QueryList<ElementRef>;
 
   ngOnInit(): void {
     if (!this.esSoloLectura)
       this.agregarServicioAOrden();
+  }
+
+  ngAfterViewInit() {
+    if (this.form)
+      this.form.statusChanges?.subscribe(status => {
+        this.esFormularioValido.emit(status === 'VALID');
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -38,7 +48,9 @@ export class ListadoServiciosComponent implements OnInit, OnChanges {
   }
 
   agregarServicioAOrden() {
-    this.servicios.push(new ServicioModel());
+    var servicioNuevo = new ServicioModel();
+    servicioNuevo.estado = this.constService.ESTADO_SERVICIO.RECIBIDO;
+    this.servicios.push(servicioNuevo);
   }
 
   cambiarPrecioIndividual(value: string, index: number) {

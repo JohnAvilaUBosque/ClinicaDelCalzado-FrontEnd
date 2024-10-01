@@ -87,8 +87,8 @@
                             <label cLabel="col" sizing="sm">Celular cliente:</label>
                             <input cFormControl type="text" [(ngModel)]="orden.cliente.celular" name="cellphone"
                                 #cellphone="ngModel" maxlength="10" [pattern]="constService.REGULAR_EXP.NUMBER" required
-                                [valid]="cellphone.touched && cellphone.invalid ? false : undefined" [readonly]="esSoloLectura"
-                                [plaintext]="esSoloLectura">
+                                [valid]="cellphone.touched && cellphone.invalid ? false : undefined"
+                                [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                             <c-form-feedback *ngIf="!!(cellphone.touched && cellphone.invalid)" [valid]="false">
                                 Este campo es requerido y debe ser numérico!
                             </c-form-feedback>
@@ -107,7 +107,8 @@
             <c-row> <!-- Datos de los servicios -->
                 <c-col sm="12" lg="8" class="mb-3">
                     <listado-servicios [servicios]="orden.servicios" [esSoloLectura]="esSoloLectura"
-                        (cambiaronPreciosEvent)="calcularTotal()"></listado-servicios>
+                        (cambiaronPreciosEvent)="calcularTotal()"
+                        (esFormularioValido)="sonValidosServicios = $event"></listado-servicios>
                 </c-col>
                 <c-col sm="12" lg="4" class="mb-3"> <!-- Datos calculados -->
                     <c-card>
@@ -143,7 +144,8 @@
                                         maxlength="11" [pattern]="constService.REGULAR_EXP.CURRENCY" required
                                         [valid]="downPayment.touched && downPayment.invalid ? false : undefined"
                                         [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
-                                    <c-form-feedback *ngIf="!!(downPayment.touched && downPayment.invalid)" [valid]="false">
+                                    <c-form-feedback *ngIf="!!(downPayment.touched && downPayment.invalid)"
+                                        [valid]="false">
                                         Este campo es requerido y debe ser un valor monetario válido!
                                     </c-form-feedback>
                                 </c-col>
@@ -163,7 +165,8 @@
                                         #deliveryDate="ngModel" required
                                         [valid]="deliveryDate.touched && deliveryDate.invalid ? false : undefined"
                                         [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
-                                    <c-form-feedback *ngIf="!!(deliveryDate.touched && deliveryDate.invalid)" [valid]="false">
+                                    <c-form-feedback *ngIf="!!(deliveryDate.touched && deliveryDate.invalid)"
+                                        [valid]="false">
                                         Este campo es requerido!
                                     </c-form-feedback>
                                 </c-col>
@@ -193,11 +196,13 @@
                 }
             </c-row>
             @if (!esSoloLectura) {
-            <input cButton color="primary" type="submit" value="Crear orden" [disabled]="orderForm.invalid">
+            <input cButton color="primary" type="submit" value="Crear orden" [disabled]="orderForm.invalid || !sonValidosServicios">
             }
         </form>
     </c-card-body>
 </c-card>
+
+<!-- MODALS -->
 
 <c-modal #whatsAppModal backdrop="static" id="whatsAppModal">
     <c-modal-header>
@@ -309,7 +314,8 @@
         <c-modal-body>
             <label cLabel="col" sizing="sm">Comentario:</label>
             <textarea cFormControl rows="5" [(ngModel)]="commentarioNuevo" name="commentNew" #commentNew="ngModel"
-                maxlength="500" required [valid]="commentNew.touched && commentNew.invalid ? false : undefined"></textarea>
+                maxlength="500" required
+                [valid]="commentNew.touched && commentNew.invalid ? false : undefined"></textarea>
             <c-form-feedback *ngIf="!!(commentNew.touched && commentNew.invalid)" [valid]="false">
                 Este campo es requerido!
             </c-form-feedback>

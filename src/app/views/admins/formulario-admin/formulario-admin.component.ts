@@ -3,8 +3,6 @@ import { BadgeComponent, ButtonGroupComponent, ButtonModule, CardModule, FormChe
 import { IconDirective } from '@coreui/icons-angular';
 import { AdministradorService } from '../administrador.service';
 import { AdministradorModel } from '../administrador.model';
-import { PreguntaService } from '../../usuarios/pregunta.service';
-import { PreguntaModel } from '../../usuarios/pregunta.model';
 import { FormsModule, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -12,19 +10,19 @@ import { map } from 'rxjs';
 import { ConstantsService } from 'src/app/constants.service';
 import { Title } from '@angular/platform-browser';
 import { UsuarioService } from '../../usuarios/usuario.service';
-import { CambioDeClaveModel, SeguridadModel } from '../../usuarios/usuario.model';
+import { CambioDeClaveModel, DatosSeguridadModel } from '../../usuarios/usuario.model';
+import { DatosSeguridadComponent } from '../../usuarios/datos-seguridad/datos-seguridad.component';
 
 @Component({
   selector: 'formulario-admin',
   standalone: true,
-  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, ReactiveFormsModule, ModalModule, RouterModule, ButtonGroupComponent, IconDirective, BadgeComponent, FormCheckLabelDirective],
+  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, ReactiveFormsModule, ModalModule, RouterModule, ButtonGroupComponent, IconDirective, BadgeComponent, FormCheckLabelDirective, DatosSeguridadComponent],
   templateUrl: './formulario-admin.component.html',
   styleUrl: './formulario-admin.component.scss'
 })
 export class FormularioAdminComponent implements OnInit {
 
   private administradorService = inject(AdministradorService);
-  private preguntaService = inject(PreguntaService);
   private usuarioService = inject(UsuarioService);
   private titleService = inject(Title);
   private formBuilder = inject(FormBuilder);
@@ -44,12 +42,12 @@ export class FormularioAdminComponent implements OnInit {
   public admin: AdministradorModel = new AdministradorModel();
   public lasClavesCoinciden: boolean = false;
   public editarDatosSeguridad: boolean = false;
-  public preguntas: Array<PreguntaModel> = [];
+  public sonValidosDatosSeguridad: boolean = false;
 
   public cambioDeClave: CambioDeClaveModel = new CambioDeClaveModel();
 
   public btnRadioGroup = this.formBuilder.group({
-    radioEstado: new FormControl("")
+    radioEstado: new FormControl('')
   });
 
   ngOnInit(): void {
@@ -63,6 +61,7 @@ export class FormularioAdminComponent implements OnInit {
         if (title == 'Agregar') {
           this.admin.estado = this.constService.ESTADO_ADMIN.ACTIVO;
           this.btnRadioGroup.setValue({ radioEstado: this.admin.estado });
+          this.btnRadioGroup.disable();
           this.habilitarModoCreacion();
         }
         else if (title == 'Editar') {
@@ -85,18 +84,12 @@ export class FormularioAdminComponent implements OnInit {
           adminEncontrado => {
             if (adminEncontrado) {
               this.admin = adminEncontrado;
-              this.admin.seguridad = new SeguridadModel;
+              this.admin.datosSeguridad = new DatosSeguridadModel;
               this.esInformacionPersonal = this.adminLocal.identificacion == this.admin.identificacion;
 
               this.btnRadioGroup.setValue({ radioEstado: this.admin.estado });
               if (this.esModoCreacion || this.esModoLectura || (this.esModoEdicion && (this.esInformacionPersonal || this.adminLocal.rol == this.constService.ROL_ADMIN.SECUNDARIO))) {
                 this.btnRadioGroup.disable();
-              }
-
-              if (this.esModoEdicion && this.esInformacionPersonal) {
-                this.preguntaService.obtenerPreguntas().subscribe(data => {
-                  this.preguntas = data;
-                });
               }
             }
             else
@@ -109,11 +102,17 @@ export class FormularioAdminComponent implements OnInit {
 
   onSubmit() {
     if (this.esModoEdicion) {
-      this.administradorService.editarAdministrador(this.admin);
-      this.router.navigate(['admins/ver/' + this.admin.identificacion]);
+      this.administradorService.editarAdministrador(this.admin).subscribe(
+        respuesta => {
+          this.router.navigate(['admins/ver/' + this.admin.identificacion]);
+        }
+      );
     } else {
-      this.administradorService.crearAdministrador(this.admin);
-      this.router.navigate(['admins/ver/' + '123456789']); // TO DO: Hacer esto dentro del suscribe del crear admin
+      this.administradorService.crearAdministrador(this.admin).subscribe(
+        respuesta => {
+          this.router.navigate(['admins/ver/' + this.admin.identificacion]);
+        }
+      );
     }
   }
 

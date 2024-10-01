@@ -33,6 +33,7 @@ export class FormularioOrdenComponent implements OnInit {
 
   public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public esSoloLectura: boolean = false;
+  public sonValidosServicios: boolean = false;
 
   public whatsAppNumber: string = '';
   public commentarioNuevo: string = '';
@@ -75,22 +76,26 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   crearOrden() {
+    this.orden.fechaCreacion = this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME);
     this.orden.fechaEntrega = this.constService.fechaATexto(this.orden.fechaEntrega, this.constService.FORMATS_API.DATE);
     if (this.commentarioNuevo)
       this.agregarComentarioAOrden(this.commentarioNuevo);
 
-    this.ordenDeTrabajoService.crearOrden(this.orden);
-    this.router.navigate(['ordenesdetrabajo/ver/' + 'ORD-2024-00003']); // TO DO: Hacer esto dentro del suscribe del crear orden
+    this.ordenDeTrabajoService.crearOrden(this.orden).subscribe(
+      respuesta => {
+        this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
+      }
+    );
+  }
+
+  calcularTotal() {
+    this.orden.precioTotal = this.orden.servicios?.length ? this.orden.servicios.map(s => s.precio).reduce((a, c) => a + c) : 0;
+    this.calcularSaldo();
   }
 
   cambiarAbono(value: string) {
     var abono = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NOT_NUMBER, ''));
     this.orden.abono = Number.isNaN(abono) ? 0 : abono;
-    this.calcularSaldo();
-  }
-
-  calcularTotal() {
-    this.orden.precioTotal = this.orden.servicios?.length ? this.orden.servicios.map(s => s.precio).reduce((a, c) => a + c) : 0;
     this.calcularSaldo();
   }
 
@@ -115,6 +120,14 @@ export class FormularioOrdenComponent implements OnInit {
       fecha: this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME)
     }
     this.orden.comentarios.push(commentarioObject);
+  }
+
+  private editarOrden() {
+    this.ordenDeTrabajoService.editarOrden(this.orden).subscribe(
+      respuesta => {
+        this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
+      }
+    );
   }
 
   // Funciones de modales
@@ -151,9 +164,9 @@ export class FormularioOrdenComponent implements OnInit {
   abonar(abonarModal: ModalComponent) {
     this.orden.abono += this.abonoNuevo;
     this.orden.saldo = this.saldoNuevo;
-    this.agregarComentarioAOrden("El cliente realizó un abono de " +
-      this.constService.monedaATexto(this.orden.abono) +
-      ", quedando un saldo de " +
+    this.agregarComentarioAOrden('El cliente realizó un abono de ' +
+      this.constService.monedaATexto(this.abonoNuevo) +
+      ', quedando un saldo de ' +
       this.constService.monedaATexto(this.orden.saldo)
     );
 
@@ -161,27 +174,31 @@ export class FormularioOrdenComponent implements OnInit {
     this.saldoNuevo = 0;
 
     abonarModal.visible = false;
+    this.editarOrden();
   }
 
   agregarNuevoComentario(comentarioModal: ModalComponent) {
     this.agregarComentarioAOrden(this.commentarioNuevo);
 
-    this.commentarioNuevo = "";
+    this.commentarioNuevo = '';
 
     comentarioModal.visible = false;
+    this.editarOrden();
   }
 
   cambiarEstadoServicios(estadoServiciosModel: ModalComponent) {
-    this.agregarComentarioAOrden("El servicio 'Reparar zapatos' cambió de estado a ENTREGADO");
+    this.agregarComentarioAOrden('El servicio x cambió de estado a ENTREGADO');
 
     estadoServiciosModel.visible = false;
+    this.editarOrden();
   }
 
   anular(anularModal: ModalComponent) {
     this.orden.estadoOrden = this.constService.ESTADO_ORDEN.ANULADA
-    this.agregarComentarioAOrden("Se canceló la orden de trabajo");
+    this.agregarComentarioAOrden('Se canceló la orden de trabajo');
 
     anularModal.visible = false;
+    this.editarOrden();
   }
 
 }

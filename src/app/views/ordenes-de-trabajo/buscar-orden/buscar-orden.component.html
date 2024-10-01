@@ -3,7 +3,7 @@
         <h5> Buscar orden de trabajo</h5>
     </c-card-header>
     <c-card-body>
-        <form cForm #searchOrderForm="ngForm" (ngSubmit)="onSubmit()">
+        <form cForm #buscarOrdenForm="ngForm" (ngSubmit)="buscarOrden()">
             <c-row>
                 <c-col xs="12" sm="10">
                     <div class="mb-3">
@@ -18,7 +18,7 @@
                 </c-col>
                 <c-col xs="12" sm="2" style="margin-top: 31px">
                     <input cButton color="primary" type="submit" value="Buscar" class="w-100"
-                        [disabled]="searchOrderForm.invalid">
+                        [disabled]="buscarOrdenForm.invalid">
                 </c-col>
             </c-row>
         </form>
