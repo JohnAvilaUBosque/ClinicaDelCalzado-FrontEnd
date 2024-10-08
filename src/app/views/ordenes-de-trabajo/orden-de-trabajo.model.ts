@@ -15,6 +15,9 @@ export class OrdenDeTrabajoModel {
     servicios: ServicioModel[] = [];
     cantidadServicios: number = 0;
     comentarios: ComentarioModel[] = [];
+    serviciosRecibidos: number = 0;
+    serviciosTerminados: number = 0;
+    serviciosDespachados: number = 0;
 }
 
 export class ComentarioModel {

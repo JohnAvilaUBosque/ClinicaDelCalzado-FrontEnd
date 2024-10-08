@@ -7,9 +7,7 @@ import { UsuarioModel } from './usuario.model';
 })
 export class UsuarioService {
 
-  readonly localStorageKeys = {
-    user: 'USER'
-  };
+  readonly localStorageKey: string = 'USER';
 
   iniciarSesion(usuario: UsuarioModel) {
     throw new Error('Method not implemented');
@@ -17,11 +15,16 @@ export class UsuarioService {
 
   cambiarAdminLocal(admin: AdministradorModel) {
     var adminJson = admin ? JSON.stringify(admin) : '';
-    localStorage.setItem(this.localStorageKeys.user, adminJson)
+    localStorage.setItem(this.localStorageKey, adminJson)
   }
 
   obtenerAdminLocal(): AdministradorModel {
-    var adminJson = localStorage.getItem(this.localStorageKeys.user);
+    var adminJson = localStorage.getItem(this.localStorageKey);
     return adminJson ? JSON.parse(adminJson ? adminJson : '') : null;
   }
+
+  cerrarSesion() {
+    localStorage.removeItem(this.localStorageKey);
+  }
+
 }

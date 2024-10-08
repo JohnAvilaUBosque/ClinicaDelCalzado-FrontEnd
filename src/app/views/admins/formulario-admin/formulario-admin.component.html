@@ -12,10 +12,13 @@
                         [routerLink]="['/admins/editar/' + admin.identificacion]">
                         <svg cIcon name="cil-pencil"></svg>
                     </a>
+
+                    @if (esInformacionPersonal) {
                     <button cButton color="warning" variant="ghost" size="sm" shape="rounded-pill"
                         cTooltip="Cambiar contraseña" [cModalToggle]="cambiarClaveModal.id">
                         <svg cIcon name="cil-lock-locked"></svg>
                     </button>
+                    }
                 </div>
             </c-col>
             }

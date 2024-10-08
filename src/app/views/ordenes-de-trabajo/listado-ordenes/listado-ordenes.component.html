@@ -25,7 +25,75 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (orden of ordenes; track orden.numeroOrden) {
+                    <tr>
+                        <td>
+                            <c-badge color="info" size="sm" 
+                                cTooltip="Al ingresar un filtro se valida que las órdenes de trabajo contengan todos los filtros definidos.">
+                                <svg cIcon color="warning" name="cil-info"></svg>
+                            </c-badge>
+                        </td>
+                        <td>
+                            <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="filtrar()"
+                                name="orderStatus" #orderStatus="ngModel" sizing="sm">
+                                <option [value]="constService.ESTADO_ORDEN.VIGENTE">
+                                    {{constService.ESTADO_ORDEN.VIGENTE}}
+                                </option>
+                                <option [value]="constService.ESTADO_ORDEN.FINALIZADA">
+                                    {{constService.ESTADO_ORDEN.FINALIZADA}}
+                                </option>
+                                <option [value]="constService.ESTADO_ORDEN.ANULADA">
+                                    {{constService.ESTADO_ORDEN.ANULADA}}
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <input cFormControl type="text" [(ngModel)]="filtro.numeroOrden" (ngModelChange)="filtrar()"
+                                name="orderNumber" #orderNumber="ngModel" maxlength="20" sizing="sm">
+                        </td>
+                        <td>
+                            <input cFormControl type="text" [(ngModel)]="filtro.atendidoPor" (ngModelChange)="filtrar()"
+                                name="attendedBy" #attendedBy="ngModel" maxlength="20" sizing="sm">
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <input cFormControl type="text" [(ngModel)]="filtro.cliente.identificacion"
+                                (ngModelChange)="filtrar()" name="identification" #identification="ngModel"
+                                maxlength="20" sizing="sm">
+                        </td>
+                        <td>
+                            <input cFormControl type="text" [(ngModel)]="filtro.cliente.nombre"
+                                (ngModelChange)="filtrar()" name="nameClient" #nameClient="ngModel" maxlength="20"
+                                sizing="sm">
+                        </td>
+                        <td>
+                            <input cFormControl type="text" [(ngModel)]="filtro.cliente.celular"
+                                (ngModelChange)="filtrar()" name="cellphone" #cellphone="ngModel" maxlength="20"
+                                sizing="sm">
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <select cSelect [(ngModel)]="filtro.estadoPago" (ngModelChange)="filtrar()"
+                                name="paymentStatus" #paymentStatus="ngModel" sizing="sm">
+                                <option [value]="constService.ESTADO_PAGO.PENDIENTE">
+                                    {{constService.ESTADO_PAGO.PENDIENTE}}
+                                </option>
+                                <option [value]="constService.ESTADO_PAGO.PAGADO">
+                                    {{constService.ESTADO_PAGO.PAGADO}}
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    @for (orden of ordenesFiltradas; track orden.numeroOrden) {
                     <tr>
                         <td>
                             <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"

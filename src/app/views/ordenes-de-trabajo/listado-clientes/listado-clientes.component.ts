@@ -1,14 +1,15 @@
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { ClienteModel } from '../cliente.model';
-import { FormModule, TableModule } from '@coreui/angular';
+import { BadgeModule, FormModule, TableModule, TooltipModule } from '@coreui/angular';
 import { ClienteService } from '../cliente.service';
 import { FormsModule } from '@angular/forms';
 import { ConstantsService } from 'src/app/constants.service';
+import { IconDirective } from '@coreui/icons-angular';
 
 @Component({
   selector: 'listado-clientes',
   standalone: true,
-  imports: [TableModule, FormsModule, FormModule],
+  imports: [TableModule, FormsModule, FormModule, BadgeModule, TooltipModule, IconDirective],
   templateUrl: './listado-clientes.component.html',
   styleUrl: './listado-clientes.component.scss'
 })
@@ -27,7 +28,6 @@ export class ListadoClientesComponent implements OnInit {
   ngOnInit(): void {
     this.ordenDeTrabajoService.obtenerClientes().subscribe(data => {
       this.clientes = data;
-      this.clientesFiltrados = data;
     })
   }
 

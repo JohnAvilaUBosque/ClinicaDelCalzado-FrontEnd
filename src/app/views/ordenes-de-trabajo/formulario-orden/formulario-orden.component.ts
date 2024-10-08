@@ -34,6 +34,7 @@ export class FormularioOrdenComponent implements OnInit {
   public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public esSoloLectura: boolean = false;
   public sonValidosServicios: boolean = false;
+  public esFechaEntregaValida: boolean = false;
 
   public whatsAppNumber: string = '';
   public commentarioNuevo: string = '';
@@ -50,7 +51,6 @@ export class FormularioOrdenComponent implements OnInit {
           this.orden.atendidoPor = this.usuarioService.obtenerAdminLocal()?.nombre;
           this.orden.fechaCreacion = this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME);
           this.orden.estadoOrden = this.constService.ESTADO_ORDEN.VIGENTE;
-          this.orden.estadoPago = this.constService.ESTADO_PAGO.PENDIENTE;
         }
         else if (title == 'Ver') {
           this.esSoloLectura = true;
@@ -78,6 +78,12 @@ export class FormularioOrdenComponent implements OnInit {
   crearOrden() {
     this.orden.fechaCreacion = this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME);
     this.orden.fechaEntrega = this.constService.fechaATexto(this.orden.fechaEntrega, this.constService.FORMATS_API.DATE);
+    this.orden.estadoPago = this.orden.saldo != 0 ?
+      this.constService.ESTADO_PAGO.PENDIENTE :
+      this.orden.servicios.some(s => s.precio == 0) ?
+        this.constService.ESTADO_PAGO.PENDIENTE :
+        this.constService.ESTADO_PAGO.PAGADO;
+
     if (this.commentarioNuevo)
       this.agregarComentarioAOrden(this.commentarioNuevo);
 
@@ -111,6 +117,10 @@ export class FormularioOrdenComponent implements OnInit {
 
   calcularSaldoNuevo() {
     this.saldoNuevo = this.orden.precioTotal - (this.orden.abono + this.abonoNuevo);
+  }
+
+  validarFechaDeEntrega(fecha: any) {
+    this.esFechaEntregaValida = new Date(fecha) > new Date();
   }
 
   private agregarComentarioAOrden(comentario: string) {
@@ -164,6 +174,9 @@ export class FormularioOrdenComponent implements OnInit {
   abonar(abonarModal: ModalComponent) {
     this.orden.abono += this.abonoNuevo;
     this.orden.saldo = this.saldoNuevo;
+    if (this.orden.saldo == 0)
+      this.orden.estadoPago = this.constService.ESTADO_PAGO.PAGADO;
+
     this.agregarComentarioAOrden('El cliente realizó un abono de ' +
       this.constService.monedaATexto(this.abonoNuevo) +
       ', quedando un saldo de ' +

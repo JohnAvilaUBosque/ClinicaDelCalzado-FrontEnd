@@ -2,7 +2,7 @@
     "ordenes": [
         {
             "numeroOrden": "ORD-20240618-00001",
-            "atendidoPor": "Liliana Morantes",
+            "atendidoPor": "Liliana Rodriguez",
             "fechaCreacion": "2024-06-18 09:22",
             "estadoOrden": "ANULADA",
             "cliente": {
@@ -18,7 +18,7 @@
             "comentarios": [
                 {
                     "descripcion": "Se requiere lo más pronto",
-                    "nombreAdmin": "Liliana Morantes",
+                    "nombreAdmin": "Liliana Rodriguez",
                     "fecha": "2024-06-18 09:22"
                 }
             ],
@@ -26,14 +26,17 @@
                 {
                     "descripcion": "Arreglar botas",
                     "precio": 20000,
-                    "estado": "RECIBIDO"
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
                 }
             ],
             "cantidadServicios": 1
         },
         {
             "numeroOrden": "ORD-20240629-00002",
-            "atendidoPor": "Liliana Morantes",
+            "atendidoPor": "Liliana Rodriguez",
             "fechaCreacion": "2024-06-29 15:48",
             "estadoOrden": "FINALIZADA",
             "cliente": {
@@ -49,17 +52,17 @@
             "comentarios": [
                 {
                     "descripcion": "Se requiere lo más pronto",
-                    "nombreAdmin": "Liliana Morantes",
+                    "nombreAdmin": "Liliana Rodriguez",
                     "fecha": "2024-06-18 09:22"
                 },
                 {
-                    "descripcion": "El cliente realizó un abono de $10,000, quedando un saldo de $0",
-                    "nombreAdmin": "Liliana Morantes",
+                    "descripcion": "El cliente realizó un abono de $15,000, quedando un saldo de $0",
+                    "nombreAdmin": "Liliana Rodriguez",
                     "fecha": "2024-06-19 14:00"
                 },
                 {
                     "descripcion": "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas 'Letraset', las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
-                    "nombreAdmin": "Liliana Morantes",
+                    "nombreAdmin": "Liliana Rodriguez",
                     "fecha": "2024-06-20 18:00"
                 }
             ],
@@ -67,12 +70,18 @@
                 {
                     "nombre": "Pegar suela de tenis",
                     "precio": 18000,
-                    "estado": "DESPACHADO"
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
                 },
                 {
                     "nombre": "Cocer chaqueta de cuero",
                     "precio": 12000,
-                    "estado": "DESPACHADO"
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
                 }
             ],
             "cantidadServicios": 2
@@ -84,12 +93,12 @@
             "estadoOrden": "VIGENTE",
             "cliente": {
                 "identificacion": "654987321",
-                "nombre": "Helena Rodriguez",
+                "nombre": "Helena Miranda",
                 "celular": "3503779573"
             },
-            "precioTotal": 32000,
+            "precioTotal": 14000,
             "abono": 10000,
-            "saldo": 22000,
+            "saldo": 4000,
             "estadoPago": "PENDIENTE",
             "fechaEntrega": "2024-07-25",
             "comentarios": [
@@ -99,8 +108,8 @@
                     "fecha": "2024-06-18 09:22"
                 },
                 {
-                    "descripcion": "El cliente realizó un abono de $10,000, quedando un saldo de $22,000",
-                    "nombreAdmin": "Liliana Morantes",
+                    "descripcion": "El cliente realizó un abono de $10,000, quedando un saldo de $4,000",
+                    "nombreAdmin": "Liliana Rodriguez",
                     "fecha": "2024-06-19 14:00"
                 }
             ],
@@ -108,20 +117,815 @@
                 {
                     "descripcion": "Cambiar cordones zapatos",
                     "precio": 4000,
-                    "estado": "RECIBIDO"
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
                 },
                 {
                     "descripcion": "Limpieza de chaqueta",
                     "precio": 10000,
-                    "estado": "TERMINADO"
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
                 },
                 {
                     "descripcion": "Cambiar cremallera bolso del mismo color de los accesorios",
-                    "precio": 15000,
-                    "estado": "DESPACHADO"
+                    "precio": 0,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": ""
+                    }
                 }
             ],
             "cantidadServicios": 3
+        },
+        {
+            "numeroOrden": "ORD-20240805-00004",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-08-05 10:30",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "7539514862",
+                "nombre": "María Gómez",
+                "celular": "3104567890"
+            },
+            "precioTotal": 30000,
+            "abono": 10000,
+            "saldo": 20000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-08-20",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente pidió rapidez en el servicio.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-08-05 10:35"
+                },
+                {
+                    "descripcion": "El cliente realizó un abono de $10,000, quedando un saldo de $20,000",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-08-05 14:00"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Reparar suela de botas",
+                    "precio": 20000,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "descripcion": "Cambiar cordones",
+                    "precio": 10000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240810-00005",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-08-10 14:00",
+            "estadoOrden": "FINALIZADA",
+            "cliente": {
+                "identificacion": "8529631470",
+                "nombre": "Juan García",
+                "celular": "3207896541"
+            },
+            "precioTotal": 18000,
+            "abono": 18000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-08-15",
+            "comentarios": [
+                {
+                    "descripcion": "Cliente solicita atención rápida.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-08-10 14:05"
+                },
+                {
+                    "descripcion": "El cliente realizó un abono de $18,000, quedando un saldo de $0",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-08-10 14:10"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Tintura de zapatos de cuero",
+                    "precio": 18000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Laura Martínez"
+                    }
+                }
+            ],
+            "cantidadServicios": 1
+        },
+        {
+            "numeroOrden": "ORD-20240812-00006",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-08-12 11:45",
+            "estadoOrden": "ANULADA",
+            "cliente": {
+                "identificacion": "9638527410",
+                "nombre": "Ana Torres",
+                "celular": "3139876543"
+            },
+            "precioTotal": 25000,
+            "abono": 5000,
+            "saldo": 20000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-08-30",
+            "comentarios": [
+                {
+                    "descripcion": "Se anuló la orden por cambio de decisión.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-08-12 12:00"
+                },
+                {
+                    "descripcion": "El cliente realizó un abono de $5,000, quedando un saldo de $20,000",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-08-12 14:00"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Reparación de cremallera de bolso",
+                    "precio": 25000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                }
+            ],
+            "cantidadServicios": 1
+        },
+        {
+            "numeroOrden": "ORD-20240815-00007",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-08-15 13:20",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "9517532584",
+                "nombre": "Sofia Herrera",
+                "celular": "3206547890"
+            },
+            "precioTotal": 35000,
+            "abono": 10000,
+            "saldo": 25000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-09-01",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $10,000, quedando un saldo de $25,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-08-15 13:25"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Reparación de chaqueta de cuero",
+                    "precio": 35000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                }
+            ],
+            "cantidadServicios": 1
+        },
+        {
+            "numeroOrden": "ORD-20240820-00008",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-08-20 09:40",
+            "estadoOrden": "FINALIZADA",
+            "cliente": {
+                "identificacion": "7894561230",
+                "nombre": "Mario Gómez",
+                "celular": "3136547892"
+            },
+            "precioTotal": 20000,
+            "abono": 20000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-08-25",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $20,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-08-20 09:45"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Cambio de cremallera en botas",
+                    "precio": 20000,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Laura Martínez"
+                    }
+                }
+            ],
+            "cantidadServicios": 1
+        },
+        {
+            "numeroOrden": "ORD-20240825-00009",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-08-25 11:00",
+            "estadoOrden": "ANULADA",
+            "cliente": {
+                "identificacion": "6547893210",
+                "nombre": "Fernanda Rojas",
+                "celular": "3103214567"
+            },
+            "precioTotal": 15000,
+            "abono": 5000,
+            "saldo": 10000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-09-05",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $5,000, quedando un saldo de $10,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-08-25 11:10"
+                },
+                {
+                    "descripcion": "La orden fue anulada a solicitud del cliente.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-08-25 14:00"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Pegar suela de zapatos",
+                    "precio": 15000,
+                    "estado": "ANULADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 1
+        },
+        {
+            "numeroOrden": "ORD-20240828-00010",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-08-28 14:30",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "9632587410",
+                "nombre": "Alejandro López",
+                "celular": "3119876543"
+            },
+            "precioTotal": 45000,
+            "abono": 20000,
+            "saldo": 25000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-09-10",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $20,000, quedando un saldo de $25,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-08-28 14:35"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Limpieza y tintura de chaqueta de cuero",
+                    "precio": 45000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                }
+            ],
+            "cantidadServicios": 1
+        },
+        {
+            "numeroOrden": "ORD-20240901-00011",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-09-01 16:00",
+            "estadoOrden": "FINALIZADA",
+            "cliente": {
+                "identificacion": "8521479630",
+                "nombre": "Patricia Martínez",
+                "celular": "3124567890"
+            },
+            "precioTotal": 30000,
+            "abono": 30000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-09-10",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $30,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-09-01 16:05"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Cambio de suela en botas",
+                    "precio": 30000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                }
+            ],
+            "cantidadServicios": 1
+        },
+        {
+            "numeroOrden": "ORD-20240905-00012",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-09-05 10:45",
+            "estadoOrden": "FINALIZADA",
+            "cliente": {
+                "identificacion": "1029384756",
+                "nombre": "Clara Montes",
+                "celular": "3115439872"
+            },
+            "precioTotal": 40000,
+            "abono": 40000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-09-12",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $40,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-09-05 10:50"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Cambio de suela en zapatos",
+                    "precio": 25000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "descripcion": "Limpieza de chaqueta",
+                    "precio": 15000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240910-00013",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-09-10 12:00",
+            "estadoOrden": "FINALIZADA",
+            "cliente": {
+                "identificacion": "1092837465",
+                "nombre": "Pedro López",
+                "celular": "3204561234"
+            },
+            "precioTotal": 55000,
+            "abono": 55000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-09-20",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $55,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-09-10 12:10"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Tintura de chaqueta de cuero",
+                    "precio": 35000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                },
+                {
+                    "descripcion": "Reparación de bolsillos",
+                    "precio": 20000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": ""
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240912-00014",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-09-12 15:30",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1023456789",
+                "nombre": "Andrea Torres",
+                "celular": "3009876543"
+            },
+            "precioTotal": 60000,
+            "abono": 60000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-09-25",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $60,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-09-12 15:40"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Arreglo de cierre en chaqueta de cuero",
+                    "precio": 30000,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "descripcion": "Cambio de botones",
+                    "precio": 0,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "descripcion": "Reparación de costuras",
+                    "precio": 30000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                }
+            ],
+            "cantidadServicios": 3
+        },
+        {
+            "numeroOrden": "ORD-20240915-00015",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-09-15 11:20",
+            "estadoOrden": "FINALIZADA",
+            "cliente": {
+                "identificacion": "1234567890",
+                "nombre": "Jorge Ramírez",
+                "celular": "3106547890"
+            },
+            "precioTotal": 28000,
+            "abono": 28000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-09-18",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $28,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-09-15 11:25"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Reparación de costuras en bolso",
+                    "precio": 12000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "descripcion": "Cambio de cremallera en chaqueta",
+                    "precio": 16000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240918-00016",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-09-18 14:45",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "0987654321",
+                "nombre": "Laura Pérez",
+                "celular": "3004567891"
+            },
+            "precioTotal": 45000,
+            "abono": 45000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-09-28",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $45,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-09-18 14:50"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Cambio de tacones en botas",
+                    "precio": 25000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "descripcion": "Pegar suela en zapatos",
+                    "precio": 20000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "descripcion": "Reparación de hebilla en bolso",
+                    "precio": 0,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": ""
+                    }
+                }
+            ],
+            "cantidadServicios": 3
+        },
+        {
+            "numeroOrden": "ORD-20240920-00017",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-09-20 09:00",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1122334455",
+                "nombre": "María González",
+                "celular": "3101234567"
+            },
+            "precioTotal": 35000,
+            "abono": 15000,
+            "saldo": 20000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-05",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $15,000, quedando un saldo de $20,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-09-20 09:05"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Cambio de cremallera en chaqueta",
+                    "precio": 15000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                },
+                {
+                    "descripcion": "Reparación de suela en botas",
+                    "precio": 20000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240922-00018",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-09-22 14:30",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "5544332211",
+                "nombre": "Andrés Hurtado",
+                "celular": "3198765432"
+            },
+            "precioTotal": 48000,
+            "abono": 20000,
+            "saldo": 28000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-07",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $20,000, quedando un saldo de $28,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-09-22 14:35"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Reparación de costuras en chaqueta de cuero",
+                    "precio": 30000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "descripcion": "Pegar suela de zapatos",
+                    "precio": 18000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": ""
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240925-00019",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-09-25 11:15",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "2233445566",
+                "nombre": "Camila Vargas",
+                "celular": "3214567890"
+            },
+            "precioTotal": 60000,
+            "abono": 30000,
+            "saldo": 30000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-10",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $30,000, quedando un saldo de $30,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-09-25 11:20"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Tintura de bolso de cuero",
+                    "precio": 25000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                },
+                {
+                    "descripcion": "Cambio de cierres",
+                    "precio": 15000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "descripcion": "Reparación de asas",
+                    "precio": 20000,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": ""
+                    }
+                }
+            ],
+            "cantidadServicios": 3
+        },
+        {
+            "numeroOrden": "ORD-20240918-00020",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-09-18 08:45",
+            "estadoOrden": "FINALIZADA",
+            "cliente": {
+                "identificacion": "6677889900",
+                "nombre": "Raúl Castillo",
+                "celular": "3001239876"
+            },
+            "precioTotal": 50000,
+            "abono": 50000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-09-25",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $50,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-09-18 08:50"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Cambio de suela en zapatos",
+                    "precio": 20000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "descripcion": "Tintura de chaqueta de cuero",
+                    "precio": 30000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240922-00021",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-09-22 16:00",
+            "estadoOrden": "FINALIZADA",
+            "cliente": {
+                "identificacion": "9988776655",
+                "nombre": "Carmen Salinas",
+                "celular": "3209876543"
+            },
+            "precioTotal": 38000,
+            "abono": 38000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-09-30",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $38,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-09-22 16:05"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Limpieza de bolso de cuero",
+                    "precio": 15000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                },
+                {
+                    "descripcion": "Reparación de asas de bolso",
+                    "precio": 23000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240925-00022",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-09-25 09:30",
+            "estadoOrden": "FINALIZADA",
+            "cliente": {
+                "identificacion": "5566778899",
+                "nombre": "Esteban Morales",
+                "celular": "3116547890"
+            },
+            "precioTotal": 42000,
+            "abono": 42000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-10-01",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $42,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-09-25 09:35"
+                }
+            ],
+            "servicios": [
+                {
+                    "descripcion": "Cambio de suela en tenis",
+                    "precio": 22000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "descripcion": "Reparación de costuras en chaqueta",
+                    "precio": 20000,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
         }
     ]
 }

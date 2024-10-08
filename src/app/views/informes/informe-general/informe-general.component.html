@@ -1,1 +1,100 @@
-<p>informe-general works!</p>
+<c-card>
+    <c-card-header>
+        <h5>Informe general</h5>
+    </c-card-header>
+    <c-card-body>
+        <p>Filtre las órdenes de trabajo en un rango de fechas y se visualizarán los totales por día.</p>
+        <form cForm #informeDetalladoForm="ngForm" (ngSubmit)="filtrar()">
+            <c-row>
+                <c-col md="5" class="mb-3">
+                    <label cLabel="col" sizing="sm">Fecha inicial:</label>
+                    <input cFormControl type="date" [(ngModel)]="fechaInicial" (ngModelChange)="validarFechas()"
+                        name="startDate" #startDate="ngModel" required
+                        [valid]="startDate.touched && (startDate.invalid || !sonFechasValidas) ? false : undefined">
+                    <c-form-feedback *ngIf="!!(startDate.touched && startDate.invalid)" [valid]="false">
+                        Este campo es requerido!
+                    </c-form-feedback>
+                    <c-form-feedback *ngIf="!sonFechasValidas" [valid]="false">
+                        Debe ser una fecha igual o anterior a la fecha final!
+                    </c-form-feedback>
+                </c-col>
+                <c-col md="5" class="mb-3">
+                    <label cLabel="col" sizing="sm">Fecha final:</label>
+                    <input cFormControl type="date" [(ngModel)]="fechaFinal" (ngModelChange)="validarFechas()"
+                        name="endDate" #endDate="ngModel" required
+                        [valid]="endDate.touched && (endDate.invalid || !sonFechasValidas) ? false : undefined">
+                    <c-form-feedback *ngIf="!!(endDate.touched && endDate.invalid)" [valid]="false">
+                        Este campo es requerido!
+                    </c-form-feedback>
+                    <c-form-feedback *ngIf="!sonFechasValidas" [valid]="false">
+                        Debe ser una fecha igual o posterior a la fecha inicial!
+                    </c-form-feedback>
+                </c-col>
+                <c-col md="2" style="margin-top: 31px">
+                    <input cButton color="primary" type="submit" value="Filtrar" class="w-100"
+                        [disabled]="informeDetalladoForm.invalid">
+                </c-col>
+            </c-row>
+        </form>
+        @if (diasFiltrados.length != 0) {
+        <div class="overflow-y-auto">
+            <table cTable hover striped>
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Dia</th>
+                        <th scope="col">Servicios recibidos</th>
+                        <th scope="col">Servicios terminados</th>
+                        <th scope="col">Servicios despachados</th>
+                        <th scope="col">Precio total</th>
+                        <th scope="col">Abono total</th>
+                        <th scope="col">Saldo total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (dia of diasFiltrados; track dia.fecha) {
+                    <tr>
+                        <td>
+                            <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                                cTooltip="Ver informe detallado" (click)="verInformeDetallado(dia)">
+                                <svg cIcon name="cil-external-link"></svg>
+                            </button>
+                        </td>
+                        <th scope="row">{{dia.fecha | date:constService.FORMATS_VIEW.DATE }}</th>
+                        <td>{{dia.serviciosRecibidos}}</td>
+                        <td>{{dia.serviciosTerminados}}</td>
+                        <td>{{dia.serviciosDespachados}}</td>
+                        <td>{{dia.precioTotal | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
+                        <td>{{dia.abono | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
+                        <td>{{dia.saldo | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
+                    </tr>
+                    }
+                </tbody>
+                <tfoot cTableColor="secondary">
+                    <tr>
+                        <th></th>
+                        <th scope="row">Totales:</th>
+                        <th>{{totales.serviciosRecibidos}}</th>
+                        <th>{{totales.serviciosTerminados}}</th>
+                        <th>{{totales.serviciosDespachados}}</th>
+                        <th>{{totales.precioTotal | currency: 'COP' : 'symbol-narrow' : '1.0'}}</th>
+                        <th>{{totales.abono | currency: 'COP' : 'symbol-narrow' : '1.0'}}</th>
+                        <th>{{totales.saldo | currency: 'COP' : 'symbol-narrow' : '1.0'}}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        }
+    </c-card-body>
+</c-card>
+
+<c-toaster [placement]="'bottom-end'" class="p-3" position="fixed">
+    <c-toast #toastSinResultados="cToast" [visible]="false" color="info" class="text-white">
+        <div class="d-flex">
+            <c-toast-body>
+                <span>No se encontraron órdenes de trabajo con las fechas ingresadas.</span>
+            </c-toast-body>
+            <button cButtonClose white class="me-2 m-auto" (click)="toastSinResultados.visible = false"></button>
+        </div>
+    </c-toast>
+</c-toaster>

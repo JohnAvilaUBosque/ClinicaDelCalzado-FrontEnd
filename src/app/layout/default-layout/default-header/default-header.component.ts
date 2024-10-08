@@ -77,6 +77,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
   @Input() sidebarId: string = 'sidebar1';
 
   cerrarSesion() {
+    this.usuarioService.cerrarSesion();
     this.router.navigate(['login']);
   }
 
