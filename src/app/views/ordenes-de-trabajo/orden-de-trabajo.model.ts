@@ -1,5 +1,5 @@
-import { ServicioModel } from './servicio.model';
-import { ClienteModel } from './cliente.model';
+import { ServicioModel } from '../servicios/servicio.model';
+import { ClienteModel } from '../clientes/cliente.model';
 
 export class OrdenDeTrabajoModel {
     numeroOrden: string = '';

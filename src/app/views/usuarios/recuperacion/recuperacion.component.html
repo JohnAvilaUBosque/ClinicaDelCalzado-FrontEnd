@@ -5,7 +5,7 @@
                 <c-card class="p-4">
                     <c-card-body>
                         <form cForm #recuperacionForm="ngForm" (ngSubmit)="recuperarClave()">
-                            <h1>{{ constService.NOMBRE_EMPRESA }}</h1>
+                            <h1>{{ CONST.NOMBRE_EMPRESA }}</h1>
                             <p class="text-body-secondary">Ingresa tu identificación, tus datos de seguridad y la
                                 contraseña nueva</p>
                             <c-row>
@@ -28,7 +28,7 @@
                             <c-row>
                                 <c-col class="mb-3">
                                     <datos-seguridad [datosSeguridad]="recuperacion.datosSeguridad"
-                                        (esFormularioValido)="sonValidosDatosSeguridad = $event"></datos-seguridad>
+                                        (esFormularioValidoEvent)="sonValidosDatosSeguridad = $event"></datos-seguridad>
                                 </c-col>
                             </c-row>
                             <c-row>
@@ -36,7 +36,7 @@
                                     <label cLabel="col" sizing="sm">Contraseña nueva:</label>
                                     <input cFormControl type="password" [(ngModel)]="recuperacion.claveNueva"
                                         name="password" #password="ngModel" (ngModelChange)="confirmarClave()"
-                                        maxlength="20" [pattern]="constService.REGULAR_EXP.PASSWORD" required
+                                        maxlength="20" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
                                         [valid]="password.touched && password.invalid ? false : undefined">
                                     <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
                                         La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra

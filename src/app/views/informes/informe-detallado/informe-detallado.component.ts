@@ -2,7 +2,7 @@ import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, ToastModule, ToastComponent } from '@coreui/angular';
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
-import { ConstantsService } from '../../../constants.service'
+import { ConstantsService } from '../../../constants.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { OrdenDeTrabajoService } from '../../ordenes-de-trabajo/orden-de-trabajo.service';
@@ -25,7 +25,7 @@ export class InformeDetalladoComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  public constService = inject(ConstantsService);
+  public CONST = inject(ConstantsService);
 
   public fechaInicial: string = '';
   public fechaFinal: string = '';
@@ -39,15 +39,15 @@ export class InformeDetalladoComponent implements OnInit {
   @ViewChild('toastSinResultados') toastSinResultados!: ToastComponent;
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Informe detallado');
+    this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Informe detallado');
 
     this.ordenDeTrabajoService.obtenerOrdenes().subscribe(data => {
-      this.ordenes = data.filter(orden => orden.estadoOrden != this.constService.ESTADO_ORDEN.ANULADA)
+      this.ordenes = data.filter(orden => orden.estadoOrden != this.CONST.ESTADO_ORDEN.ANULADA)
         .sort(orden => new Date(orden.fechaCreacion).getTime())
         .map(orden => {
-          orden.serviciosRecibidos = orden.servicios.filter(s => s.estado == this.constService.ESTADO_SERVICIO.RECIBIDO).length;
-          orden.serviciosTerminados = orden.servicios.filter(s => s.estado == this.constService.ESTADO_SERVICIO.TERMINADO).length;
-          orden.serviciosDespachados = orden.servicios.filter(s => s.estado == this.constService.ESTADO_SERVICIO.DESPACHADO).length;
+          orden.serviciosRecibidos = orden.servicios.filter(s => s.estado == this.CONST.ESTADO_SERVICIO.RECIBIDO).length;
+          orden.serviciosTerminados = orden.servicios.filter(s => s.estado == this.CONST.ESTADO_SERVICIO.TERMINADO).length;
+          orden.serviciosDespachados = orden.servicios.filter(s => s.estado == this.CONST.ESTADO_SERVICIO.DESPACHADO).length;
           return orden;
         });
 

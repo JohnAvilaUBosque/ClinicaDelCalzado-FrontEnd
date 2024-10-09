@@ -9,37 +9,32 @@
                 <div class="actions">
                     <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
                         cTooltip="Enviar por WhatsApp" [cModalToggle]="whatsAppModal.id"
-                        *ngIf="orden.estadoOrden != constService.ESTADO_ORDEN.ANULADA">
+                        *ngIf="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA">
                         <svg cIcon name="cil-phone"></svg>
                     </button>
-                    <!-- <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Descargar"
-                        [cModalToggle]="descargarModal.id">
+                    <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Descargar"
+                        [cModalToggle]="descargarModal.id" *ngIf="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA">
                         <svg cIcon name="cil-data-transfer-down"></svg>
-                    </button> -->
+                    </button>
                     <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Abonar"
                         [cModalToggle]="abonarModal.id" (click)="calcularSaldoNuevo()"
-                        *ngIf="orden.estadoOrden != constService.ESTADO_ORDEN.ANULADA">
+                        *ngIf="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA">
                         <svg cIcon name="cil-dollar"></svg>
                     </button>
                     <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
                         cTooltip="Agregar comentario" [cModalToggle]="comentarioModal.id">
                         <svg cIcon name="cil-short-text"></svg>
                     </button>
-                    <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
-                        cTooltip="Cambiar estado de servicios" [cModalToggle]="cambiarEstadoModal.id"
-                        *ngIf="orden.estadoOrden != constService.ESTADO_ORDEN.ANULADA">
-                        <svg cIcon name="cil-flag-alt"></svg>
-                    </button>
                     <button cButton color="danger" variant="ghost" size="sm" shape="rounded-pill"
                         cTooltip="Anular orden" [cModalToggle]="anularModal.id"
-                        *ngIf="orden.estadoOrden != constService.ESTADO_ORDEN.ANULADA">
+                        *ngIf="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA">
                         <svg cIcon name="cil-x"></svg>
                     </button>
                 </div>
             </c-col>
             <c-col class="align-self-center">
                 <c-badge
-                    color="{{orden.estadoOrden == constService.ESTADO_ORDEN.VIGENTE ? 'info' : orden.estadoOrden == constService.ESTADO_ORDEN.ANULADA ? 'danger' : 'success'}}"
+                    color="{{orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE ? 'info' : orden.estadoOrden == CONST.ESTADO_ORDEN.ANULADA ? 'danger' : 'success'}}"
                     shape="rounded-pill" class="float-end">
                     {{orden.estadoOrden | uppercase}}
                 </c-badge>
@@ -62,7 +57,7 @@
                 <c-col sm="6" lg="4" class="mb-3">
                     <label cLabel="col" sizing="sm">Fecha de creación:</label>
                     <input cFormControl type="text" readOnly plaintext
-                        [ngModel]="orden.fechaCreacion | date:constService.FORMATS_VIEW.DATETIME" name="createDate">
+                        [ngModel]="orden.fechaCreacion | date:CONST.FORMATS_VIEW.DATETIME" name="createDate">
                 </c-col>
             </c-row>
             }
@@ -70,7 +65,7 @@
                 <c-col sm="6" lg="4" class="mb-3">
                     <label cLabel="col" sizing="sm">Identificación cliente:</label>
                     <input cFormControl type="text" [(ngModel)]="orden.cliente.identificacion" name="identification"
-                        #identification="ngModel" maxlength="20" [pattern]="constService.REGULAR_EXP.NUMBER" required
+                        #identification="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER" required
                         [valid]="identification.touched && identification.invalid ? false : undefined"
                         [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                     <c-form-feedback *ngIf="!!(identification.touched && identification.invalid)" [valid]="false">
@@ -92,7 +87,7 @@
                         <c-col>
                             <label cLabel="col" sizing="sm">Celular cliente:</label>
                             <input cFormControl type="text" [(ngModel)]="orden.cliente.celular" name="cellphone"
-                                #cellphone="ngModel" maxlength="10" [pattern]="constService.REGULAR_EXP.NUMBER" required
+                                #cellphone="ngModel" maxlength="10" [pattern]="CONST.REGULAR_EXP.NUMBER" required
                                 [valid]="cellphone.touched && cellphone.invalid ? false : undefined"
                                 [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                             <c-form-feedback *ngIf="!!(cellphone.touched && cellphone.invalid)" [valid]="false">
@@ -110,13 +105,14 @@
                     </c-row>
                 </c-col>
             </c-row>
-            <c-row> <!-- Datos de los servicios -->
-                <c-col sm="12" lg="8" class="mb-3">
+            <c-row>
+                <c-col xxl="8" class="mb-3"> <!-- Datos de los servicios -->
                     <listado-servicios [servicios]="orden.servicios" [esSoloLectura]="esSoloLectura"
                         (cambiaronPreciosEvent)="calcularTotal()"
-                        (esFormularioValido)="sonValidosServicios = $event"></listado-servicios>
+                        (esFormularioValidoEvent)="sonValidosServicios = $event"
+                        (agregarComentarioEvent)="agregarComentarioAOrden($event)"></listado-servicios>
                 </c-col>
-                <c-col sm="12" lg="4" class="mb-3"> <!-- Datos calculados -->
+                <c-col xxl="4" class="mb-3"> <!-- Datos de pago -->
                     <c-card>
                         <c-card-header>
                             <c-row>
@@ -126,7 +122,7 @@
                                 @if (esSoloLectura) {
                                 <c-col class="align-self-center">
                                     <c-badge
-                                        color="{{orden.estadoPago == constService.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
+                                        color="{{orden.estadoPago == CONST.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
                                         shape="rounded-pill" class="float-end">
                                         {{orden.estadoPago | uppercase}}
                                     </c-badge>
@@ -136,18 +132,18 @@
                         </c-card-header>
                         <c-card-body>
                             <c-row>
-                                <c-col sm="6" lg="12" xl="6" class="mb-3">
+                                <c-col sm="6" class="mb-3">
                                     <label cLabel="col" sizing="sm">Precio total:</label>
                                     <input cFormControl type="text" readOnly plaintext
                                         [ngModel]="orden.precioTotal | currency: 'COP' : 'symbol-narrow' : '1.0'"
                                         name="totalPrice">
                                 </c-col>
-                                <c-col sm="6" lg="12" xl="6" class="mb-3">
+                                <c-col sm="6" class="mb-3">
                                     <label cLabel="col" sizing="sm">Abono:</label>
                                     <input cFormControl type="text"
                                         [ngModel]="orden.abono | currency: 'COP' : 'symbol-narrow' : '1.0'"
                                         (ngModelChange)="cambiarAbono($event)" name="downPayment" #downPayment="ngModel"
-                                        maxlength="11" [pattern]="constService.REGULAR_EXP.CURRENCY" required
+                                        maxlength="11" [pattern]="CONST.REGULAR_EXP.CURRENCY" required
                                         [valid]="downPayment.touched && downPayment.invalid ? false : undefined"
                                         [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
                                     <c-form-feedback *ngIf="!!(downPayment.touched && downPayment.invalid)"
@@ -155,17 +151,17 @@
                                         Este campo es requerido y debe ser un valor monetario válido!
                                     </c-form-feedback>
                                 </c-col>
-                                <c-col sm="6" lg="12" xl="6" class="mb-3">
+                                <c-col sm="6" class="mb-3">
                                     <label cLabel="col" sizing="sm">Saldo:</label>
                                     <input cFormControl type="text" readOnly plaintext
                                         [ngModel]="orden.saldo | currency: 'COP' : 'symbol-narrow' : '1.0'"
-                                        name="balance" #balance="ngModel" [pattern]="constService.REGULAR_EXP.CURRENCY"
+                                        name="balance" #balance="ngModel" [pattern]="CONST.REGULAR_EXP.CURRENCY"
                                         [valid]="balance.invalid ? false : undefined">
                                     <c-form-feedback *ngIf="!!(balance.invalid)" [valid]="false">
                                         El saldo no puede quedar en un valor monetario negativo!
                                     </c-form-feedback>
                                 </c-col>
-                                <c-col sm="6" lg="12" xl="6" class="mb-3">
+                                <c-col sm="6" class="mb-3">
                                     <label cLabel="col" sizing="sm">Fecha de entrega:</label>
                                     <input cFormControl type="date" [(ngModel)]="orden.fechaEntrega"
                                         (ngModelChange)="validarFechaDeEntrega($event)" name="deliveryDate"
@@ -189,8 +185,18 @@
                     @for (comment of orden.comentarios; track $index) {
                     <hr>
                     <div>
-                        <label cLabel="col" sizing="sm">Comentario por {{comment.nombreAdmin}} el {{comment.fecha |
-                            date:constService.FORMATS_VIEW.DATETIME }}:</label>
+                        <label cLabel="col" sizing="sm" class="d-inline text-secondary fw-semibold">
+                            Comentario por
+                        </label>
+                        <label cLabel="col" sizing="sm" class="d-inline text-secondary fw-bold">
+                            {{comment.nombreAdmin}}
+                        </label>
+                        <label cLabel="col" sizing="sm" class="d-inline text-secondary fw-semibold">
+                            el día
+                        </label>
+                        <label cLabel="col" sizing="sm" class="d-inline text-secondary fw-bold">
+                            {{comment.fecha | date:CONST.FORMATS_VIEW.DATETIME }}:
+                        </label>
                         <p>{{comment.descripcion}}</p>
                     </div>
                     }
@@ -213,6 +219,24 @@
 
 <!-- MODALS -->
 
+<c-modal #clientesModal backdrop="static" id="clientesModal" size="lg">
+    <c-modal-header>
+        <h5 cModalTitle>Buscar cliente</h5>
+        <button [cModalToggle]="clientesModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        @if (clientesModal.visible) {
+        <listado-clientes (seleccionClienteEvent)="cambiarCliente($event); clientesModal.visible = false">
+        </listado-clientes>
+        }
+    </c-modal-body>
+    <c-modal-footer>
+        <button [cModalToggle]="clientesModal.id" cButton color="secondary">
+            Cerrar
+        </button>
+    </c-modal-footer>
+</c-modal>
+
 <c-modal #whatsAppModal backdrop="static" id="whatsAppModal">
     <form cForm #whatsAppForm="ngForm">
         <c-modal-header>
@@ -223,7 +247,7 @@
             @if (whatsAppModal.visible) {
             <label cLabel="col" sizing="sm">Confirma el número de WhatsApp:</label>
             <input cFormControl type="text" [(ngModel)]="whatsAppNumber" name="wpNumber" #wpNumber="ngModel"
-                maxlength="10" [pattern]="constService.REGULAR_EXP.NUMBER" maxlength="10" minlength="10" required
+                maxlength="10" [pattern]="CONST.REGULAR_EXP.NUMBER" maxlength="10" minlength="10" required
                 [valid]="wpNumber.touched && wpNumber.invalid ? false : undefined">
             <c-form-feedback *ngIf="!!(wpNumber.touched && wpNumber.invalid)" [valid]="false">
                 Este campo debe ser un número de celular válido!
@@ -234,7 +258,8 @@
             <button [cModalToggle]="whatsAppModal.id" cButton color="secondary">
                 Cerrar
             </button>
-            <button cButton color="success" (click)="enviarPorWhatsApp(whatsAppModal)" [disabled]="whatsAppForm.invalid">
+            <button cButton color="success" (click)="enviarPorWhatsApp(whatsAppModal)"
+                [disabled]="whatsAppForm.invalid">
                 Enviar
                 <svg cIcon name="cil-phone"></svg>
             </button>
@@ -291,7 +316,7 @@
                     <label cLabel="col" sizing="sm">Nuevo abono:</label>
                     <input cFormControl type="text" [ngModel]="abonoNuevo | currency: 'COP' : 'symbol-narrow' : '1.0'"
                         (ngModelChange)="cambiarAbonoNuevo($event)" name="downPaymentNew" #downPaymentNew="ngModel"
-                        maxlength="11" [pattern]="constService.REGULAR_EXP.CURRENCY" required
+                        maxlength="11" [pattern]="CONST.REGULAR_EXP.CURRENCY" required
                         [valid]="downPaymentNew.touched && (downPaymentNew.invalid || abonoNuevo == 0) ? false : undefined">
                     <c-form-feedback *ngIf="!!(downPaymentNew.touched && (downPaymentNew.invalid || abonoNuevo == 0))"
                         [valid]="false">
@@ -302,7 +327,7 @@
                     <label cLabel="col" sizing="sm">Nuevo saldo:</label>
                     <input cFormControl type="text" readOnly plaintext
                         [ngModel]="saldoNuevo | currency: 'COP' : 'symbol-narrow' : '1.0'" name="balanceNew"
-                        #balanceNew="ngModel" [pattern]="constService.REGULAR_EXP.CURRENCY"
+                        #balanceNew="ngModel" [pattern]="CONST.REGULAR_EXP.CURRENCY"
                         [valid]="balanceNew.invalid ? false : undefined">
                     <c-form-feedback *ngIf="!!(balanceNew.invalid)" [valid]="false">
                         El saldo no puede quedar en un valor monetario negativo!
@@ -354,62 +379,39 @@
     </form>
 </c-modal>
 
-<c-modal #cambiarEstadoModal backdrop="static" id="cambiarEstadoModal">
-    <c-modal-header>
-        <h5 cModalTitle>Cambiar estado a orden de trabajo</h5>
-        <button [cModalToggle]="cambiarEstadoModal.id" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body>
-        @if (cambiarEstadoModal.visible) {
-
-        }
-    </c-modal-body>
-    <c-modal-footer>
-        <button [cModalToggle]="cambiarEstadoModal.id" cButton color="secondary">
-            Cerrar
-        </button>
-        <button cButton color="primary" (click)="cambiarEstadoServicios(cambiarEstadoModal)">
-            Cambiar estado
-            <svg cIcon name="cil-flag-alt"></svg>
-        </button>
-    </c-modal-footer>
-</c-modal>
-
 <c-modal #anularModal backdrop="static" id="anularModal">
-    <c-modal-header>
-        <h5 cModalTitle>Anular orden de trabajo</h5>
-        <button [cModalToggle]="anularModal.id" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body>
-        <p>¿ Está seguro de anular esta orden de trabajo ?</p>
-    </c-modal-body>
-    <c-modal-footer>
-        @if (anularModal.visible) {
-        <button [cModalToggle]="anularModal.id" cButton color="secondary">
-            Cerrar
-        </button>
-        <button cButton color="danger" (click)="anular(anularModal)">
-            Anular
-            <svg cIcon name="cil-x"></svg>
-        </button>
-        }
-    </c-modal-footer>
-</c-modal>
-
-<c-modal #clientesModal backdrop="static" id="clientesModal" size="lg">
-    <c-modal-header>
-        <h5 cModalTitle>Buscar cliente</h5>
-        <button [cModalToggle]="clientesModal.id" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body>
-        @if (clientesModal.visible) {
-        <listado-clientes
-            (seleccionClienteEvent)="cambiarCliente($event); clientesModal.visible = false"></listado-clientes>
-        }
-    </c-modal-body>
-    <c-modal-footer>
-        <button [cModalToggle]="clientesModal.id" cButton color="secondary">
-            Cerrar
-        </button>
-    </c-modal-footer>
+    <form cForm #anularForm="ngForm">
+        <c-modal-header>
+            <h5 cModalTitle>Anular orden de trabajo</h5>
+            <button [cModalToggle]="anularModal.id" cButtonClose></button>
+        </c-modal-header>
+        <c-modal-body>
+            @if (anularModal.visible) {
+            @if (orden.abono) {
+            <p>Para poder anular la orden de trabajo, por favor comente que se hizo con lo ya abonado ({{orden.abono |
+                currency: 'COP' : 'symbol-narrow' : '1.0'}}).</p>
+            <label cLabel="col" sizing="sm">Comentario:</label>
+            <textarea cFormControl rows="5" [(ngModel)]="commentarioNuevo" name="commentNew" #commentNew="ngModel"
+                maxlength="500" required
+                [valid]="commentNew.touched && commentNew.invalid ? false : undefined"></textarea>
+            <c-form-feedback *ngIf="!!(commentNew.touched && commentNew.invalid)" [valid]="false">
+                Este campo es requerido!
+            </c-form-feedback>
+            }
+            @else {
+            <p>¿ Está seguro de anular esta orden de trabajo ?</p>
+            }
+            }
+        </c-modal-body>
+        <c-modal-footer>
+            <button [cModalToggle]="anularModal.id" cButton color="secondary">
+                Cerrar
+            </button>
+            <button cButton color="danger" (click)="anular(anularModal)" [disabled]="anularForm.invalid"
+                class="text-white">
+                Anular
+                <svg cIcon name="cil-x"></svg>
+            </button>
+        </c-modal-footer>
+    </form>
 </c-modal>

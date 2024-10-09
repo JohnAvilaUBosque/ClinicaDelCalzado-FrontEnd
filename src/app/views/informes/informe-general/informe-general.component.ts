@@ -2,7 +2,7 @@ import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, ToastModule, ToastComponent } from '@coreui/angular';
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
-import { ConstantsService } from '../../../constants.service'
+import { ConstantsService } from '../../../constants.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { OrdenDeTrabajoService } from '../../ordenes-de-trabajo/orden-de-trabajo.service';
@@ -24,7 +24,7 @@ export class InformeGeneralComponent implements OnInit {
   private titleService = inject(Title);
   private router = inject(Router);
 
-  public constService = inject(ConstantsService);
+  public CONST = inject(ConstantsService);
 
   public fechaInicial: string = '';
   public fechaFinal: string = '';
@@ -38,17 +38,17 @@ export class InformeGeneralComponent implements OnInit {
   @ViewChild('toastSinResultados') toastSinResultados!: ToastComponent;
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Informe general');
+    this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Informe general');
 
     this.ordenDeTrabajoService.obtenerOrdenes().subscribe(data => {
-      data.filter(orden => orden.estadoOrden != this.constService.ESTADO_ORDEN.ANULADA)
+      data.filter(orden => orden.estadoOrden != this.CONST.ESTADO_ORDEN.ANULADA)
         .map(orden => {
-          orden.serviciosRecibidos = orden.servicios.filter(s => s.estado == this.constService.ESTADO_SERVICIO.RECIBIDO).length;
-          orden.serviciosTerminados = orden.servicios.filter(s => s.estado == this.constService.ESTADO_SERVICIO.TERMINADO).length;
-          orden.serviciosDespachados = orden.servicios.filter(s => s.estado == this.constService.ESTADO_SERVICIO.DESPACHADO).length;
+          orden.serviciosRecibidos = orden.servicios.filter(s => s.estado == this.CONST.ESTADO_SERVICIO.RECIBIDO).length;
+          orden.serviciosTerminados = orden.servicios.filter(s => s.estado == this.CONST.ESTADO_SERVICIO.TERMINADO).length;
+          orden.serviciosDespachados = orden.servicios.filter(s => s.estado == this.CONST.ESTADO_SERVICIO.DESPACHADO).length;
           return orden;
         }).forEach(orden => {
-          var fecha = this.constService.fechaATexto(orden.fechaCreacion, this.constService.FORMATS_API.DATE);
+          var fecha = this.CONST.fechaATexto(orden.fechaCreacion, this.CONST.FORMATS_API.DATE);
           var dia = this.dias.find(d => d.fecha == fecha);
           if (dia) {
             dia.precioTotal += orden.precioTotal;

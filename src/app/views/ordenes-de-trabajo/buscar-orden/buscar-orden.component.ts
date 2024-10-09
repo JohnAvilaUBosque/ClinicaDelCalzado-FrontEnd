@@ -21,16 +21,16 @@ export class BuscarOrdenComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  public constService = inject(ConstantsService);
+  public CONST = inject(ConstantsService);
 
   numeroOrden: string = '';
 
   alertVisible: boolean = false;
-  
+
   idOrdenNoEncontrada: string = '';
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Buscar orden de trabajo');
+    this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Buscar orden de trabajo');
 
     this.route.queryParams.pipe(map((p) => p['ordenNoEncontrada'])).subscribe(
       ordenNoEncontrada => {

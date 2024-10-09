@@ -4,7 +4,7 @@ import { OrdenDeTrabajoService } from '../orden-de-trabajo.service'
 import { OrdenDeTrabajoModel } from '../orden-de-trabajo.model'
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
-import { ConstantsService } from '../../../constants.service'
+import { ConstantsService } from '../../../constants.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -22,22 +22,22 @@ export class ListadoOrdenesComponent implements OnInit {
   private titleService = inject(Title);
   private router = inject(Router);
 
-  public constService = inject(ConstantsService);
+  public CONST = inject(ConstantsService);
 
   public ordenes: OrdenDeTrabajoModel[] = [];
-  
+
   public filtro: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public ordenesFiltradas: OrdenDeTrabajoModel[] = [];
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Órdenes de trabajo');
+    this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Órdenes de trabajo');
 
     this.ordenDeTrabajoService.obtenerOrdenes().subscribe(data => {
       this.ordenes = data.sort(orden => new Date(orden.fechaCreacion).getTime())
         .reverse();
 
-        this.filtro.estadoOrden = this.constService.ESTADO_ORDEN.VIGENTE;
-        this.filtrar();
+      this.filtro.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
+      this.filtrar();
     })
   }
 

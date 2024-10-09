@@ -23,14 +23,14 @@ export class RecuperacionComponent implements OnInit {
   private titleService = inject(Title);
   private router = inject(Router);
 
-  public constService = inject(ConstantsService);
+  public CONST = inject(ConstantsService);
 
   public recuperacion: RecuperacionModel = new RecuperacionModel();
   public lasClavesCoinciden: boolean = false;
   public sonValidosDatosSeguridad: boolean = false;
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Recuperacion');
+    this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Recuperacion');
   }
 
   recuperarClave() {

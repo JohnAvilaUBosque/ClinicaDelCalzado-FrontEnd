@@ -1,0 +1,54 @@
+{
+    "operarios": [
+        {
+            "identificacion": "1023456789",
+            "nombre": "Alex Medina",
+            "celular": "3124567890"
+        },
+        {
+            "identificacion": "1034567890",
+            "nombre": "Luis Vivas",
+            "celular": "3135678901"
+        },
+        {
+            "identificacion": "1045678901",
+            "nombre": "Sofía Herrera",
+            "celular": "3146789012"
+        },
+        {
+            "identificacion": "1056789012",
+            "nombre": "Carlos Pérez",
+            "celular": "3157890123"
+        },
+        {
+            "identificacion": "1067890123",
+            "nombre": "Laura Martínez",
+            "celular": "3168901234"
+        },
+        {
+            "identificacion": "1078901234",
+            "nombre": "Fernando Gómez",
+            "celular": "3179012345"
+        },
+        {
+            "identificacion": "1089012345",
+            "nombre": "María Ríos",
+            "celular": "3180123456"
+        },
+        {
+            "identificacion": "1090123456",
+            "nombre": "Javier Castillo",
+            "celular": "3191234567"
+        },
+        {
+            "identificacion": "1101234567",
+            "nombre": "Andrea Torres",
+            "celular": "3202345678"
+        },
+        {
+            "identificacion": "1112345678",
+            "nombre": "Diego Ramírez",
+            "celular": "3213456789"
+        }
+    ]
+}

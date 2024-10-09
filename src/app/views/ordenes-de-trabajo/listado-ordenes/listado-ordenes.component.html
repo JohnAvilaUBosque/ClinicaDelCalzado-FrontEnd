@@ -27,7 +27,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <c-badge color="info" size="sm" 
+                            <c-badge color="info" size="sm"
                                 cTooltip="Al ingresar un filtro se valida que las órdenes de trabajo contengan todos los filtros definidos.">
                                 <svg cIcon color="warning" name="cil-info"></svg>
                             </c-badge>
@@ -35,14 +35,14 @@
                         <td>
                             <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="filtrar()"
                                 name="orderStatus" #orderStatus="ngModel" sizing="sm">
-                                <option [value]="constService.ESTADO_ORDEN.VIGENTE">
-                                    {{constService.ESTADO_ORDEN.VIGENTE}}
+                                <option [value]="CONST.ESTADO_ORDEN.VIGENTE">
+                                    {{CONST.ESTADO_ORDEN.VIGENTE}}
                                 </option>
-                                <option [value]="constService.ESTADO_ORDEN.FINALIZADA">
-                                    {{constService.ESTADO_ORDEN.FINALIZADA}}
+                                <option [value]="CONST.ESTADO_ORDEN.FINALIZADA">
+                                    {{CONST.ESTADO_ORDEN.FINALIZADA}}
                                 </option>
-                                <option [value]="constService.ESTADO_ORDEN.ANULADA">
-                                    {{constService.ESTADO_ORDEN.ANULADA}}
+                                <option [value]="CONST.ESTADO_ORDEN.ANULADA">
+                                    {{CONST.ESTADO_ORDEN.ANULADA}}
                                 </option>
                             </select>
                         </td>
@@ -84,11 +84,11 @@
                         <td>
                             <select cSelect [(ngModel)]="filtro.estadoPago" (ngModelChange)="filtrar()"
                                 name="paymentStatus" #paymentStatus="ngModel" sizing="sm">
-                                <option [value]="constService.ESTADO_PAGO.PENDIENTE">
-                                    {{constService.ESTADO_PAGO.PENDIENTE}}
+                                <option [value]="CONST.ESTADO_PAGO.PENDIENTE">
+                                    {{CONST.ESTADO_PAGO.PENDIENTE}}
                                 </option>
-                                <option [value]="constService.ESTADO_PAGO.PAGADO">
-                                    {{constService.ESTADO_PAGO.PAGADO}}
+                                <option [value]="CONST.ESTADO_PAGO.PAGADO">
+                                    {{CONST.ESTADO_PAGO.PAGADO}}
                                 </option>
                             </select>
                         </td>
@@ -103,25 +103,24 @@
                         </td>
                         <td>
                             <c-badge
-                                color="{{orden.estadoOrden == constService.ESTADO_ORDEN.VIGENTE ? 'info' : orden.estadoOrden == constService.ESTADO_ORDEN.ANULADA ? 'danger' : 'success' }}"
+                                color="{{orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE ? 'info' : orden.estadoOrden == CONST.ESTADO_ORDEN.ANULADA ? 'danger' : 'success' }}"
                                 shape="rounded-pill">
                                 {{orden.estadoOrden | uppercase}}
                             </c-badge>
                         </td>
                         <th scope="row">{{orden.numeroOrden}}</th>
                         <td>{{orden.atendidoPor}}</td>
-                        <td>{{orden.fechaCreacion | date:constService.FORMATS_VIEW.DATETIME }}</td>
+                        <td>{{orden.fechaCreacion | date:CONST.FORMATS_VIEW.DATETIME }}</td>
                         <td>{{orden.cliente.identificacion}}</td>
                         <td>{{orden.cliente.nombre}}</td>
                         <td>{{orden.cliente.celular}}</td>
                         <td>{{orden.cantidadServicios}}</td>
-                        <td>{{orden.fechaEntrega | date:constService.FORMATS_VIEW.DATE}}</td>
+                        <td>{{orden.fechaEntrega | date:CONST.FORMATS_VIEW.DATE}}</td>
                         <td>{{orden.precioTotal | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
                         <td>{{orden.abono | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
                         <td>{{orden.saldo | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
                         <td>
-                            <c-badge
-                                color="{{orden.estadoPago == constService.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
+                            <c-badge color="{{orden.estadoPago == CONST.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
                                 shape="rounded-pill">
                                 {{orden.estadoPago | uppercase}}
                             </c-badge>

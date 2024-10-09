@@ -30,7 +30,7 @@
                 <c-col sm="6" class="mb-3">
                     <label cLabel="col" sizing="sm">Identificación:</label>
                     <input cFormControl type="text" [(ngModel)]="admin.identificacion" name="identification"
-                        #identification="ngModel" maxlength="20" required [pattern]="constService.REGULAR_EXP.NUMBER"
+                        #identification="ngModel" maxlength="20" required [pattern]="CONST.REGULAR_EXP.NUMBER"
                         [valid]="identification.touched && identification.invalid ? false : undefined"
                         [readonly]="esModoLectura || esModoEdicion" [plaintext]="esModoLectura || esModoEdicion">
                     <c-form-feedback *ngIf="!!(identification.touched && identification.invalid)" [valid]="false">
@@ -51,7 +51,7 @@
                 <c-col sm="6" class="mb-3">
                     <label cLabel="col" sizing="sm">Celular:</label>
                     <input cFormControl type="text" [(ngModel)]="admin.celular" name="cellphone" #cellphone="ngModel"
-                        maxlength="10" [pattern]="constService.REGULAR_EXP.NUMBER" required
+                        maxlength="10" [pattern]="CONST.REGULAR_EXP.NUMBER" required
                         [valid]="cellphone.touched && cellphone.invalid ? false : undefined" [readonly]="esModoLectura"
                         [plaintext]="esModoLectura">
                     <c-form-feedback *ngIf="!!(cellphone.touched && cellphone.invalid)" [valid]="false">
@@ -64,7 +64,7 @@
                 <c-col sm="6" class="mb-3">
                     <label cLabel="col" sizing="sm">Contraseña:</label>
                     <input cFormControl type="password" [(ngModel)]="admin.clave" name="password" #password="ngModel"
-                        (ngModelChange)="confirmarClave()" maxlength="20" [pattern]="constService.REGULAR_EXP.PASSWORD"
+                        (ngModelChange)="confirmarClave()" maxlength="20" [pattern]="CONST.REGULAR_EXP.PASSWORD"
                         required [valid]="password.touched && password.invalid ? false : undefined">
                     <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
                         La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1
@@ -89,10 +89,10 @@
                     <label cLabel="col" sizing="sm">Rol:</label>
                     <select cSelect [(ngModel)]="admin.rol" name="role" #role="ngModel" required
                         [valid]="role.touched && role.invalid ? false : undefined"
-                        [disabled]="esModoLectura || (esModoEdicion && (esInformacionPersonal || adminLocal.rol == constService.ROL_ADMIN.SECUNDARIO))">
-                        <option [value]="constService.ROL_ADMIN.PRINCIPAL">{{constService.ROL_ADMIN.PRINCIPAL}}
+                        [disabled]="esModoLectura || (esModoEdicion && (esInformacionPersonal || adminLocal.rol == CONST.ROL_ADMIN.SECUNDARIO))">
+                        <option [value]="CONST.ROL_ADMIN.PRINCIPAL">{{CONST.ROL_ADMIN.PRINCIPAL}}
                         </option>
-                        <option [value]="constService.ROL_ADMIN.SECUNDARIO">{{constService.ROL_ADMIN.SECUNDARIO}}
+                        <option [value]="CONST.ROL_ADMIN.SECUNDARIO">{{CONST.ROL_ADMIN.SECUNDARIO}}
                         </option>
                     </select>
                     <c-form-feedback *ngIf="!!(role.touched && role.invalid)" [valid]="false">
@@ -103,22 +103,24 @@
                     <label cLabel="col" sizing="sm">Estado:</label>
                     <c-button-group [formGroup]="btnRadioGroup" class="ms-4">
                         @if (btnRadioGroup.enabled || (btnRadioGroup.disabled && admin.estado ==
-                        constService.ESTADO_ADMIN.ACTIVO)) {
+                        CONST.ESTADO_ADMIN.ACTIVO)) {
                         <input class="btn-check" formControlName="radioEstado" id="radio1" type="radio"
-                            [value]="constService.ESTADO_ADMIN.ACTIVO" />
-                        <label (click)="cambiarEstado(constService.ESTADO_ADMIN.ACTIVO)" cButton cFormCheckLabel
-                            color="info" for="radio1" variant="outline">
-                            {{ constService.ESTADO_ADMIN.ACTIVO }}
+                            [value]="CONST.ESTADO_ADMIN.ACTIVO" />
+                        <label (click)="cambiarEstado(CONST.ESTADO_ADMIN.ACTIVO)" cButton cFormCheckLabel color="info"
+                            for="radio1" variant="outline" [ngClass]="{'text-white': admin.estado ==
+                        CONST.ESTADO_ADMIN.ACTIVO}">
+                            {{ CONST.ESTADO_ADMIN.ACTIVO }}
                         </label>
                         }
 
                         @if (btnRadioGroup.enabled || (btnRadioGroup.disabled && admin.estado ==
-                        constService.ESTADO_ADMIN.INACTIVO)) {
+                        CONST.ESTADO_ADMIN.INACTIVO)) {
                         <input class="btn-check" formControlName="radioEstado" id="radio2" type="radio"
-                            [value]="constService.ESTADO_ADMIN.INACTIVO" />
-                        <label (click)="cambiarEstado(constService.ESTADO_ADMIN.INACTIVO)" cButton cFormCheckLabel
-                            color="danger" for="radio2" variant="outline">
-                            {{ constService.ESTADO_ADMIN.INACTIVO }}
+                            [value]="CONST.ESTADO_ADMIN.INACTIVO" />
+                        <label (click)="cambiarEstado(CONST.ESTADO_ADMIN.INACTIVO)" cButton cFormCheckLabel
+                            color="danger" for="radio2" variant="outline" [ngClass]="{'text-white': admin.estado ==
+                        CONST.ESTADO_ADMIN.INACTIVO}">
+                            {{ CONST.ESTADO_ADMIN.INACTIVO }}
                         </label>
                         }
                     </c-button-group>
@@ -129,7 +131,7 @@
                 <c-col sm="6" class="mb-3">
                     <c-form-check sizing="lg" switch>
                         <input cFormCheckInput type="checkbox" [(ngModel)]="editarDatosSeguridad" name="checkSecurity"
-                            style="cursor: pointer;" />
+                            role="button" />
                         <label cFormCheckLabel>Editar datos de seguridad</label>
                     </c-form-check>
                 </c-col>
@@ -138,7 +140,7 @@
             <c-row>
                 <c-col class="mb-3">
                     <datos-seguridad [datosSeguridad]="admin.datosSeguridad"
-                        (esFormularioValido)="sonValidosDatosSeguridad = $event"></datos-seguridad>
+                        (esFormularioValidoEvent)="sonValidosDatosSeguridad = $event"></datos-seguridad>
                 </c-col>
             </c-row>
             }
@@ -162,7 +164,7 @@
                 <c-col xs="12" class="mb-3">
                     <label cLabel="col" sizing="sm">Contraseña actual:</label>
                     <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveActual" name="password"
-                        #password="ngModel" maxlength="20" [pattern]="constService.REGULAR_EXP.PASSWORD" required
+                        #password="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
                         [valid]="password.touched && password.invalid ? false : undefined">
                     <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
                         La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1
@@ -173,7 +175,7 @@
                     <label cLabel="col" sizing="sm">Contraseña nueva:</label>
                     <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveNueva" name="passwordNew"
                         #passwordNew="ngModel" (ngModelChange)="confirmarClaveEnCambioDeClave()" maxlength="20"
-                        [pattern]="constService.REGULAR_EXP.PASSWORD" required
+                        [pattern]="CONST.REGULAR_EXP.PASSWORD" required
                         [valid]="passwordNew.touched && passwordNew.invalid ? false : undefined">
                     <c-form-feedback *ngIf="!!(passwordNew.touched && passwordNew.invalid)" [valid]="false">
                         La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1

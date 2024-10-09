@@ -23,7 +23,7 @@ export class DatosSeguridadComponent implements OnInit, AfterViewInit {
 
   @ViewChild('datosSeguridadForm') form?: NgForm;
 
-  @Output() esFormularioValido = new EventEmitter<boolean>();
+  @Output() esFormularioValidoEvent = new EventEmitter<boolean>();
 
   ngOnInit(): void {
     this.preguntaService.obtenerPreguntas().subscribe(data => {
@@ -34,7 +34,7 @@ export class DatosSeguridadComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     if (this.form)
       this.form.statusChanges?.subscribe(status => {
-        this.esFormularioValido.emit(status === 'VALID');
+        this.esFormularioValidoEvent.emit(status === 'VALID');
       });
   }
 }

@@ -9,15 +9,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { UsuarioService } from '../../usuarios/usuario.service';
 import { ConstantsService } from 'src/app/constants.service';
-import { ListadoServiciosComponent } from '../listado-servicios/listado-servicios.component';
-import { ListadoClientesComponent } from '../listado-clientes/listado-clientes.component';
+import { ListadoServiciosComponent } from '../../servicios/listado-servicios/listado-servicios.component';
+import { ListadoClientesComponent } from '../../clientes/listado-clientes/listado-clientes.component';
+import { ListadoOperariosComponent } from '../../operarios/listado-operarios/listado-operarios.component';
 import { Title } from '@angular/platform-browser';
-import { ClienteModel } from '../cliente.model';
+import { ClienteModel } from '../../clientes/cliente.model';
 
 @Component({
   selector: 'formulario-orden',
   standalone: true,
-  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, ModalModule, IconDirective, BadgeComponent, ListadoServiciosComponent, ListadoClientesComponent],
+  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, ModalModule, IconDirective, BadgeComponent, ListadoServiciosComponent, ListadoClientesComponent, ListadoOperariosComponent],
   templateUrl: './formulario-orden.component.html',
   styleUrl: './formulario-orden.component.scss'
 })
@@ -29,7 +30,7 @@ export class FormularioOrdenComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  public constService = inject(ConstantsService);
+  public CONST = inject(ConstantsService);
 
   public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public esSoloLectura: boolean = false;
@@ -44,13 +45,13 @@ export class FormularioOrdenComponent implements OnInit {
   ngOnInit(): void {
     const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
-        this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + title + ' orden de trabajo');
+        this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + title + ' orden de trabajo');
 
         if (title == 'Crear') {
-          this.orden.numeroOrden = this.constService.ORDEN_NUMBER_DEFAULT;
+          this.orden.numeroOrden = this.CONST.ORDEN_NUMBER_DEFAULT;
           this.orden.atendidoPor = this.usuarioService.obtenerAdminLocal()?.nombre;
-          this.orden.fechaCreacion = this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME);
-          this.orden.estadoOrden = this.constService.ESTADO_ORDEN.VIGENTE;
+          this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME);
+          this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
         }
         else if (title == 'Ver') {
           this.esSoloLectura = true;
@@ -76,13 +77,13 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   crearOrden() {
-    this.orden.fechaCreacion = this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME);
-    this.orden.fechaEntrega = this.constService.fechaATexto(this.orden.fechaEntrega, this.constService.FORMATS_API.DATE);
+    this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME);
+    this.orden.fechaEntrega = this.CONST.fechaATexto(this.orden.fechaEntrega, this.CONST.FORMATS_API.DATE);
     this.orden.estadoPago = this.orden.saldo != 0 ?
-      this.constService.ESTADO_PAGO.PENDIENTE :
+      this.CONST.ESTADO_PAGO.PENDIENTE :
       this.orden.servicios.some(s => s.precio == 0) ?
-        this.constService.ESTADO_PAGO.PENDIENTE :
-        this.constService.ESTADO_PAGO.PAGADO;
+        this.CONST.ESTADO_PAGO.PENDIENTE :
+        this.CONST.ESTADO_PAGO.PAGADO;
 
     if (this.commentarioNuevo)
       this.agregarComentarioAOrden(this.commentarioNuevo);
@@ -100,7 +101,7 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   cambiarAbono(value: string) {
-    var abono = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NOT_NUMBER, ''));
+    var abono = Number.parseInt(value.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
     this.orden.abono = Number.isNaN(abono) ? 0 : abono;
     this.calcularSaldo();
   }
@@ -110,7 +111,7 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   cambiarAbonoNuevo(value: string) {
-    var abonoNuevo = Number.parseInt(value.replace(this.constService.REGULAR_EXP.NOT_NUMBER, ''));
+    var abonoNuevo = Number.parseInt(value.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
     this.abonoNuevo = Number.isNaN(abonoNuevo) ? 0 : abonoNuevo;
     this.calcularSaldoNuevo();
   }
@@ -123,11 +124,11 @@ export class FormularioOrdenComponent implements OnInit {
     this.esFechaEntregaValida = new Date(fecha) > new Date();
   }
 
-  private agregarComentarioAOrden(comentario: string) {
+  agregarComentarioAOrden(comentario: string) {
     var commentarioObject: ComentarioModel = {
       descripcion: comentario,
       nombreAdmin: this.usuarioService.obtenerAdminLocal()?.nombre,
-      fecha: this.constService.fechaATexto(new Date(), this.constService.FORMATS_API.DATETIME)
+      fecha: this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME)
     }
     this.orden.comentarios.push(commentarioObject);
   }
@@ -151,17 +152,17 @@ export class FormularioOrdenComponent implements OnInit {
   enviarPorWhatsApp(whatsAppModal: ModalComponent) {
     var mensaje =
       'Orden de trabajo: *' + this.orden.numeroOrden + '* %0A' +
-      this.constService.fechaATexto(this.orden.fechaCreacion, this.constService.FORMATS_VIEW.DATETIME) + '%0A %0A' +
+      this.CONST.fechaATexto(this.orden.fechaCreacion, this.CONST.FORMATS_VIEW.DATETIME) + '%0A %0A' +
       'Servicios: ' + '%0A';
 
-    this.orden.servicios.forEach(s => mensaje += '- ' + s.descripcion + ' (' + this.constService.monedaATexto(s.precio) + ') %0A');
+    this.orden.servicios.forEach(s => mensaje += '- ' + s.descripcion + ' (' + this.CONST.monedaATexto(s.precio) + ') %0A');
 
-    mensaje += '%0A' + 'Precio total: ' + this.constService.monedaATexto(this.orden.precioTotal) + '%0A' +
-      'Abono: ' + this.constService.monedaATexto(this.orden.abono) + '%0A' +
-      'Saldo: ' + this.constService.monedaATexto(this.orden.saldo) + '%0A %0A' +
-      'Fecha de entrega: ' + this.constService.fechaATexto(this.orden.fechaEntrega, this.constService.FORMATS_VIEW.DATE);
+    mensaje += '%0A' + 'Precio total: ' + this.CONST.monedaATexto(this.orden.precioTotal) + '%0A' +
+      'Abono: ' + this.CONST.monedaATexto(this.orden.abono) + '%0A' +
+      'Saldo: ' + this.CONST.monedaATexto(this.orden.saldo) + '%0A %0A' +
+      'Fecha de entrega: ' + this.CONST.fechaATexto(this.orden.fechaEntrega, this.CONST.FORMATS_VIEW.DATE);
 
-    window.open(this.constService.WHATSAPP_URL + this.whatsAppNumber + '?text=' + mensaje);
+    window.open(this.CONST.WHATSAPP_URL + this.whatsAppNumber + '?text=' + mensaje);
 
     whatsAppModal.visible = false;
   }
@@ -175,12 +176,12 @@ export class FormularioOrdenComponent implements OnInit {
     this.orden.abono += this.abonoNuevo;
     this.orden.saldo = this.saldoNuevo;
     if (this.orden.saldo == 0)
-      this.orden.estadoPago = this.constService.ESTADO_PAGO.PAGADO;
+      this.orden.estadoPago = this.CONST.ESTADO_PAGO.PAGADO;
 
     this.agregarComentarioAOrden('El cliente realizó un abono de ' +
-      this.constService.monedaATexto(this.abonoNuevo) +
+      this.CONST.monedaATexto(this.abonoNuevo) +
       ', quedando un saldo de ' +
-      this.constService.monedaATexto(this.orden.saldo)
+      this.CONST.monedaATexto(this.orden.saldo)
     );
 
     this.abonoNuevo = 0;
@@ -199,15 +200,8 @@ export class FormularioOrdenComponent implements OnInit {
     this.editarOrden();
   }
 
-  cambiarEstadoServicios(estadoServiciosModel: ModalComponent) {
-    this.agregarComentarioAOrden('El servicio x cambió de estado a ENTREGADO');
-
-    estadoServiciosModel.visible = false;
-    this.editarOrden();
-  }
-
   anular(anularModal: ModalComponent) {
-    this.orden.estadoOrden = this.constService.ESTADO_ORDEN.ANULADA
+    this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.ANULADA
     this.agregarComentarioAOrden('Se canceló la orden de trabajo');
 
     anularModal.visible = false;

@@ -64,13 +64,13 @@
                         </td>
                         <td>
                             <c-badge
-                                color="{{orden.estadoOrden == constService.ESTADO_ORDEN.VIGENTE ? 'info' : orden.estadoOrden == constService.ESTADO_ORDEN.ANULADA ? 'danger' : 'success' }}"
+                                color="{{orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE ? 'info' : orden.estadoOrden == CONST.ESTADO_ORDEN.ANULADA ? 'danger' : 'success' }}"
                                 shape="rounded-pill">
                                 {{orden.estadoOrden | uppercase}}
                             </c-badge>
                         </td>
                         <th scope="row">{{orden.numeroOrden}}</th>
-                        <td>{{orden.fechaCreacion | date:constService.FORMATS_VIEW.DATETIME }}</td>
+                        <td>{{orden.fechaCreacion | date:CONST.FORMATS_VIEW.DATETIME }}</td>
                         <td>{{orden.serviciosRecibidos}}</td>
                         <td>{{orden.serviciosTerminados}}</td>
                         <td>{{orden.serviciosDespachados}}</td>

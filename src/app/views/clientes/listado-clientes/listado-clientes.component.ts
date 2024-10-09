@@ -15,9 +15,9 @@ import { IconDirective } from '@coreui/icons-angular';
 })
 export class ListadoClientesComponent implements OnInit {
 
-  private ordenDeTrabajoService = inject(ClienteService);
+  private clienteService = inject(ClienteService);
 
-  public constService = inject(ConstantsService);
+  public CONST = inject(ConstantsService);
 
   clientes: ClienteModel[] = [];
   filtro: ClienteModel = new ClienteModel();
@@ -26,16 +26,16 @@ export class ListadoClientesComponent implements OnInit {
   @Output() seleccionClienteEvent = new EventEmitter<ClienteModel>();
 
   ngOnInit(): void {
-    this.ordenDeTrabajoService.obtenerClientes().subscribe(data => {
+    this.clienteService.obtenerClientes().subscribe(data => {
       this.clientes = data;
     })
   }
 
   filtrar() {
-    this.clientesFiltrados = this.clientes.filter(x =>
-      x.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
-      x.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&
-      x.celular.toLowerCase().includes(this.filtro.celular.toLowerCase())
+    this.clientesFiltrados = this.clientes.filter(cliente =>
+      cliente.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
+      cliente.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&
+      cliente.celular.toLowerCase().includes(this.filtro.celular.toLowerCase())
     )
   }
 

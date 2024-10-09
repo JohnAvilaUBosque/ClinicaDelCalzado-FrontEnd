@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   private usuarioService = inject(UsuarioService);
   private administradorService = inject(AdministradorService);
 
-  public constService = inject(ConstantsService);
+  public CONST = inject(ConstantsService);
 
   usuario: UsuarioModel = new UsuarioModel();
 
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
   @ViewChild('toastUsuarioInactivo') toastUsuarioInactivo!: ToastComponent;
 
   ngOnInit(): void {
-    this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + 'Login');
+    this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Login');
   }
 
   iniciarSesion() {
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
         return;
       }
 
-      if (admin.estado == this.constService.ESTADO_ADMIN.INACTIVO) {
+      if (admin.estado == this.CONST.ESTADO_ADMIN.INACTIVO) {
         this.toastUsuarioInactivo.visible = true;
         return;
       }

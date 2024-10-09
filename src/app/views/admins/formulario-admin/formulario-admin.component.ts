@@ -29,7 +29,7 @@ export class FormularioAdminComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  public constService = inject(ConstantsService);
+  public CONST = inject(ConstantsService);
 
   public titulo: string = '';
   public adminLocal: AdministradorModel = new AdministradorModel();
@@ -55,11 +55,11 @@ export class FormularioAdminComponent implements OnInit {
 
     this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
-        this.titleService.setTitle(this.constService.NOMBRE_EMPRESA + ' - ' + title + ' administrador');
+        this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + title + ' administrador');
 
         this.titulo = title;
         if (title == 'Agregar') {
-          this.admin.estado = this.constService.ESTADO_ADMIN.ACTIVO;
+          this.admin.estado = this.CONST.ESTADO_ADMIN.ACTIVO;
           this.btnRadioGroup.setValue({ radioEstado: this.admin.estado });
           this.btnRadioGroup.disable();
           this.habilitarModoCreacion();
@@ -88,7 +88,7 @@ export class FormularioAdminComponent implements OnInit {
               this.esInformacionPersonal = this.adminLocal.identificacion == this.admin.identificacion;
 
               this.btnRadioGroup.setValue({ radioEstado: this.admin.estado });
-              if (this.esModoCreacion || this.esModoLectura || (this.esModoEdicion && (this.esInformacionPersonal || this.adminLocal.rol == this.constService.ROL_ADMIN.SECUNDARIO))) {
+              if (this.esModoCreacion || this.esModoLectura || (this.esModoEdicion && (this.esInformacionPersonal || this.adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO))) {
                 this.btnRadioGroup.disable();
               }
             }
