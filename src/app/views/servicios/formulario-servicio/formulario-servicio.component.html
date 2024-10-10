@@ -1,1 +1,105 @@
-<p>formulario-servicio works!</p>
+<form cForm #servicioForm="ngForm" (ngSubmit)="editarServicio()">
+    <c-row>
+        <c-col class="mb-3">
+            <textarea #textareaElement cFormControl rows="1" [(ngModel)]="servicio.descripcion" name="nameService"
+                #nameService="ngModel" (input)="adjustTextareasHeight()" maxlength="100" required
+                [valid]="nameService.touched && nameService.invalid ? false : undefined" readonly plaintext>
+            </textarea>
+            <c-form-feedback *ngIf="!!(nameService.touched && nameService.invalid)" [valid]="false">
+                Este campo es requerido!
+            </c-form-feedback>
+        </c-col>
+    </c-row>
+    <c-row>
+        <c-col class="mb-3">
+            <c-input-group>
+                <textarea #textareaElement cFormControl rows="1" [(ngModel)]="servicio.operario.nombre" name="operator"
+                    #operator="ngModel" readonly>
+                </textarea>
+                <button cButton color="primary" size="sm" variant="outline"
+                    cTooltip="Buscar operario" [cModalToggle]="operarioFormModal.id">
+                    <svg cIcon name="cil-search"></svg>
+                </button>
+                <c-form-feedback *ngIf="!!(operator.touched && operator.invalid)" [valid]="false">
+                    Este campo es requerido y debe ser un valor monetario válido!
+                </c-form-feedback>
+            </c-input-group>
+        </c-col>
+    </c-row>
+    <c-row>
+        <c-col class="mb-3" style="margin-top: 31px;">
+            <label cLabel="col" sizing="sm">Estado:</label>
+            <c-button-group [formGroup]="btnRadioGroup" class="ms-4">
+                @if (btnRadioGroup.enabled || (btnRadioGroup.disabled && servicio.estado ==
+                CONST.ESTADO_SERVICIO.RECIBIDO)) {
+                <input class="btn-check" formControlName="radioEstado" id="radio1" type="radio"
+                    [value]="CONST.ESTADO_SERVICIO.RECIBIDO" />
+                <label (click)="cambiarEstado(CONST.ESTADO_SERVICIO.RECIBIDO)" cButton cFormCheckLabel color="warning"
+                    for="radio1" variant="outline" [ngClass]="{'text-white': servicio.estado ==
+                        CONST.ESTADO_SERVICIO.RECIBIDO}">
+                    {{ CONST.ESTADO_SERVICIO.RECIBIDO }}
+                </label>
+                }
+                @if (btnRadioGroup.enabled || (btnRadioGroup.disabled && servicio.estado ==
+                CONST.ESTADO_SERVICIO.TERMINADO)) {
+                <input class="btn-check" formControlName="radioEstado" id="radio2" type="radio"
+                    [value]="CONST.ESTADO_SERVICIO.TERMINADO" />
+                <label (click)="cambiarEstado(CONST.ESTADO_SERVICIO.TERMINADO)" cButton cFormCheckLabel color="info"
+                    for="radio2" variant="outline" [ngClass]="{'text-white': servicio.estado ==
+                        CONST.ESTADO_SERVICIO.TERMINADO}">
+                    {{ CONST.ESTADO_SERVICIO.TERMINADO }}
+                </label>
+                }
+                @if (btnRadioGroup.enabled || (btnRadioGroup.disabled && servicio.estado ==
+                CONST.ESTADO_SERVICIO.DESPACHADO)) {
+                <input class="btn-check" formControlName="radioEstado" id="radio3" type="radio"
+                    [value]="CONST.ESTADO_SERVICIO.DESPACHADO" />
+                <label (click)="cambiarEstado(CONST.ESTADO_SERVICIO.DESPACHADO)" cButton cFormCheckLabel color="success"
+                    for="radio3" variant="outline" [ngClass]="{'text-white': servicio.estado ==
+                        CONST.ESTADO_SERVICIO.DESPACHADO}">
+                    {{ CONST.ESTADO_SERVICIO.DESPACHADO }}
+                </label>
+                }
+            </c-button-group>
+        </c-col>
+    </c-row>
+    <c-row>
+        <c-col sm="6" class="mb-3">
+            <c-form-check sizing="lg" switch>
+                <input cFormCheckInput type="checkbox" [(ngModel)]="editarPrecio" name="checkSecurity" role="button" />
+                <label cFormCheckLabel>Editar precio</label>
+            </c-form-check>
+        </c-col>
+    </c-row>
+    <c-row>
+        <c-col class="mb-3">
+            <input cFormControl type="text" [ngModel]="servicio.precio | currency: 'COP' : 'symbol-narrow' : '1.0'"
+                (ngModelChange)="cambiarPrecioIndividual($event)" name="price" #price="ngModel" maxlength="11" required
+                [pattern]="CONST.REGULAR_EXP.CURRENCY" [valid]="price.touched && price.invalid ? false : undefined"
+                [readonly]="!editarPrecio" [plaintext]="!editarPrecio">
+            <c-form-feedback *ngIf="!!(price.touched && price.invalid)" [valid]="false">
+                Este campo es requerido y debe ser un valor monetario válido!
+            </c-form-feedback>
+        </c-col>
+    </c-row>
+    <input *ngIf="!ocultarBoton" cButton color="primary" type="submit" [value]="'Editar'" [disabled]="servicioForm.invalid">
+</form>
+
+<c-modal #operarioFormModal backdrop="static" id="operarioFormModal" size="lg">
+    <c-modal-header>
+        <h5 cModalTitle>Buscar operario</h5>
+        <button [cModalToggle]="operarioFormModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        @if (operarioFormModal.visible) {
+        <listado-operarios
+            (seleccionOperarioEvent)="cambiarOperario($event); operarioFormModal.visible = false; adjustTextareasHeight()">
+        </listado-operarios>
+        }
+    </c-modal-body>
+    <c-modal-footer>
+        <button [cModalToggle]="operarioFormModal.id" cButton color="secondary">
+            Cerrar
+        </button>
+    </c-modal-footer>
+</c-modal>

@@ -25,7 +25,6 @@ export class FormularioAdminComponent implements OnInit {
   private administradorService = inject(AdministradorService);
   private usuarioService = inject(UsuarioService);
   private titleService = inject(Title);
-  private formBuilder = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -46,6 +45,7 @@ export class FormularioAdminComponent implements OnInit {
 
   public cambioDeClave: CambioDeClaveModel = new CambioDeClaveModel();
 
+  private formBuilder = inject(FormBuilder);
   public btnRadioGroup = this.formBuilder.group({
     radioEstado: new FormControl('')
   });
@@ -74,7 +74,6 @@ export class FormularioAdminComponent implements OnInit {
         }
       }
     );
-
   }
 
   private obtenerAdmin() {

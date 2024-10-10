@@ -2,9 +2,9 @@
     <c-card-header>
         <c-row>
             <c-col xs="auto" class="col-title">
-                <h5 class="me-2"> {{ esSoloLectura ? 'Ver' : 'Crear'}} orden de trabajo</h5>
+                <h5 class="me-2"> {{ esModoLectura ? 'Ver' : 'Crear'}} orden de trabajo</h5>
             </c-col>
-            @if (esSoloLectura) {
+            @if (esModoLectura) {
             <c-col xs="auto">
                 <div class="actions">
                     <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
@@ -44,7 +44,7 @@
     </c-card-header>
     <c-card-body>
         <form cForm #orderForm="ngForm" (ngSubmit)="crearOrden()">
-            @if (esSoloLectura) {
+            @if (esModoLectura) {
             <c-row> <!-- Datos automaticos -->
                 <c-col sm="6" lg="4" class="mb-3">
                     <label cLabel="col" sizing="sm">Número de orden:</label>
@@ -67,7 +67,7 @@
                     <input cFormControl type="text" [(ngModel)]="orden.cliente.identificacion" name="identification"
                         #identification="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER" required
                         [valid]="identification.touched && identification.invalid ? false : undefined"
-                        [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                        [readonly]="esModoLectura" [plaintext]="esModoLectura">
                     <c-form-feedback *ngIf="!!(identification.touched && identification.invalid)" [valid]="false">
                         Este campo es requerido y debe ser numérico!
                     </c-form-feedback>
@@ -77,7 +77,7 @@
                     <input cFormControl type="text" [(ngModel)]="orden.cliente.nombre" name="nameClient"
                         #nameClient="ngModel" maxlength="100" required
                         [valid]="nameClient.touched && nameClient.invalid ? false : undefined"
-                        [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                        [readonly]="esModoLectura" [plaintext]="esModoLectura">
                     <c-form-feedback *ngIf="!!(nameClient.touched && nameClient.invalid)" [valid]="false">
                         Este campo es requerido!
                     </c-form-feedback>
@@ -89,12 +89,12 @@
                             <input cFormControl type="text" [(ngModel)]="orden.cliente.celular" name="cellphone"
                                 #cellphone="ngModel" maxlength="10" [pattern]="CONST.REGULAR_EXP.NUMBER" required
                                 [valid]="cellphone.touched && cellphone.invalid ? false : undefined"
-                                [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                                [readonly]="esModoLectura" [plaintext]="esModoLectura">
                             <c-form-feedback *ngIf="!!(cellphone.touched && cellphone.invalid)" [valid]="false">
                                 Este campo es requerido y debe ser numérico!
                             </c-form-feedback>
                         </c-col>
-                        @if (!esSoloLectura) {
+                        @if (!esModoLectura) {
                         <c-col xs="auto" class="mt-3">
                             <button cButton color="primary" variant="outline" size="sm" shape="rounded-pill"
                                 cTooltip="Buscar cliente" [cModalToggle]="clientesModal.id">
@@ -107,7 +107,7 @@
             </c-row>
             <c-row>
                 <c-col xxl="8" class="mb-3"> <!-- Datos de los servicios -->
-                    <listado-servicios [servicios]="orden.servicios" [esSoloLectura]="esSoloLectura"
+                    <listado-servicios [servicios]="orden.servicios" [esModoLectura]="esModoLectura"
                         (cambiaronPreciosEvent)="calcularTotal()"
                         (esFormularioValidoEvent)="sonValidosServicios = $event"
                         (agregarComentarioEvent)="agregarComentarioAOrden($event)"></listado-servicios>
@@ -119,7 +119,7 @@
                                 <c-col xs="auto">
                                     <h6>Datos de pago</h6>
                                 </c-col>
-                                @if (esSoloLectura) {
+                                @if (esModoLectura) {
                                 <c-col class="align-self-center">
                                     <c-badge
                                         color="{{orden.estadoPago == CONST.ESTADO_PAGO.PENDIENTE ? 'warning' : 'success'}}"
@@ -145,7 +145,7 @@
                                         (ngModelChange)="cambiarAbono($event)" name="downPayment" #downPayment="ngModel"
                                         maxlength="11" [pattern]="CONST.REGULAR_EXP.CURRENCY" required
                                         [valid]="downPayment.touched && downPayment.invalid ? false : undefined"
-                                        [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                                        [readonly]="esModoLectura" [plaintext]="esModoLectura">
                                     <c-form-feedback *ngIf="!!(downPayment.touched && downPayment.invalid)"
                                         [valid]="false">
                                         Este campo es requerido y debe ser un valor monetario válido!
@@ -167,7 +167,7 @@
                                         (ngModelChange)="validarFechaDeEntrega($event)" name="deliveryDate"
                                         #deliveryDate="ngModel" required
                                         [valid]="deliveryDate.touched && (deliveryDate.invalid || !esFechaEntregaValida) ? false : undefined"
-                                        [readonly]="esSoloLectura" [plaintext]="esSoloLectura">
+                                        [readonly]="esModoLectura" [plaintext]="esModoLectura">
                                     <c-form-feedback
                                         *ngIf="!!(deliveryDate.touched && (deliveryDate.invalid || !esFechaEntregaValida))"
                                         [valid]="false">
@@ -180,7 +180,7 @@
                 </c-col>
             </c-row>
             <c-row> <!-- Comentario -->
-                @if (esSoloLectura) {
+                @if (esModoLectura) {
                 <c-col xs="12" class="mb-3">
                     @for (comment of orden.comentarios; track $index) {
                     <hr>
@@ -209,7 +209,7 @@
                 </c-col>
                 }
             </c-row>
-            @if (!esSoloLectura) {
+            @if (!esModoLectura) {
             <input cButton color="primary" type="submit" value="Crear orden"
                 [disabled]="orderForm.invalid || !sonValidosServicios">
             }

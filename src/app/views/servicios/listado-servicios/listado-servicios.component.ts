@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { OperarioModel } from '../../operarios/operario.model';
 import { ListadoOperariosComponent } from '../../operarios/listado-operarios/listado-operarios.component';
+import { FormularioServicioComponent } from '../formulario-servicio/formulario-servicio.component';
 
 @Component({
   selector: 'listado-servicios',
   standalone: true,
-  imports: [CommonModule, GridModule, FormsModule, FormModule, ButtonModule, TableModule, TooltipModule, ModalModule, IconDirective, BadgeComponent, ListadoOperariosComponent],
+  imports: [CommonModule, GridModule, FormsModule, FormModule, ButtonModule, TableModule, TooltipModule, ModalModule, IconDirective, BadgeComponent, ListadoOperariosComponent, FormularioServicioComponent],
   templateUrl: './listado-servicios.component.html',
   styleUrl: './listado-servicios.component.scss'
 })
@@ -19,20 +20,21 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
 
   public CONST = inject(ConstantsService);
 
-  @Input() esSoloLectura: boolean = false;
   @Input() servicios: ServicioModel[] = [];
+  @Input() esModoLectura: boolean = false;
+
+  public indexServicioSeleccionado: number = 0;
+  public esValidoFormServicio: boolean = false;
 
   @Output() cambiaronPreciosEvent = new EventEmitter<string>();
   @Output() esFormularioValidoEvent = new EventEmitter<boolean>();
   @Output() agregarComentarioEvent = new EventEmitter<string>();
 
-  public indexServicioSeleccionado: number = 0;
-
   @ViewChild('serviciosForm') form?: NgForm;
   @ViewChildren('textareaElement') textareas!: QueryList<ElementRef>;
 
   ngOnInit(): void {
-    if (!this.esSoloLectura)
+    if (!this.esModoLectura)
       this.agregarServicioAOrden();
   }
 
@@ -44,7 +46,7 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['servicios'].currentValue?.length && this.esSoloLectura)
+    if (changes['servicios'].currentValue?.length && this.esModoLectura)
       this.adjustTextareasHeight();
   }
 

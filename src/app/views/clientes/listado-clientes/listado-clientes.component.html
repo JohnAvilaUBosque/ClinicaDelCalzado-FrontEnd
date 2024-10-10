@@ -1,41 +1,43 @@
-<p>Comience ingresando un filtro para visualizar los clientes.</p>
-<table cTable hover striped>
-    <thead>
-        <tr>
-            <th scope="col" class="col"></th>
-            <th scope="col" class="col">Identificación</th>
-            <th scope="col" class="col">Nombre</th>
-            <th scope="col" class="col">Celular</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <c-badge color="info" size="sm"
-                    cTooltip="Al ingresar un filtro se valida que los clientes contengan todos los filtros definidos.">
-                    <svg cIcon color="warning" name="cil-info"></svg>
-                </c-badge>
-            </td>
-            <td>
-                <input cFormControl type="text" [(ngModel)]="filtro.identificacion" (ngModelChange)="filtrar()"
-                    name="identification" #identification="ngModel" maxlength="20" sizing="sm">
-            </td>
-            <td>
-                <input cFormControl type="text" [(ngModel)]="filtro.nombre" (ngModelChange)="filtrar()"
-                    name="nameClient" #nameClient="ngModel" maxlength="20" sizing="sm">
-            </td>
-            <td>
-                <input cFormControl type="text" [(ngModel)]="filtro.celular" (ngModelChange)="filtrar()"
-                    name="cellphone" #cellphone="ngModel" maxlength="20" sizing="sm">
-            </td>
-        </tr>
-        @for (cliente of clientesFiltrados; track $index) {
-        <tr (click)="seleccionarCliente(cliente)">
-            <td></td>
-            <td>{{cliente.identificacion}}</td>
-            <td>{{cliente.nombre}}</td>
-            <td>{{cliente.celular}}</td>
-        </tr>
-        }
-    </tbody>
-</table>
+<p>Comience ingresando un filtro para mostrar los clientes.</p>
+<div class="overflow-auto">
+    <table cTable hover striped>
+        <thead>
+            <tr>
+                <th scope="col" class="col"></th>
+                <th scope="col" class="col">Identificación</th>
+                <th scope="col" class="col">Nombre</th>
+                <th scope="col" class="col">Celular</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <c-badge color="info" size="sm"
+                        cTooltip="Se muestran los clientes que contengan cada filtro definido.">
+                        <svg cIcon color="warning" name="cil-info"></svg>
+                    </c-badge>
+                </td>
+                <td>
+                    <input cFormControl type="text" [(ngModel)]="filtro.identificacion" (ngModelChange)="filtrar()"
+                        name="identification" #identification="ngModel" maxlength="20" sizing="sm">
+                </td>
+                <td>
+                    <input cFormControl type="text" [(ngModel)]="filtro.nombre" (ngModelChange)="filtrar()"
+                        name="nameClient" #nameClient="ngModel" maxlength="20" sizing="sm">
+                </td>
+                <td>
+                    <input cFormControl type="text" [(ngModel)]="filtro.celular" (ngModelChange)="filtrar()"
+                        name="cellphone" #cellphone="ngModel" maxlength="20" sizing="sm">
+                </td>
+            </tr>
+            @for (cliente of clientesFiltrados; track $index) {
+            <tr (click)="seleccionarCliente(cliente)">
+                <td></td>
+                <td>{{cliente.identificacion}}</td>
+                <td>{{cliente.nombre}}</td>
+                <td>{{cliente.celular}}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

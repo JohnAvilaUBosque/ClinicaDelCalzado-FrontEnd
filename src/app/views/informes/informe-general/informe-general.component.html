@@ -30,14 +30,14 @@
                         Debe ser una fecha igual o posterior a la fecha inicial!
                     </c-form-feedback>
                 </c-col>
-                <c-col md="2" style="margin-top: 31px">
+                <c-col md="2" class="mb-3" style="margin-top: 31px;">
                     <input cButton color="primary" type="submit" value="Filtrar" class="w-100"
                         [disabled]="informeDetalladoForm.invalid">
                 </c-col>
             </c-row>
         </form>
         @if (diasFiltrados.length != 0) {
-        <div class="overflow-y-auto">
+        <div class="overflow-auto">
             <table cTable hover striped>
                 <thead>
                     <tr>

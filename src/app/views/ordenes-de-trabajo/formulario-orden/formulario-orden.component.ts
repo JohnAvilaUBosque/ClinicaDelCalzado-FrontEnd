@@ -33,7 +33,7 @@ export class FormularioOrdenComponent implements OnInit {
   public CONST = inject(ConstantsService);
 
   public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
-  public esSoloLectura: boolean = false;
+  public esModoLectura: boolean = false;
   public sonValidosServicios: boolean = false;
   public esFechaEntregaValida: boolean = false;
 
@@ -54,7 +54,7 @@ export class FormularioOrdenComponent implements OnInit {
           this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
         }
         else if (title == 'Ver') {
-          this.esSoloLectura = true;
+          this.esModoLectura = true;
 
           this.route.params.pipe(map((p) => p['id-orden'])).subscribe(
             idOrden => {
