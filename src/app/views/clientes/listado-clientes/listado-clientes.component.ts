@@ -32,6 +32,11 @@ export class ListadoClientesComponent implements OnInit {
   }
 
   filtrar() {
+    if (!this.filtro.identificacion && !this.filtro.nombre && !this.filtro.celular) {
+      this.clientesFiltrados = [];
+      return;
+    }
+
     this.clientesFiltrados = this.clientes.filter(cliente =>
       cliente.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
       cliente.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&

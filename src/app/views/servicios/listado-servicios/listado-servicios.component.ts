@@ -22,16 +22,23 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
 
   @Input() servicios: ServicioModel[] = [];
   @Input() esModoLectura: boolean = false;
+  @Input() esOrdenAnulada: boolean = false;
 
   public indexServicioSeleccionado: number = 0;
+  public idServicioSeleccionado: number = 0;
   public esValidoFormServicio: boolean = false;
 
   @Output() cambiaronPreciosEvent = new EventEmitter<string>();
   @Output() esFormularioValidoEvent = new EventEmitter<boolean>();
-  @Output() agregarComentarioEvent = new EventEmitter<string>();
+  @Output() servicioEditadoEvent = new EventEmitter<ServicioModel>();
 
-  @ViewChild('serviciosForm') form?: NgForm;
+  @ViewChild('serviciosForm') form!: NgForm;
   @ViewChildren('textareaElement') textareas!: QueryList<ElementRef>;
+
+  @ViewChild('operarioModal') operarioModal!: ModalComponent;
+
+  @ViewChild('editarServicioModal') editarServicioModal!: ModalComponent;
+  @ViewChild('formularioServicio') formularioServicio!: FormularioServicioComponent;
 
   ngOnInit(): void {
     if (!this.esModoLectura)
@@ -62,10 +69,17 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
     this.cambiaronPreciosEvent.emit();
   }
 
-  cambiarOperario(operario: OperarioModel, index: number) {
-    this.servicios[index].operario.identificacion = operario.identificacion;
-    this.servicios[index].operario.nombre = operario.nombre;
-    this.servicios[index].operario.celular = operario.celular;
+  cambiarOperario(operario: OperarioModel) {
+    if (this.esModoLectura)
+      this.formularioServicio.servicio.operario = operario;
+    else
+      this.servicios[this.indexServicioSeleccionado].operario = operario;
+
+    this.operarioModal.visible = false;
+    if (this.esModoLectura)
+      this.editarServicioModal.visible = true;
+
+    this.adjustTextareasHeight()
   }
 
   borrarServicio(borrarServicioModel: ModalComponent, index: number) {
@@ -75,10 +89,14 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
     borrarServicioModel.visible = false;
   }
 
-  editarServicio(editarServicioModel: ModalComponent, index: number) {
-    this.agregarComentarioEvent.emit('El servicio i cambió el atributo p del valor x al valor y');
+  servicioEditado(servicio: ServicioModel) {
+    this.servicioEditadoEvent.emit(servicio);
+    this.idServicioSeleccionado = 0;
+  }
 
-    editarServicioModel.visible = false;
+  seleccionarOperario() {
+    this.editarServicioModal.visible = false;
+    this.operarioModal.visible = true;
   }
 
   adjustTextareasHeight(): void {

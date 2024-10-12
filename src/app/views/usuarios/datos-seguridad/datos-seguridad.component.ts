@@ -21,7 +21,7 @@ export class DatosSeguridadComponent implements OnInit, AfterViewInit {
 
   public preguntas: Array<PreguntaModel> = [];
 
-  @ViewChild('datosSeguridadForm') form?: NgForm;
+  @ViewChild('datosSeguridadForm') form!: NgForm;
 
   @Output() esFormularioValidoEvent = new EventEmitter<boolean>();
 

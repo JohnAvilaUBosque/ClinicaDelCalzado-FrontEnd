@@ -4,34 +4,40 @@
             <table cTable hover bordered style="margin-bottom: 0px;">
                 <thead>
                     <tr>
-                        <th scope="col" class="col-auto"></th>
-                        <th scope="col" class="col-6" style="min-width: 150px;">Listado de servicios</th>
-                        <th scope="col" class="col-auto">Precio individual</th>
-                        <th scope="col" class="col-3" style="min-width: 150px;">Operario</th>
+                        @if (!esOrdenAnulada) {
+                        <th scope="col" class="col-auto" style="min-width: 50px"></th>
+                        }
+                        <th scope="col" class="col-6" style="min-width: 150px;"><label cLabel="col" sizing="sm">Listado
+                                de servicios:</label></th>
+                        <th scope="col" class="col-auto"><label cLabel="col" sizing="sm">Precio individual:</label></th>
+                        <th scope="col" class="col-3" style="min-width: 150px;"><label cLabel="col"
+                                sizing="sm">Operario:</label></th>
                         @if (esModoLectura) {
-                        <th scope="col" class="col-auto">Estado</th>
+                        <th scope="col" class="col-auto"><label cLabel="col" sizing="sm">Estado:</label></th>
                         }
                     </tr>
                 </thead>
                 <tbody>
                     @for (servicio of servicios; track $index) {
                     <tr>
+                        @if (!esOrdenAnulada) {
                         <td>
-                            @if (!esModoLectura) {
+                            @if (esModoLectura) {
+                            <button cButton color="primary" variant="outline" size="sm" shape="rounded-pill"
+                                cTooltip="Editar servicio" [cModalToggle]="editarServicioModal.id"
+                                (click)="idServicioSeleccionado = servicio.id">
+                                <svg cIcon name="cil-pencil"></svg>
+                            </button>
+                            }
+                            @else if ($index != 0) {
                             <button cButton color="danger" variant="outline" size="sm" shape="rounded-pill"
                                 cTooltip="Borrar servicio" [cModalToggle]="borrarServicioModal.id"
                                 (click)="indexServicioSeleccionado = $index">
                                 <svg cIcon name="cil-x"></svg>
                             </button>
                             }
-                            @else {
-                            <button cButton color="primary" variant="outline" size="sm" shape="rounded-pill"
-                                cTooltip="Editar servicio" [cModalToggle]="editarServicioModal.id"
-                                (click)="indexServicioSeleccionado = $index">
-                                <svg cIcon name="cil-pencil"></svg>
-                            </button>
-                            }
                         </td>
+                        }
                         <td>
                             <textarea #textareaElement cFormControl rows="1" [(ngModel)]="servicio.descripcion"
                                 name="nameService{{$index}}" #nameService="ngModel" (input)="adjustTextareasHeight()"
@@ -56,14 +62,15 @@
                         </td>
                         <td>
                             <c-input-group>
-                                <textarea #textareaElement cFormControl rows="1" [(ngModel)]="servicio.operario.nombre"
+                                <textarea #textareaElement cFormControl rows="1" [ngModel]="servicio.operario?.nombre"
                                     name="operator{{$index}}" #operator="ngModel" readonly [plaintext]="esModoLectura">
                                 </textarea>
-                                <button *ngIf="!esModoLectura" cButton color="primary" size="sm" variant="outline"
-                                    cTooltip="Buscar operario" [cModalToggle]="operarioModal.id"
-                                    (click)="indexServicioSeleccionado = $index">
+                                @if (!esModoLectura) {
+                                <button cButton color="primary" size="sm" variant="outline" cTooltip="Buscar operario"
+                                    [cModalToggle]="operarioModal.id" (click)="indexServicioSeleccionado = $index">
                                     <svg cIcon name="cil-search"></svg>
                                 </button>
+                                }
                                 <c-form-feedback *ngIf="!!(operator.touched && operator.invalid)" [valid]="false">
                                     Este campo es requerido y debe ser un valor monetario válido!
                                 </c-form-feedback>
@@ -98,20 +105,21 @@
 
 <!-- MODALS -->
 
-<c-modal #operarioModal backdrop="static" id="operarioModal" size="lg">
+<c-modal #operarioModal backdrop="static" id="operarioModal" size="lg" scrollable>
     <c-modal-header>
         <h5 cModalTitle>Buscar operario</h5>
-        <button [cModalToggle]="operarioModal.id" cButtonClose></button>
+        <button [cModalToggle]="operarioModal.id" cButtonClose
+            (click)="esModoLectura ? editarServicioModal.visible = true : null"></button>
     </c-modal-header>
     <c-modal-body>
         @if (operarioModal.visible) {
-        <listado-operarios
-            (seleccionOperarioEvent)="cambiarOperario($event, indexServicioSeleccionado); operarioModal.visible = false; adjustTextareasHeight()">
+        <listado-operarios (seleccionOperarioEvent)="cambiarOperario($event);">
         </listado-operarios>
         }
     </c-modal-body>
     <c-modal-footer>
-        <button [cModalToggle]="operarioModal.id" cButton color="secondary">
+        <button [cModalToggle]="operarioModal.id" cButton color="secondary"
+            (click)="esModoLectura ? editarServicioModal.visible = true : null">
             Cerrar
         </button>
     </c-modal-footer>
@@ -120,21 +128,21 @@
 <c-modal #editarServicioModal backdrop="static" id="editarServicioModal">
     <c-modal-header>
         <h5 cModalTitle>Editar servicio</h5>
-        <button [cModalToggle]="editarServicioModal.id" cButtonClose></button>
+        <button [cModalToggle]="editarServicioModal.id" cButtonClose (click)="idServicioSeleccionado = 0"></button>
     </c-modal-header>
     <c-modal-body>
-        @if (editarServicioModal.visible) {
-        <formulario-servicio [servicio]="servicios[indexServicioSeleccionado]" [ocultarBoton]="true"
-            (esFormularioValidoEvent)="esValidoFormServicio = $event">
-
+        <formulario-servicio #formularioServicio [idServicio]="idServicioSeleccionado" [ocultarBoton]="true"
+            (esFormularioValidoEvent)="esValidoFormServicio = $event" (servicioEditadoEvent)="servicioEditado($event)"
+            (seleccionarOperarioEvent)="seleccionarOperario()">
         </formulario-servicio>
-        }
     </c-modal-body>
     <c-modal-footer>
-        <button [cModalToggle]="editarServicioModal.id" cButton color="secondary">
+        <button [cModalToggle]="editarServicioModal.id" cButton color="secondary" (click)="idServicioSeleccionado = 0">
             Cerrar
         </button>
-        <button cButton color="primary" (click)="editarServicio(editarServicioModal, indexServicioSeleccionado)">
+        <button cButton color="primary"
+            (click)="formularioServicio.editarServicio(); editarServicioModal.visible = false"
+            [disabled]="!esValidoFormServicio">
             Editar
             <svg cIcon name="cil-pencil"></svg>
         </button>

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { OrdenDeTrabajoModel } from './orden-de-trabajo.model';
 import { map, Observable } from 'rxjs';
 import { formatDate } from '@angular/common';
+import { ServicioModel } from '../servicios/servicio.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +40,29 @@ export class OrdenDeTrabajoService {
     // return this.http.post<any>(this.url, orden);
     return this.obtenerOrdenes().pipe(map(
       ordenes => {
+        var servicios: ServicioModel[] = [];
+        ordenes.forEach(orden => servicios.push(...orden.servicios));
+        var ultimoId = servicios.sort(s => s.id).map((s => s.id)).pop();
+        ordenNueva.servicios.forEach(s => {
+          if (ultimoId) {
+            ultimoId++;
+            s.id = ultimoId;
+          }
+        })
+
         ordenNueva.numeroOrden = this.obtenerSiguienteNumero(ordenes, ordenNueva.fechaCreacion);
         ordenes.push(ordenNueva);
+        localStorage.setItem('ORDENES', JSON.stringify(ordenes));
+      }
+    ));
+  }
+
+  editarOrden(ordenEditada: OrdenDeTrabajoModel): Observable<any> {
+    // return this.http.post<any>(this.url, orden);
+    return this.obtenerOrdenes().pipe(map(
+      ordenes => {
+        var index = ordenes.findIndex(orden => orden.numeroOrden == ordenEditada.numeroOrden);
+        ordenes[index] = ordenEditada;
         localStorage.setItem('ORDENES', JSON.stringify(ordenes));
       }
     ));
@@ -57,14 +79,4 @@ export class OrdenDeTrabajoService {
     return 'ORD-' + formatDate(fechaCreacion, 'yyyyMMdd', 'en-US') + '-' + siguienteNumero || '00001';
   }
 
-  editarOrden(ordenEditada: OrdenDeTrabajoModel): Observable<any> {
-    // return this.http.post<any>(this.url, orden);
-    return this.obtenerOrdenes().pipe(map(
-      ordenes => {
-        var index = ordenes.findIndex(orden => orden.numeroOrden == ordenEditada.numeroOrden);
-        ordenes[index] = ordenEditada;
-        localStorage.setItem('ORDENES', JSON.stringify(ordenes));
-      }
-    ));
-  }
 }

@@ -17,7 +17,7 @@
             "fechaEntrega": "2024-07-25",
             "comentarios": [
                 {
-                    "descripcion": "Se requiere lo más pronto",
+                    "descripcion": "Se anula por petición del cliente",
                     "nombreAdmin": "Liliana Rodriguez",
                     "fecha": "2024-06-18 09:22"
                 }
@@ -25,10 +25,12 @@
             "servicios": [
                 {
                     "descripcion": "Arreglar botas",
+                    "id": 1,
                     "precio": 20000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
-                        "nombre": "Alex Medina"
+                        "nombre": ""
                     }
                 }
             ],
@@ -44,8 +46,8 @@
                 "nombre": "Pepito Perez",
                 "celular": "3194218651"
             },
-            "precioTotal": 15000,
-            "abono": 15000,
+            "precioTotal": 30000,
+            "abono": 30000,
             "saldo": 0,
             "estadoPago": "PAGADO",
             "fechaEntrega": "2024-07-10",
@@ -56,7 +58,7 @@
                     "fecha": "2024-06-18 09:22"
                 },
                 {
-                    "descripcion": "El cliente realizó un abono de $15,000, quedando un saldo de $0",
+                    "descripcion": "El cliente realizó un abono de $30,000, quedando un saldo de $0",
                     "nombreAdmin": "Liliana Rodriguez",
                     "fecha": "2024-06-19 14:00"
                 },
@@ -69,16 +71,20 @@
             "servicios": [
                 {
                     "nombre": "Pegar suela de tenis",
+                    "id": 2,
                     "precio": 18000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Alex Medina"
                     }
                 },
                 {
                     "nombre": "Cocer chaqueta de cuero",
+                    "id": 3,
                     "precio": 12000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -96,19 +102,19 @@
                 "nombre": "Helena Miranda",
                 "celular": "3503779573"
             },
-            "precioTotal": 14000,
+            "precioTotal": 24000,
             "abono": 10000,
-            "saldo": 4000,
+            "saldo": 14000,
             "estadoPago": "PENDIENTE",
             "fechaEntrega": "2024-07-25",
             "comentarios": [
                 {
-                    "descripcion": "Se requiere lo más pronto",
+                    "descripcion": "La fecha de entrega es posible que cambie",
                     "nombreAdmin": "Yesid Rivera",
                     "fecha": "2024-06-18 09:22"
                 },
                 {
-                    "descripcion": "El cliente realizó un abono de $10,000, quedando un saldo de $4,000",
+                    "descripcion": "El cliente realizó un abono de $10,000, quedando un saldo de $14,000",
                     "nombreAdmin": "Liliana Rodriguez",
                     "fecha": "2024-06-19 14:00"
                 }
@@ -116,26 +122,32 @@
             "servicios": [
                 {
                     "descripcion": "Cambiar cordones zapatos",
-                    "precio": 4000,
-                    "estado": "RECIBIDO",
+                    "id": 4,
+                    "precio": 0,
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": false,
                     "operario": {
-                        "nombre": "Alex Medina"
+                        "nombre": ""
                     }
                 },
                 {
                     "descripcion": "Limpieza de chaqueta",
+                    "id": 5,
                     "precio": 10000,
                     "estado": "TERMINADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
                 },
                 {
                     "descripcion": "Cambiar cremallera bolso del mismo color de los accesorios",
-                    "precio": 0,
+                    "id": 6,
+                    "precio": 14000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
-                        "nombre": ""
+                        "nombre": "Alex Medina"
                     }
                 }
             ],
@@ -166,16 +178,20 @@
             "servicios": [
                 {
                     "descripcion": "Reparar suela de botas",
+                    "id": 7,
                     "precio": 20000,
                     "estado": "TERMINADO",
+                    "precioEstablecido": true,
                     "operario": {
-                        "nombre": "Carlos Pérez"
+                        "nombre": ""
                     }
                 },
                 {
                     "descripcion": "Cambiar cordones",
+                    "id": 8,
                     "precio": 10000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -213,8 +229,10 @@
             "servicios": [
                 {
                     "descripcion": "Tintura de zapatos de cuero",
+                    "id": 9,
                     "precio": 18000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Laura Martínez"
                     }
@@ -252,8 +270,10 @@
             "servicios": [
                 {
                     "descripcion": "Reparación de cremallera de bolso",
+                    "id": 10,
                     "precio": 25000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Alex Medina"
                     }
@@ -286,8 +306,10 @@
             "servicios": [
                 {
                     "descripcion": "Reparación de chaqueta de cuero",
+                    "id": 11,
                     "precio": 35000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
@@ -320,8 +342,10 @@
             "servicios": [
                 {
                     "descripcion": "Cambio de cremallera en botas",
+                    "id": 12,
                     "precio": 20000,
                     "estado": "TERMINADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Laura Martínez"
                     }
@@ -359,8 +383,10 @@
             "servicios": [
                 {
                     "descripcion": "Pegar suela de zapatos",
+                    "id": 13,
                     "precio": 15000,
                     "estado": "ANULADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -393,8 +419,10 @@
             "servicios": [
                 {
                     "descripcion": "Limpieza y tintura de chaqueta de cuero",
+                    "id": 14,
                     "precio": 45000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Alex Medina"
                     }
@@ -427,8 +455,10 @@
             "servicios": [
                 {
                     "descripcion": "Cambio de suela en botas",
+                    "id": 15,
                     "precio": 30000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
@@ -461,16 +491,20 @@
             "servicios": [
                 {
                     "descripcion": "Cambio de suela en zapatos",
+                    "id": 16,
                     "precio": 25000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
                     "descripcion": "Limpieza de chaqueta",
+                    "id": 17,
                     "precio": 15000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -503,16 +537,20 @@
             "servicios": [
                 {
                     "descripcion": "Tintura de chaqueta de cuero",
+                    "id": 18,
                     "precio": 35000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Alex Medina"
                     }
                 },
                 {
                     "descripcion": "Reparación de bolsillos",
+                    "id": 19,
                     "precio": 20000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": ""
                     }
@@ -545,24 +583,30 @@
             "servicios": [
                 {
                     "descripcion": "Arreglo de cierre en chaqueta de cuero",
+                    "id": 20,
                     "precio": 30000,
                     "estado": "TERMINADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
                     "descripcion": "Cambio de botones",
+                    "id": 21,
                     "precio": 0,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": false,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
                 },
                 {
                     "descripcion": "Reparación de costuras",
+                    "id": 22,
                     "precio": 30000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Alex Medina"
                     }
@@ -595,16 +639,20 @@
             "servicios": [
                 {
                     "descripcion": "Reparación de costuras en bolso",
+                    "id": 23,
                     "precio": 12000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
                 },
                 {
                     "descripcion": "Cambio de cremallera en chaqueta",
+                    "id": 24,
                     "precio": 16000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Alex Medina"
                     }
@@ -637,24 +685,30 @@
             "servicios": [
                 {
                     "descripcion": "Cambio de tacones en botas",
+                    "id": 25,
                     "precio": 25000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
                     "descripcion": "Pegar suela en zapatos",
+                    "id": 26,
                     "precio": 20000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
                 },
                 {
                     "descripcion": "Reparación de hebilla en bolso",
+                    "id": 27,
                     "precio": 0,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": false,
                     "operario": {
                         "nombre": ""
                     }
@@ -687,16 +741,20 @@
             "servicios": [
                 {
                     "descripcion": "Cambio de cremallera en chaqueta",
+                    "id": 28,
                     "precio": 15000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Alex Medina"
                     }
                 },
                 {
                     "descripcion": "Reparación de suela en botas",
+                    "id": 29,
                     "precio": 20000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -729,16 +787,20 @@
             "servicios": [
                 {
                     "descripcion": "Reparación de costuras en chaqueta de cuero",
+                    "id": 30,
                     "precio": 30000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
                     "descripcion": "Pegar suela de zapatos",
+                    "id": 31,
                     "precio": 18000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": ""
                     }
@@ -771,24 +833,30 @@
             "servicios": [
                 {
                     "descripcion": "Tintura de bolso de cuero",
+                    "id": 32,
                     "precio": 25000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Alex Medina"
                     }
                 },
                 {
                     "descripcion": "Cambio de cierres",
+                    "id": 33,
                     "precio": 15000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
                 },
                 {
                     "descripcion": "Reparación de asas",
+                    "id": 34,
                     "precio": 20000,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": ""
                     }
@@ -821,16 +889,20 @@
             "servicios": [
                 {
                     "descripcion": "Cambio de suela en zapatos",
+                    "id": 35,
                     "precio": 20000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
                     "descripcion": "Tintura de chaqueta de cuero",
+                    "id": 36,
                     "precio": 30000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -863,16 +935,20 @@
             "servicios": [
                 {
                     "descripcion": "Limpieza de bolso de cuero",
+                    "id": 37,
                     "precio": 15000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Alex Medina"
                     }
                 },
                 {
                     "descripcion": "Reparación de asas de bolso",
+                    "id": 38,
                     "precio": 23000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -905,16 +981,20 @@
             "servicios": [
                 {
                     "descripcion": "Cambio de suela en tenis",
+                    "id": 39,
                     "precio": 22000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
                     "descripcion": "Reparación de costuras en chaqueta",
+                    "id": 40,
                     "precio": 20000,
                     "estado": "DESPACHADO",
+                    "precioEstablecido": true,
                     "operario": {
                         "nombre": "Luis Vivas"
                     }

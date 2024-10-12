@@ -18,7 +18,7 @@
                     </button>
                     <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Abonar"
                         [cModalToggle]="abonarModal.id" (click)="calcularSaldoNuevo()"
-                        *ngIf="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA">
+                        *ngIf="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE">
                         <svg cIcon name="cil-dollar"></svg>
                     </button>
                     <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
@@ -27,7 +27,7 @@
                     </button>
                     <button cButton color="danger" variant="ghost" size="sm" shape="rounded-pill"
                         cTooltip="Anular orden" [cModalToggle]="anularModal.id"
-                        *ngIf="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA">
+                        *ngIf="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE">
                         <svg cIcon name="cil-x"></svg>
                     </button>
                 </div>
@@ -107,10 +107,10 @@
             </c-row>
             <c-row>
                 <c-col xxl="8" class="mb-3"> <!-- Datos de los servicios -->
-                    <listado-servicios [servicios]="orden.servicios" [esModoLectura]="esModoLectura"
+                    <listado-servicios [servicios]="orden.servicios" [esModoLectura]="esModoLectura" [esOrdenAnulada]="orden.estadoOrden == CONST.ESTADO_ORDEN.ANULADA"
                         (cambiaronPreciosEvent)="calcularTotal()"
                         (esFormularioValidoEvent)="sonValidosServicios = $event"
-                        (agregarComentarioEvent)="agregarComentarioAOrden($event)"></listado-servicios>
+                        (servicioEditadoEvent)="servicioEditado($event);"></listado-servicios>
                 </c-col>
                 <c-col xxl="4" class="mb-3"> <!-- Datos de pago -->
                     <c-card>
@@ -219,7 +219,7 @@
 
 <!-- MODALS -->
 
-<c-modal #clientesModal backdrop="static" id="clientesModal" size="lg">
+<c-modal #clientesModal backdrop="static" id="clientesModal" size="lg" scrollable>
     <c-modal-header>
         <h5 cModalTitle>Buscar cliente</h5>
         <button [cModalToggle]="clientesModal.id" cButtonClose></button>

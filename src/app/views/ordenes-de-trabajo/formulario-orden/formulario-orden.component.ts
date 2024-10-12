@@ -14,6 +14,7 @@ import { ListadoClientesComponent } from '../../clientes/listado-clientes/listad
 import { ListadoOperariosComponent } from '../../operarios/listado-operarios/listado-operarios.component';
 import { Title } from '@angular/platform-browser';
 import { ClienteModel } from '../../clientes/cliente.model';
+import { ServicioModel } from '../../servicios/servicio.model';
 
 @Component({
   selector: 'formulario-orden',
@@ -55,23 +56,25 @@ export class FormularioOrdenComponent implements OnInit {
         }
         else if (title == 'Ver') {
           this.esModoLectura = true;
-
-          this.route.params.pipe(map((p) => p['id-orden'])).subscribe(
-            idOrden => {
-
-              this.ordenDeTrabajoService.obtenerOrden(idOrden).subscribe(
-                ordenEncontrada => {
-                  if (ordenEncontrada) {
-                    this.orden = ordenEncontrada;
-                    this.whatsAppNumber = ordenEncontrada.cliente.celular;
-                  }
-                  else
-                    this.router.navigate(['ordenesdetrabajo/buscar'], { queryParams: { ordenNoEncontrada: idOrden } });
-                }
-              )
+          this.route.params.pipe(map((p) => p['numero-orden'])).subscribe(
+            numeroOrden => {
+              this.obtenerOrden(numeroOrden);
             }
           );
         }
+      }
+    );
+  }
+
+  obtenerOrden(numeroOrden: string) {
+    this.ordenDeTrabajoService.obtenerOrden(numeroOrden).subscribe(
+      ordenEncontrada => {
+        if (ordenEncontrada) {
+          this.orden = ordenEncontrada;
+          this.whatsAppNumber = ordenEncontrada.cliente.celular;
+        }
+        else
+          this.router.navigate(['ordenesdetrabajo/buscar/'], { queryParams: { ordenNoEncontrada: numeroOrden } });
       }
     );
   }
@@ -82,8 +85,8 @@ export class FormularioOrdenComponent implements OnInit {
     this.orden.estadoPago = this.orden.saldo != 0 ?
       this.CONST.ESTADO_PAGO.PENDIENTE :
       this.orden.servicios.some(s => s.precio == 0) ?
-        this.CONST.ESTADO_PAGO.PENDIENTE :
-        this.CONST.ESTADO_PAGO.PAGADO;
+      this.CONST.ESTADO_PAGO.PENDIENTE :
+      this.CONST.ESTADO_PAGO.PAGADO;
 
     if (this.commentarioNuevo)
       this.agregarComentarioAOrden(this.commentarioNuevo);
@@ -133,12 +136,32 @@ export class FormularioOrdenComponent implements OnInit {
     this.orden.comentarios.push(commentarioObject);
   }
 
-  private editarOrden() {
+  editarOrden() {
+    this.orden.estadoPago = this.orden.saldo != 0 ?
+    this.CONST.ESTADO_PAGO.PENDIENTE :
+    this.orden.servicios.every(s => s.precioEstablecido) ?
+      this.CONST.ESTADO_PAGO.PAGADO : this.CONST.ESTADO_PAGO.PENDIENTE;
+
+    this.orden.estadoOrden =
+      this.orden.estadoPago == this.CONST.ESTADO_PAGO.PAGADO
+        && this.orden.servicios.every(s => s.estado == this.CONST.ESTADO_SERVICIO.DESPACHADO)
+        ? this.CONST.ESTADO_ORDEN.FINALIZADA
+        : this.CONST.ESTADO_ORDEN.VIGENTE;
+
     this.ordenDeTrabajoService.editarOrden(this.orden).subscribe(
       respuesta => {
         this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
       }
     );
+  }
+
+  servicioEditado(servicio: ServicioModel) {
+    this.obtenerOrden(this.orden.numeroOrden);
+    setTimeout(() => {
+      this.agregarComentarioAOrden('Se edito el servicio "' + servicio.descripcion + '"');
+      this.calcularTotal();
+      this.editarOrden();
+    }, 100);
   }
 
   // Funciones de modales

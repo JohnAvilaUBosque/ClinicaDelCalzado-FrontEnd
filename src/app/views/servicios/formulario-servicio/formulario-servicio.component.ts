@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
-import { ButtonGroupComponent, ButtonModule, FormCheckLabelDirective, FormModule, GridModule, ModalModule, TooltipModule } from '@coreui/angular';
+import { BadgeModule, ButtonGroupComponent, ButtonModule, FormCheckLabelDirective, FormModule, GridModule, ModalModule, TooltipModule } from '@coreui/angular';
 import { ConstantsService } from 'src/app/constants.service';
 import { ServicioModel } from '../servicio.model';
+import { ServicioService } from '../servicio.service';
 import { OperarioModel } from '../../operarios/operario.model';
 import { ListadoOperariosComponent } from '../../operarios/listado-operarios/listado-operarios.component';
 import { IconDirective } from '@coreui/icons-angular';
@@ -11,27 +12,33 @@ import { IconDirective } from '@coreui/icons-angular';
 @Component({
   selector: 'formulario-servicio',
   standalone: true,
-  imports: [CommonModule, FormModule, GridModule, FormsModule, ReactiveFormsModule, ButtonModule, TooltipModule, ModalModule, ButtonGroupComponent, IconDirective, FormCheckLabelDirective, ListadoOperariosComponent],
+  imports: [CommonModule, FormModule, GridModule, FormsModule, ReactiveFormsModule, ButtonModule, TooltipModule, ModalModule, BadgeModule, ButtonGroupComponent, IconDirective, FormCheckLabelDirective, ListadoOperariosComponent],
   templateUrl: './formulario-servicio.component.html',
   styleUrl: './formulario-servicio.component.scss'
 })
 export class FormularioServicioComponent implements OnInit, OnChanges, AfterViewInit {
 
+  private servicioService = inject(ServicioService);
+
   public CONST = inject(ConstantsService);
 
-  @Input() servicio: ServicioModel = new ServicioModel();
+  @Input() idServicio: number = 0;
   @Input() ocultarBoton: boolean = false;
 
-  public editarPrecio: boolean = false;
+  public servicio: ServicioModel = new ServicioModel();
+  public establecerPrecio: boolean = false;
 
   private formBuilder = inject(FormBuilder);
+  public radioEstado = new FormControl('');
   public btnRadioGroup = this.formBuilder.group({
-    radioEstado: new FormControl('')
+    radioEstado: this.radioEstado
   });
 
   @Output() esFormularioValidoEvent = new EventEmitter<boolean>();
+  @Output() servicioEditadoEvent = new EventEmitter<ServicioModel>();
+  @Output() seleccionarOperarioEvent = new EventEmitter();
 
-  @ViewChild('datosSeguridadForm') form?: NgForm;
+  @ViewChild('servicioForm') form!: NgForm;
   @ViewChildren('textareaElement') textareas!: QueryList<ElementRef>;
 
   ngOnInit(): void {
@@ -46,8 +53,18 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['servicio'].currentValue?.length)
-      this.adjustTextareasHeight();
+    if (this.idServicio && changes['idServicio'].currentValue != changes['idServicio'].previousValue) {
+      this.servicioService.obtenerServicio(this.idServicio).subscribe(
+        servicio => {
+          if (servicio) {
+            this.servicio = servicio;
+            this.btnRadioGroup.setValue({ radioEstado: servicio.estado });
+            this.establecerPrecio = false;
+            this.adjustTextareasHeight();
+          }
+        }
+      );
+    }
   }
 
   cambiarPrecioIndividual(value: string) {
@@ -57,7 +74,6 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
 
   cambiarEstado(value: string): void {
     this.btnRadioGroup.setValue({ radioEstado: value });
-    this.servicio.estado = value;
   }
 
   cambiarOperario(operario: OperarioModel) {
@@ -67,7 +83,17 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
   }
 
   editarServicio() {
-    throw new Error('Method not implemented');
+    this.servicio.estado = this.btnRadioGroup.get('radioEstado')?.value ?? this.servicio.estado;
+    if (!this.servicio.precioEstablecido) this.servicio.precioEstablecido = this.establecerPrecio;
+    this.servicioService.editarServicio(this.servicio).subscribe(
+      respuesta => {
+        this.servicioEditadoEvent.emit(this.servicio);
+      }
+    );
+  }
+
+  seleccionarOperario() {
+    this.seleccionarOperarioEvent.emit();
   }
 
   adjustTextareasHeight(): void {

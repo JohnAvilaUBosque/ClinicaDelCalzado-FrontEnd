@@ -26,15 +26,17 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
-                            <c-badge color="info" size="sm"
-                                cTooltip="Se muestran las órdenes de trabajo que contengan cada filtro definido.">
-                                <svg cIcon color="warning" name="cil-info"></svg>
+                        <td class="text-center">
+                            <c-badge size="sm" class="text-info"
+                                cTooltip="Se muestran las órdenes de trabajo que contengan una parte de los filtros definidos.">
+                                <svg cIcon name="cil-warning"></svg>
                             </c-badge>
                         </td>
                         <td>
                             <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="filtrar()"
                                 name="orderStatus" #orderStatus="ngModel" sizing="sm">
+                                <option [value]="">
+                                </option>
                                 <option [value]="CONST.ESTADO_ORDEN.VIGENTE">
                                     {{CONST.ESTADO_ORDEN.VIGENTE}}
                                 </option>
@@ -84,6 +86,8 @@
                         <td>
                             <select cSelect [(ngModel)]="filtro.estadoPago" (ngModelChange)="filtrar()"
                                 name="paymentStatus" #paymentStatus="ngModel" sizing="sm">
+                                <option [value]="">
+                                </option>
                                 <option [value]="CONST.ESTADO_PAGO.PENDIENTE">
                                     {{CONST.ESTADO_PAGO.PENDIENTE}}
                                 </option>

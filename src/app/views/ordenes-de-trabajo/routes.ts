@@ -27,7 +27,7 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'ver/:id-orden',
+        path: 'ver/:numero-orden',
         loadComponent: () => import('./formulario-orden/formulario-orden.component').then(m => m.FormularioOrdenComponent),
         data: {
           title: 'Ver'

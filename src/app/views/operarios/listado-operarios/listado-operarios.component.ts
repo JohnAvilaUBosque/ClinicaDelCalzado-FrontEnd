@@ -32,6 +32,11 @@ export class ListadoOperariosComponent {
   }
 
   filtrar() {
+    if (!this.filtro.identificacion && !this.filtro.nombre && !this.filtro.celular) {
+      this.operariosFiltrados = [];
+      return;
+    }
+
     this.operariosFiltrados = this.operarios.filter(operario =>
       operario.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
       operario.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&

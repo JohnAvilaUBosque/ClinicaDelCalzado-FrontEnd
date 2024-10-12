@@ -17,7 +17,7 @@ export enum ESTADO_PAGO {
 }
 
 export enum ESTADO_SERVICIO {
-    RECIBIDO = 'RECIBIDO',
+    RECIBIDO = 'EN PROCESO',
     TERMINADO = 'TERMINADO',
     DESPACHADO = 'DESPACHADO'
 }
