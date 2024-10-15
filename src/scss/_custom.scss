@@ -19,3 +19,9 @@
 .sidebar-header {
   padding: var(--cui-sidebar-padding-y) 0;
 }
+
+c-card-header {
+  .col-title {
+      border-inline-end: 2px solid var(--cui-border-color) ;
+  }
+}

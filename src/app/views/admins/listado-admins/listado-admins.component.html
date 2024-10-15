@@ -1,13 +1,23 @@
 <c-card>
     <c-card-header>
-        <h5>Listado administradores</h5>
+        <c-row>
+            <c-col xs="auto" class="col-title">
+                <h5>Listado administradores</h5>
+            </c-col>
+            <c-col xs="auto">
+                <a cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                    cTooltip="Agregar administrador" [routerLink]="['/admins/agregar']">
+                    <svg cIcon name="cil-user-plus"></svg>
+                </a>
+            </c-col>
+        </c-row>
     </c-card-header>
     <c-card-body>
         <div class="overflow-auto">
             <table cTable hover striped>
                 <thead>
                     <tr>
-                        <th scope="col">Acciones</th>
+                        <th scope="col" style="min-width: 85px;">Acciones</th>
                         <th scope="col">Identificación</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Celular</th>
@@ -20,12 +30,12 @@
                     <tr>
                         <td>
                             <a cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
-                                [cTooltip]="adminLocal.identificacion == admin.identificacion ? 'Ver perfil' : 'Ver administrador'"
+                                [cTooltip]="adminLocal.identificacion == admin.identificacion ? 'Ver perfil' : 'Ver'"
                                 (click)="navegarAFormulario(admin.identificacion)">
                                 <svg cIcon name="cil-external-link"></svg>
                             </a>
                             <a cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
-                                [cTooltip]="adminLocal.identificacion == admin.identificacion ? 'Editar perfil' : 'Editar administrador'"
+                                [cTooltip]="adminLocal.identificacion == admin.identificacion ? 'Editar perfil' : 'Editar'"
                                 [routerLink]="['/admins/editar/' + admin.identificacion]">
                                 <svg cIcon name="cil-pencil"></svg>
                             </a>

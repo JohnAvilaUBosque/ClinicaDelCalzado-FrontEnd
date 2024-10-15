@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, ToastModule, ToastComponent } from '@coreui/angular';
+import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, ToastModule, ToastComponent, ModalModule, ModalComponent } from '@coreui/angular';
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { ConstantsService } from '../../../constants.service';
@@ -14,7 +14,7 @@ import { map } from 'rxjs';
 @Component({
   selector: 'informe-detallado',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, FormsModule, ToastModule, IconDirective, CurrencyPipe, UpperCasePipe],
+  imports: [CommonModule, CardModule, TableModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, FormsModule, ToastModule, ModalModule, IconDirective, CurrencyPipe, UpperCasePipe],
   templateUrl: './informe-detallado.component.html',
   styleUrl: './informe-detallado.component.scss'
 })
@@ -37,6 +37,8 @@ export class InformeDetalladoComponent implements OnInit {
   public totales: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
 
   @ViewChild('toastSinResultados') toastSinResultados!: ToastComponent;
+  @ViewChild('fechaInicialInvalida') fechaInicialInvalida!: ToastComponent;
+  @ViewChild('fechaFinalInvalida') fechaFinalInvalida!: ToastComponent;
 
   ngOnInit(): void {
     this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Informe detallado');
@@ -53,12 +55,36 @@ export class InformeDetalladoComponent implements OnInit {
 
       this.route.queryParams.subscribe(
         params => {
-          if (params['fechaInicial']) this.fechaInicial = params['fechaInicial'];
-          if (params['fechaFinal']) this.fechaFinal = params['fechaFinal'];
-          if (params['fechaInicial'] || params['fechaFinal']) this.filtrar();
+          if (!params['fechaInicial'] && !params['fechaFinal']) {
+            this.ordenesFiltradas = [];
+            this.fechaInicial = "";
+            this.fechaFinal = "";
+            return;
+          }
+
+          this.fechaInicial = params['fechaInicial'];
+          this.fechaFinal = params['fechaFinal'];
+
+          var fechaInicialDate = this.CONST.textoAFecha(this.fechaInicial);
+          if (!fechaInicialDate) {
+            this.fechaInicialInvalida.visible = true;
+            return;
+          }
+
+          var fechaFinalDate = this.CONST.textoAFecha(this.fechaFinal);
+          if (!fechaFinalDate) {
+            this.fechaFinalInvalida.visible = true;
+            return;
+          }
+
+          this.filtrar();
         }
       );
     })
+  }
+
+  verInformeDetallado() {
+    this.router.navigate(['informes/detallado'], { queryParams: { fechaInicial: this.fechaInicial, fechaFinal: this.fechaFinal } });
   }
 
   verOrden(orden: OrdenDeTrabajoModel) {
@@ -68,7 +94,11 @@ export class InformeDetalladoComponent implements OnInit {
   filtrar() {
     var fechaFinalMasUnDia = new Date(this.fechaFinal);
     fechaFinalMasUnDia.setDate(new Date(this.fechaFinal).getDate() + 1);
-    this.ordenesFiltradas = this.ordenes.filter(orden => new Date(this.fechaInicial) < new Date(orden.fechaCreacion) && new Date(orden.fechaCreacion) < fechaFinalMasUnDia);
+    this.ordenesFiltradas = this.ordenes.filter(
+      orden =>
+        new Date(this.fechaInicial) <= new Date(orden.fechaCreacion)
+        && new Date(orden.fechaCreacion) < fechaFinalMasUnDia
+    );
     if (this.ordenesFiltradas.length == 0) {
       this.toastSinResultados.visible = true;
     }
@@ -83,6 +113,11 @@ export class InformeDetalladoComponent implements OnInit {
 
   validarFechas() {
     this.sonFechasValidas = new Date(this.fechaInicial) <= new Date(this.fechaFinal);
+  }
+
+  descargar(descargarModal: ModalComponent) {
+
+    descargarModal.visible = false;
   }
 
 }

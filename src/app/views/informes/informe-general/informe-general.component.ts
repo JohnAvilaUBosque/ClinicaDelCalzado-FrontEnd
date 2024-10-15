@@ -1,9 +1,9 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, ToastModule, ToastComponent } from '@coreui/angular';
+import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, ToastModule, ToastComponent, ModalModule, ModalComponent } from '@coreui/angular';
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { ConstantsService } from '../../../constants.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { OrdenDeTrabajoService } from '../../ordenes-de-trabajo/orden-de-trabajo.service';
 import { OrdenDeTrabajoModel } from '../../ordenes-de-trabajo/orden-de-trabajo.model';
@@ -14,7 +14,7 @@ import { sum } from 'lodash-es';
 @Component({
   selector: 'informe-general',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, FormsModule, ToastModule, IconDirective, CurrencyPipe, UpperCasePipe],
+  imports: [CommonModule, CardModule, TableModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, FormsModule, ToastModule, ModalModule, IconDirective, CurrencyPipe, UpperCasePipe],
   templateUrl: './informe-general.component.html',
   styleUrl: './informe-general.component.scss'
 })
@@ -23,6 +23,7 @@ export class InformeGeneralComponent implements OnInit {
   private ordenDeTrabajoService = inject(OrdenDeTrabajoService);
   private titleService = inject(Title);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   public CONST = inject(ConstantsService);
 
@@ -36,6 +37,8 @@ export class InformeGeneralComponent implements OnInit {
   public totales: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
 
   @ViewChild('toastSinResultados') toastSinResultados!: ToastComponent;
+  @ViewChild('fechaInicialInvalida') fechaInicialInvalida!: ToastComponent;
+  @ViewChild('fechaFinalInvalida') fechaFinalInvalida!: ToastComponent;
 
   ngOnInit(): void {
     this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Informe general');
@@ -70,7 +73,39 @@ export class InformeGeneralComponent implements OnInit {
           }
         });
       this.dias = this.dias.sort(orden => new Date(orden.fecha).getTime());
+
+      this.route.queryParams.subscribe(
+        params => {
+          if (!params['fechaInicial'] && !params['fechaFinal']) {
+            this.diasFiltrados = [];
+            this.fechaInicial = "";
+            this.fechaFinal = "";
+            return;
+          }
+
+          this.fechaInicial = params['fechaInicial'];
+          this.fechaFinal = params['fechaFinal'];
+
+          var fechaInicialDate = this.CONST.textoAFecha(this.fechaInicial);
+          if (!fechaInicialDate) {
+            this.fechaInicialInvalida.visible = true;
+            return;
+          }
+
+          var fechaFinalDate = this.CONST.textoAFecha(this.fechaFinal);
+          if (!fechaFinalDate) {
+            this.fechaFinalInvalida.visible = true;
+            return;
+          }
+
+          this.filtrar();
+        }
+      );
     })
+  }
+
+  verInformeGeneral() {
+    this.router.navigate(['informes/general'], { queryParams: { fechaInicial: this.fechaInicial, fechaFinal: this.fechaFinal } });
   }
 
   verInformeDetallado(dia: DiaInformeGeneral) {
@@ -80,7 +115,11 @@ export class InformeGeneralComponent implements OnInit {
   filtrar() {
     var fechaFinalMasUnDia = new Date(this.fechaFinal);
     fechaFinalMasUnDia.setDate(new Date(this.fechaFinal).getDate() + 1);
-    this.diasFiltrados = this.dias.filter(dia => new Date(this.fechaInicial) < new Date(dia.fecha) && new Date(dia.fecha) < fechaFinalMasUnDia);
+    this.diasFiltrados = this.dias.filter(
+      dia =>
+        new Date(this.fechaInicial) <= new Date(dia.fecha)
+        && new Date(dia.fecha) < fechaFinalMasUnDia
+    );
     if (this.diasFiltrados.length == 0) {
       this.toastSinResultados.visible = true;
     }
@@ -95,6 +134,11 @@ export class InformeGeneralComponent implements OnInit {
 
   validarFechas() {
     this.sonFechasValidas = new Date(this.fechaInicial) <= new Date(this.fechaFinal);
+  }
+
+  descargar(descargarModal: ModalComponent) {
+
+    descargarModal.visible = false;
   }
 
 }

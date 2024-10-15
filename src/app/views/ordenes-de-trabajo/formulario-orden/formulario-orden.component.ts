@@ -178,7 +178,7 @@ export class FormularioOrdenComponent implements OnInit {
       this.CONST.fechaATexto(this.orden.fechaCreacion, this.CONST.FORMATS_VIEW.DATETIME) + '%0A %0A' +
       'Servicios: ' + '%0A';
 
-    this.orden.servicios.forEach(s => mensaje += '- ' + s.descripcion + ' (' + this.CONST.monedaATexto(s.precio) + ') %0A');
+    this.orden.servicios.forEach(s => mensaje += '- ' + s.descripcion + ' (' + (s.precioEstablecido ? this.CONST.monedaATexto(s.precio) : 'Pendiente') + ') %0A');
 
     mensaje += '%0A' + 'Precio total: ' + this.CONST.monedaATexto(this.orden.precioTotal) + '%0A' +
       'Abono: ' + this.CONST.monedaATexto(this.orden.abono) + '%0A' +

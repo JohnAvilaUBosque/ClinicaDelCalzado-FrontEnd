@@ -7,7 +7,17 @@
 <ng-template #elseBlock>
     <c-card>
         <c-card-header>
-            <h5>Listado operarios</h5>
+            <c-row>
+                <c-col xs="auto" class="col-title">
+                    <h5>Listado operarios</h5>
+                </c-col>
+                <c-col xs="auto">
+                    <a cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                        cTooltip="Agregar operario" [routerLink]="['/operarios/agregar']">
+                        <svg cIcon name="cil-contact"></svg>
+                    </a>
+                </c-col>
+            </c-row>
         </c-card-header>
         <c-card-body>
             <ng-container *ngTemplateOutlet="operariosTemplate">
@@ -21,7 +31,9 @@
         <table cTable hover striped>
             <thead>
                 <tr>
-                    <th scope="col" class="col">{{ esEmbebido ? "" : "Acciones" }}</th>
+                    <th scope="col" class="col" style="min-width: 85px;">
+                        {{ esEmbebido ? "" : "Acciones" }}
+                    </th>
                     <th scope="col" class="col">Identificación</th>
                     <th scope="col" class="col">Nombre</th>
                     <th scope="col" class="col">Celular</th>
@@ -66,7 +78,7 @@
                     </td>
                     }
                 </tr>
-                @for (operario of operariosFiltrados; track $index) {
+                @for (operario of operariosPorPagina[paginaActual-1]; track $index) {
                 <tr (click)="seleccionarOperario(operario)">
                     <td>
                         @if (!esEmbebido) {
@@ -95,5 +107,29 @@
                 }
             </tbody>
         </table>
+        @if (operariosPorPagina.length) {
+        <c-pagination>
+            <li cPageItem [disabled]="paginaActual == 1">
+                <a cPageLink role="button" (click)="paginaActual = 1">&laquo;</a>
+            </li>
+            <li cPageItem [disabled]="paginaActual == 1">
+                <a cPageLink role="button" (click)="paginaActual = paginaActual-1">&lt;</a>
+            </li>
+            @for (pagina of operariosPorPagina; track $index) {
+            <li cPageItem [active]="paginaActual == $index+1">
+                <a cPageLink role="button" (click)="paginaActual = $index+1">{{ $index+1 }}</a>
+            </li>
+            }
+            <li cPageItem [disabled]="paginaActual == operariosPorPagina.length">
+                <a cPageLink role="button" (click)="paginaActual = paginaActual+1">&gt;</a>
+            </li>
+            <li cPageItem [disabled]="paginaActual == operariosPorPagina.length">
+                <a cPageLink role="button" (click)="paginaActual = operariosPorPagina.length">
+                    &raquo;
+                </a>
+            </li>
+        </c-pagination>
+        }
+        <p>{{ operariosFiltrados.length }} resultados</p>
     </div>
 </ng-template>

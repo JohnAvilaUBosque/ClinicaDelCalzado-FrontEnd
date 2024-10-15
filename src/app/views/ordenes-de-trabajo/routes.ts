@@ -40,6 +40,13 @@ export const routes: Routes = [
           title: 'Buscar'
         }
       },
+      {
+        path: 'migrar',
+        loadComponent: () => import('./formulario-orden/formulario-orden.component').then(m => m.FormularioOrdenComponent),
+        data: {
+          title: 'Crear'
+        }
+      },
       { path: '**', redirectTo: 'listado' }
     ]
   }

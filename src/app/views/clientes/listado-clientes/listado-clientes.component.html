@@ -30,7 +30,7 @@
                         name="cellphone" #cellphone="ngModel" maxlength="20" sizing="sm">
                 </td>
             </tr>
-            @for (cliente of clientesFiltrados; track $index) {
+            @for (cliente of clientesPorPagina[paginaActual-1]; track $index) {
             <tr (click)="seleccionarCliente(cliente)">
                 <td></td>
                 <td>{{cliente.identificacion}}</td>
@@ -40,4 +40,28 @@
             }
         </tbody>
     </table>
+    @if (clientesPorPagina.length) {
+    <c-pagination>
+        <li cPageItem [disabled]="paginaActual == 1">
+            <a cPageLink role="button" (click)="paginaActual = 1">&laquo;</a>
+        </li>
+        <li cPageItem [disabled]="paginaActual == 1">
+            <a cPageLink role="button" (click)="paginaActual = paginaActual-1">&lt;</a>
+        </li>
+        @for (pagina of clientesPorPagina; track $index) {
+        <li cPageItem [active]="paginaActual == $index+1">
+            <a cPageLink role="button" (click)="paginaActual = $index+1">{{ $index+1 }}</a>
+        </li>
+        }
+        <li cPageItem [disabled]="paginaActual == clientesPorPagina.length">
+            <a cPageLink role="button" (click)="paginaActual = paginaActual+1">&gt;</a>
+        </li>
+        <li cPageItem [disabled]="paginaActual == clientesPorPagina.length">
+            <a cPageLink role="button" (click)="paginaActual = clientesPorPagina.length">
+                &raquo;
+            </a>
+        </li>
+    </c-pagination>
+    }
+    <p>{{ clientesFiltrados.length }} resultados</p>
 </div>

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, FormModule, GridModule } from '@coreui/angular';
+import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, FormModule, GridModule, PaginationModule } from '@coreui/angular';
 import { OrdenDeTrabajoService } from '../orden-de-trabajo.service'
 import { OrdenDeTrabajoModel } from '../orden-de-trabajo.model'
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'listado-ordenes',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, GridModule, BadgeModule, ButtonModule, TooltipModule, FormsModule, FormModule, IconDirective, CurrencyPipe, UpperCasePipe],
+  imports: [CommonModule, CardModule, TableModule, GridModule, BadgeModule, ButtonModule, TooltipModule, FormsModule, FormModule, PaginationModule, IconDirective, CurrencyPipe, UpperCasePipe],
   templateUrl: './listado-ordenes.component.html',
   styleUrl: './listado-ordenes.component.scss'
 })
@@ -28,6 +28,9 @@ export class ListadoOrdenesComponent implements OnInit {
 
   public filtro: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public ordenesFiltradas: OrdenDeTrabajoModel[] = [];
+
+  public ordenesPorPagina: Array<OrdenDeTrabajoModel[]> = [];
+  public paginaActual: number = 1;
 
   ngOnInit(): void {
     this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Órdenes de trabajo');
@@ -50,7 +53,17 @@ export class ListadoOrdenesComponent implements OnInit {
       x.cliente.nombre.toLowerCase().includes(this.filtro.cliente.nombre.toLowerCase()) &&
       x.cliente.celular.toLowerCase().includes(this.filtro.cliente.celular.toLowerCase()) &&
       (!this.filtro.estadoPago || x.estadoPago.toLowerCase() == this.filtro.estadoPago.toLowerCase())
-    )
+    );
+    this.paginar();
+  }
+
+  paginar() {
+    this.paginaActual = 1;
+    this.ordenesPorPagina = [];
+    for (let i = 0; i < this.ordenesFiltradas.length; i += this.CONST.CANT_FILAS_POR_PAGINA) {
+      const ordenes = this.ordenesFiltradas.slice(i, i + this.CONST.CANT_FILAS_POR_PAGINA);
+      this.ordenesPorPagina.push(ordenes);
+    };
   }
 
   verOrden(orden: OrdenDeTrabajoModel) {

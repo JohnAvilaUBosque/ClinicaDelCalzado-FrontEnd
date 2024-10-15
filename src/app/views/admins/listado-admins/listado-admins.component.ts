@@ -1,6 +1,6 @@
 
 import { Component, inject, OnInit } from '@angular/core';
-import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule } from '@coreui/angular';
+import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, GridModule } from '@coreui/angular';
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { ConstantsService } from '../../../constants.service';
@@ -13,7 +13,7 @@ import { UsuarioService } from '../../usuarios/usuario.service';
 @Component({
   selector: 'listado-admins',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, BadgeModule, ButtonModule, TooltipModule, RouterModule, IconDirective, CurrencyPipe, UpperCasePipe],
+  imports: [CommonModule, CardModule, TableModule, GridModule, BadgeModule, ButtonModule, TooltipModule, RouterModule, IconDirective, CurrencyPipe, UpperCasePipe],
   templateUrl: './listado-admins.component.html',
   styleUrl: './listado-admins.component.scss'
 })

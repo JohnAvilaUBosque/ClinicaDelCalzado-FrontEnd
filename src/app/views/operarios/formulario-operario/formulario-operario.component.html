@@ -6,12 +6,10 @@
             </c-col>
             @if (esModoLectura) {
             <c-col xs="auto">
-                <div class="actions">
-                    <a cButton color="success" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Editar"
-                        [routerLink]="['/operarios/editar/' + operario.identificacion]">
-                        <svg cIcon name="cil-pencil"></svg>
-                    </a>
-                </div>
+                <a cButton color="success" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Editar"
+                    [routerLink]="['/operarios/editar/' + operario.identificacion]">
+                    <svg cIcon name="cil-pencil"></svg>
+                </a>
             </c-col>
             }
         </c-row>

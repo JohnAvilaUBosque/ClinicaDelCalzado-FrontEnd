@@ -6,31 +6,28 @@
             </c-col>
             @if (esModoLectura) {
             <c-col xs="auto">
-                <div class="actions">
-                    <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
-                        cTooltip="Enviar por WhatsApp" [cModalToggle]="whatsAppModal.id"
-                        *ngIf="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA">
-                        <svg cIcon name="cil-phone"></svg>
-                    </button>
-                    <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Descargar"
-                        [cModalToggle]="descargarModal.id" *ngIf="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA">
-                        <svg cIcon name="cil-data-transfer-down"></svg>
-                    </button>
-                    <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Abonar"
-                        [cModalToggle]="abonarModal.id" (click)="calcularSaldoNuevo()"
-                        *ngIf="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE">
-                        <svg cIcon name="cil-dollar"></svg>
-                    </button>
-                    <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
-                        cTooltip="Agregar comentario" [cModalToggle]="comentarioModal.id">
-                        <svg cIcon name="cil-short-text"></svg>
-                    </button>
-                    <button cButton color="danger" variant="ghost" size="sm" shape="rounded-pill"
-                        cTooltip="Anular orden" [cModalToggle]="anularModal.id"
-                        *ngIf="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE">
-                        <svg cIcon name="cil-x"></svg>
-                    </button>
-                </div>
+                <button cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
+                    cTooltip="Enviar por WhatsApp" [cModalToggle]="whatsAppModal.id"
+                    *ngIf="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA">
+                    <svg cIcon name="cil-phone"></svg>
+                </button>
+                <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Descargar"
+                    [cModalToggle]="descargarModal.id" *ngIf="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA">
+                    <svg cIcon name="cil-data-transfer-down"></svg>
+                </button>
+                <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Abonar"
+                    [cModalToggle]="abonarModal.id" (click)="calcularSaldoNuevo()"
+                    *ngIf="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE">
+                    <svg cIcon name="cil-dollar"></svg>
+                </button>
+                <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                    cTooltip="Agregar comentario" [cModalToggle]="comentarioModal.id">
+                    <svg cIcon name="cil-short-text"></svg>
+                </button>
+                <button cButton color="danger" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Anular orden"
+                    [cModalToggle]="anularModal.id" *ngIf="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE">
+                    <svg cIcon name="cil-x"></svg>
+                </button>
             </c-col>
             <c-col class="align-self-center">
                 <c-badge

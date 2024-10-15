@@ -5,28 +5,32 @@
             "nombre": "Liliana Rodriguez",
             "celular": "3216549870",
             "estado": "ACTIVO",
-            "rol": "PRINCIPAL"
+            "rol": "PRINCIPAL",
+            "clave": "Abcd1234*"
         },
         {
             "identificacion": 321654987,
             "nombre": "Ana Nuñez",
             "celular": "3197624850",
             "estado": "INACTIVO",
-            "rol": "PRINCIPAL"
+            "rol": "PRINCIPAL",
+            "clave": "Abcd1234*"
         },
         {
             "identificacion": 789456123,
             "nombre": "Yesid Rivera",
             "celular": "3456789120",
             "estado": "ACTIVO",
-            "rol": "SECUNDARIO"
+            "rol": "SECUNDARIO",
+            "clave": "Abcd1234*"
         },
         {
             "identificacion": 987654321,
             "nombre": "Eduardo Fonseca",
             "celular": "3123456789",
             "estado": "INACTIVO",
-            "rol": "SECUNDARIO"
+            "rol": "SECUNDARIO",
+            "clave": "Abcd1234*"
         }
     ]
 }

@@ -41,11 +41,6 @@ export class LoginComponent implements OnInit {
     this.toastUsuarioInactivo.visible = false;
 
     // this.usuarioService.iniciarSesion(this.usuario);
-    if (this.usuario.clave.length < 8) {
-      this.toastCredencialesIncorrectas.visible = true;
-      return;
-    }
-
     this.administradorService.obtenerAdministradores().subscribe(data => {
       var admin = data.find(admin => admin.identificacion == this.usuario.identificacion);
       if (!admin) {
@@ -53,6 +48,11 @@ export class LoginComponent implements OnInit {
         return;
       }
 
+      if (this.usuario.clave != admin.clave) {
+        this.toastCredencialesIncorrectas.visible = true;
+        return;
+      }
+  
       if (admin.estado == this.CONST.ESTADO_ADMIN.INACTIVO) {
         this.toastUsuarioInactivo.visible = true;
         return;

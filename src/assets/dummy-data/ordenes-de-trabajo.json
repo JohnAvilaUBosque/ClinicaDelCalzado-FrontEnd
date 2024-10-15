@@ -24,11 +24,11 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Arreglar botas",
                     "id": 1,
+                    "descripcion": "Arreglar botas",
                     "precio": 20000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": ""
                     }
@@ -70,21 +70,21 @@
             ],
             "servicios": [
                 {
-                    "nombre": "Pegar suela de tenis",
                     "id": 2,
+                    "nombre": "Pegar suela de tenis",
                     "precio": 18000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Alex Medina"
                     }
                 },
                 {
-                    "nombre": "Cocer chaqueta de cuero",
                     "id": 3,
+                    "nombre": "Cocer chaqueta de cuero",
                     "precio": 12000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -121,31 +121,31 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Cambiar cordones zapatos",
                     "id": 4,
+                    "descripcion": "Cambiar cordones zapatos",
                     "precio": 0,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": false,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": ""
                     }
                 },
                 {
-                    "descripcion": "Limpieza de chaqueta",
                     "id": 5,
+                    "descripcion": "Limpieza de chaqueta",
                     "precio": 10000,
-                    "estado": "TERMINADO",
                     "precioEstablecido": true,
+                    "estado": "TERMINADO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
                 },
                 {
-                    "descripcion": "Cambiar cremallera bolso del mismo color de los accesorios",
                     "id": 6,
+                    "descripcion": "Cambiar cremallera bolso del mismo color de los accesorios",
                     "precio": 14000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Alex Medina"
                     }
@@ -177,21 +177,21 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Reparar suela de botas",
                     "id": 7,
+                    "descripcion": "Reparar suela de botas",
                     "precio": 20000,
-                    "estado": "TERMINADO",
                     "precioEstablecido": true,
+                    "estado": "TERMINADO",
                     "operario": {
                         "nombre": ""
                     }
                 },
                 {
-                    "descripcion": "Cambiar cordones",
                     "id": 8,
+                    "descripcion": "Cambiar cordones",
                     "precio": 10000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -228,11 +228,11 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Tintura de zapatos de cuero",
                     "id": 9,
+                    "descripcion": "Tintura de zapatos de cuero",
                     "precio": 18000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Laura Martínez"
                     }
@@ -269,11 +269,11 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Reparación de cremallera de bolso",
                     "id": 10,
+                    "descripcion": "Reparación de cremallera de bolso",
                     "precio": 25000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": "Alex Medina"
                     }
@@ -305,11 +305,11 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Reparación de chaqueta de cuero",
                     "id": 11,
+                    "descripcion": "Reparación de chaqueta de cuero",
                     "precio": 35000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
@@ -341,11 +341,11 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Cambio de cremallera en botas",
                     "id": 12,
+                    "descripcion": "Cambio de cremallera en botas",
                     "precio": 20000,
-                    "estado": "TERMINADO",
                     "precioEstablecido": true,
+                    "estado": "TERMINADO",
                     "operario": {
                         "nombre": "Laura Martínez"
                     }
@@ -382,11 +382,11 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Pegar suela de zapatos",
                     "id": 13,
+                    "descripcion": "Pegar suela de zapatos",
                     "precio": 15000,
-                    "estado": "ANULADO",
                     "precioEstablecido": true,
+                    "estado": "ANULADO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -418,11 +418,11 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Limpieza y tintura de chaqueta de cuero",
                     "id": 14,
+                    "descripcion": "Limpieza y tintura de chaqueta de cuero",
                     "precio": 45000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": "Alex Medina"
                     }
@@ -454,11 +454,11 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Cambio de suela en botas",
                     "id": 15,
+                    "descripcion": "Cambio de suela en botas",
                     "precio": 30000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
@@ -490,21 +490,21 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Cambio de suela en zapatos",
                     "id": 16,
+                    "descripcion": "Cambio de suela en zapatos",
                     "precio": 25000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
-                    "descripcion": "Limpieza de chaqueta",
                     "id": 17,
+                    "descripcion": "Limpieza de chaqueta",
                     "precio": 15000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -536,21 +536,21 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Tintura de chaqueta de cuero",
                     "id": 18,
+                    "descripcion": "Tintura de chaqueta de cuero",
                     "precio": 35000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Alex Medina"
                     }
                 },
                 {
-                    "descripcion": "Reparación de bolsillos",
                     "id": 19,
+                    "descripcion": "Reparación de bolsillos",
                     "precio": 20000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": ""
                     }
@@ -582,31 +582,31 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Arreglo de cierre en chaqueta de cuero",
                     "id": 20,
+                    "descripcion": "Arreglo de cierre en chaqueta de cuero",
                     "precio": 30000,
-                    "estado": "TERMINADO",
                     "precioEstablecido": true,
+                    "estado": "TERMINADO",
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
-                    "descripcion": "Cambio de botones",
                     "id": 21,
+                    "descripcion": "Cambio de botones",
                     "precio": 0,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": false,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
                 },
                 {
-                    "descripcion": "Reparación de costuras",
                     "id": 22,
+                    "descripcion": "Reparación de costuras",
                     "precio": 30000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Alex Medina"
                     }
@@ -638,21 +638,21 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Reparación de costuras en bolso",
                     "id": 23,
+                    "descripcion": "Reparación de costuras en bolso",
                     "precio": 12000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
                 },
                 {
-                    "descripcion": "Cambio de cremallera en chaqueta",
                     "id": 24,
+                    "descripcion": "Cambio de cremallera en chaqueta",
                     "precio": 16000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Alex Medina"
                     }
@@ -684,31 +684,31 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Cambio de tacones en botas",
                     "id": 25,
+                    "descripcion": "Cambio de tacones en botas",
                     "precio": 25000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
-                    "descripcion": "Pegar suela en zapatos",
                     "id": 26,
+                    "descripcion": "Pegar suela en zapatos",
                     "precio": 20000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
                 },
                 {
-                    "descripcion": "Reparación de hebilla en bolso",
                     "id": 27,
+                    "descripcion": "Reparación de hebilla en bolso",
                     "precio": 0,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": false,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": ""
                     }
@@ -740,21 +740,21 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Cambio de cremallera en chaqueta",
                     "id": 28,
+                    "descripcion": "Cambio de cremallera en chaqueta",
                     "precio": 15000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": "Alex Medina"
                     }
                 },
                 {
-                    "descripcion": "Reparación de suela en botas",
                     "id": 29,
+                    "descripcion": "Reparación de suela en botas",
                     "precio": 20000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -786,21 +786,21 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Reparación de costuras en chaqueta de cuero",
                     "id": 30,
+                    "descripcion": "Reparación de costuras en chaqueta de cuero",
                     "precio": 30000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
-                    "descripcion": "Pegar suela de zapatos",
                     "id": 31,
+                    "descripcion": "Pegar suela de zapatos",
                     "precio": 18000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": ""
                     }
@@ -832,31 +832,31 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Tintura de bolso de cuero",
                     "id": 32,
+                    "descripcion": "Tintura de bolso de cuero",
                     "precio": 25000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": "Alex Medina"
                     }
                 },
                 {
-                    "descripcion": "Cambio de cierres",
                     "id": 33,
+                    "descripcion": "Cambio de cierres",
                     "precio": 15000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
                 },
                 {
-                    "descripcion": "Reparación de asas",
                     "id": 34,
+                    "descripcion": "Reparación de asas",
                     "precio": 20000,
-                    "estado": "EN PROCESO",
                     "precioEstablecido": true,
+                    "estado": "EN PROCESO",
                     "operario": {
                         "nombre": ""
                     }
@@ -888,21 +888,21 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Cambio de suela en zapatos",
                     "id": 35,
+                    "descripcion": "Cambio de suela en zapatos",
                     "precio": 20000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
-                    "descripcion": "Tintura de chaqueta de cuero",
                     "id": 36,
+                    "descripcion": "Tintura de chaqueta de cuero",
                     "precio": 30000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -934,21 +934,21 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Limpieza de bolso de cuero",
                     "id": 37,
+                    "descripcion": "Limpieza de bolso de cuero",
                     "precio": 15000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Alex Medina"
                     }
                 },
                 {
-                    "descripcion": "Reparación de asas de bolso",
                     "id": 38,
+                    "descripcion": "Reparación de asas de bolso",
                     "precio": 23000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Luis Vivas"
                     }
@@ -980,23 +980,713 @@
             ],
             "servicios": [
                 {
-                    "descripcion": "Cambio de suela en tenis",
                     "id": 39,
+                    "descripcion": "Cambio de suela en tenis",
                     "precio": 22000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Carlos Pérez"
                     }
                 },
                 {
-                    "descripcion": "Reparación de costuras en chaqueta",
                     "id": 40,
+                    "descripcion": "Reparación de costuras en chaqueta",
                     "precio": 20000,
-                    "estado": "DESPACHADO",
                     "precioEstablecido": true,
+                    "estado": "DESPACHADO",
                     "operario": {
                         "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241005-00023",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-10-05 12:30",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1237896540",
+                "nombre": "Mario González",
+                "celular": "3129876540"
+            },
+            "precioTotal": 40000,
+            "abono": 20000,
+            "saldo": 20000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-20",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $20,000, quedando un saldo de $20,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-10-05 12:35"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 41,
+                    "descripcion": "Reparación de cierre de chaqueta",
+                    "precio": 15000,
+                    "precioEstablecido": true,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "id": 42,
+                    "descripcion": "Cambio de suela en zapatos",
+                    "precio": 25000,
+                    "precioEstablecido": true,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240930-00024",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-09-30 11:45",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1234567890",
+                "nombre": "Carlos Herrera",
+                "celular": "3124567890"
+            },
+            "precioTotal": 35000,
+            "abono": 20000,
+            "saldo": 15000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-10",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $20,000, quedando un saldo de $15,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-09-30 11:50"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 43,
+                    "descripcion": "Tintura de chaqueta de cuero",
+                    "precio": 20000,
+                    "precioEstablecido": true,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "id": 44,
+                    "descripcion": "Reparación de costuras en pantalón",
+                    "precio": 15000,
+                    "precioEstablecido": true,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241001-00025",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-10-01 09:20",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "9876543211",
+                "nombre": "Sofía Martínez",
+                "celular": "3109876543"
+            },
+            "precioTotal": 47000,
+            "abono": 20000,
+            "saldo": 27000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-20",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $20,000, quedando un saldo de $27,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-10-01 09:25"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 45,
+                    "descripcion": "Reparación de bolsillos en chaqueta",
+                    "precio": 17000,
+                    "precioEstablecido": true,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "id": 46,
+                    "descripcion": "Limpieza y pulido de zapatos",
+                    "precio": 30000,
+                    "precioEstablecido": true,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240928-00026",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-09-28 14:40",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "6543219870",
+                "nombre": "Esteban Mejía",
+                "celular": "3113456789"
+            },
+            "precioTotal": 60000,
+            "abono": 30000,
+            "saldo": 30000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-15",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $30,000, quedando un saldo de $30,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-09-28 14:45"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 47,
+                    "descripcion": "Cambio de forro de chaqueta de cuero",
+                    "precio": 35000,
+                    "precioEstablecido": true,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "id": 48,
+                    "descripcion": "Reparación de cierres",
+                    "precio": 25000,
+                    "precioEstablecido": true,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240929-00027",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-09-29 12:50",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1237894560",
+                "nombre": "Gabriela Torres",
+                "celular": "3004567891"
+            },
+            "precioTotal": 52000,
+            "abono": 20000,
+            "saldo": 32000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-18",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $20,000, quedando un saldo de $32,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-09-29 12:55"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 49,
+                    "descripcion": "Cambio de tacones en botas",
+                    "precio": 27000,
+                    "precioEstablecido": true,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "id": 50,
+                    "descripcion": "Reparación de costuras en bolso",
+                    "precio": 25000,
+                    "precioEstablecido": true,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241003-00028",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-10-03 09:15",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1098765431",
+                "nombre": "Laura Rodríguez",
+                "celular": "3198765432"
+            },
+            "precioTotal": 52000,
+            "abono": 52000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-10-17",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $52,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-10-03 09:20"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 51,
+                    "descripcion": "Tintura de chaqueta",
+                    "precio": 30000,
+                    "precioEstablecido": true,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "id": 52,
+                    "descripcion": "Reparación de bolsillos en pantalón",
+                    "precio": 22000,
+                    "precioEstablecido": true,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241002-00029",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-10-02 11:00",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "9876543212",
+                "nombre": "Lucía Torres",
+                "celular": "3104567892"
+            },
+            "precioTotal": 35000,
+            "abono": 15000,
+            "saldo": 20000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-16",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $15,000, quedando un saldo de $20,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-10-02 11:05"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 53,
+                    "descripcion": "Cambio de forro en chaqueta",
+                    "precio": 20000,
+                    "precioEstablecido": true,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                },
+                {
+                    "id": 54,
+                    "descripcion": "Reparación de tacones",
+                    "precio": 15000,
+                    "precioEstablecido": true,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20240930-00030",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-09-30 15:30",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1097654321",
+                "nombre": "Roberto López",
+                "celular": "3176543212"
+            },
+            "precioTotal": 60000,
+            "abono": 30000,
+            "saldo": 30000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-14",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $30,000, quedando un saldo de $30,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-09-30 15:35"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 55,
+                    "descripcion": "Cambio de cremalleras en chaqueta",
+                    "precio": 25000,
+                    "precioEstablecido": true,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "id": 56,
+                    "descripcion": "Reparación de costuras",
+                    "precio": 35000,
+                    "precioEstablecido": true,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241001-00031",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-10-01 13:45",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1236547890",
+                "nombre": "Ana María Ruiz",
+                "celular": "3201234567"
+            },
+            "precioTotal": 48000,
+            "abono": 48000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-10-13",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $48,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-10-01 13:50"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 57,
+                    "descripcion": "Reparación de cremallera en bolso",
+                    "precio": 20000,
+                    "precioEstablecido": true,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                },
+                {
+                    "id": 58,
+                    "descripcion": "Cambio de suela en botas",
+                    "precio": 28000,
+                    "precioEstablecido": true,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241001-00032",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-10-01 10:30",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1098765432",
+                "nombre": "Julia Ramírez",
+                "celular": "3176543210"
+            },
+            "precioTotal": 28000,
+            "abono": 10000,
+            "saldo": 18000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-15",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $10,000, quedando un saldo de $18,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-10-01 10:35"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 59,
+                    "descripcion": "Cambio de suela en botas",
+                    "precio": 15000,
+                    "precioEstablecido": true,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                },
+                {
+                    "id": 60,
+                    "descripcion": "Arreglo de costuras en chaqueta",
+                    "precio": 13000,
+                    "precioEstablecido": true,
+                    "estado": "RECIBIDO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241010-00033",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-10-10 14:00",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1098765430",
+                "nombre": "Sofía García",
+                "celular": "3139876541"
+            },
+            "precioTotal": 55000,
+            "abono": 25000,
+            "saldo": 30000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-25",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $25,000, quedando un saldo de $30,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-10-10 14:05"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 61,
+                    "descripcion": "Reparación de tacones",
+                    "precio": 20000,
+                    "precioEstablecido": true,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "id": 62,
+                    "descripcion": "Cambio de suela",
+                    "precio": 35000,
+                    "precioEstablecido": true,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241009-00034",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-10-09 11:45",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "9876543213",
+                "nombre": "Javier Ramírez",
+                "celular": "3104567891"
+            },
+            "precioTotal": 40000,
+            "abono": 40000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-10-20",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $40,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-10-09 11:50"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 63,
+                    "descripcion": "Tintura de chaqueta de cuero",
+                    "precio": 20000,
+                    "precioEstablecido": true,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                },
+                {
+                    "id": 64,
+                    "descripcion": "Reparación de cremalleras",
+                    "precio": 20000,
+                    "precioEstablecido": true,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241007-00035",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-10-07 10:30",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "1236547892",
+                "nombre": "Valentina Pérez",
+                "celular": "3149876543"
+            },
+            "precioTotal": 50000,
+            "abono": 30000,
+            "saldo": 20000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-21",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $30,000, quedando un saldo de $20,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-10-07 10:35"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 65,
+                    "descripcion": "Limpieza y acondicionamiento de cuero",
+                    "precio": 30000,
+                    "precioEstablecido": true,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "id": 66,
+                    "descripcion": "Cambio de cierre en botas",
+                    "precio": 20000,
+                    "precioEstablecido": true,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241006-00036",
+            "atendidoPor": "Liliana Rodriguez",
+            "fechaCreacion": "2024-10-06 09:20",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "6543210987",
+                "nombre": "Marta Ruiz",
+                "celular": "3198765432"
+            },
+            "precioTotal": 35000,
+            "abono": 35000,
+            "saldo": 0,
+            "estadoPago": "PAGADO",
+            "fechaEntrega": "2024-10-15",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó el pago completo de $35,000.",
+                    "nombreAdmin": "Liliana Rodriguez",
+                    "fecha": "2024-10-06 09:25"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 67,
+                    "descripcion": "Reparación de forro interior",
+                    "precio": 20000,
+                    "precioEstablecido": true,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": "Luis Vivas"
+                    }
+                },
+                {
+                    "id": 68,
+                    "descripcion": "Reparación de broches en chaqueta",
+                    "precio": 15000,
+                    "precioEstablecido": true,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Alex Medina"
+                    }
+                }
+            ],
+            "cantidadServicios": 2
+        },
+        {
+            "numeroOrden": "ORD-20241011-00037",
+            "atendidoPor": "Yesid Rivera",
+            "fechaCreacion": "2024-10-11 15:10",
+            "estadoOrden": "VIGENTE",
+            "cliente": {
+                "identificacion": "9871234567",
+                "nombre": "Carlos Gómez",
+                "celular": "3106543210"
+            },
+            "precioTotal": 60000,
+            "abono": 30000,
+            "saldo": 30000,
+            "estadoPago": "PENDIENTE",
+            "fechaEntrega": "2024-10-26",
+            "comentarios": [
+                {
+                    "descripcion": "El cliente realizó un abono de $30,000, quedando un saldo de $30,000.",
+                    "nombreAdmin": "Yesid Rivera",
+                    "fecha": "2024-10-11 15:15"
+                }
+            ],
+            "servicios": [
+                {
+                    "id": 69,
+                    "descripcion": "Cambio de cremalleras",
+                    "precio": 0,
+                    "precioEstablecido": false,
+                    "estado": "TERMINADO",
+                    "operador": {
+                        "nombre": ""
+                    }
+                },
+                {
+                    "id": 70,
+                    "descripcion": "Reparación de costuras",
+                    "precio": 60000,
+                    "precioEstablecido": true,
+                    "estado": "DESPACHADO",
+                    "operador": {
+                        "nombre": "Carlos Pérez"
                     }
                 }
             ],

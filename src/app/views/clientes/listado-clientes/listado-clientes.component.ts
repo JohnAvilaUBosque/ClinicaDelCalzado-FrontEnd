@@ -1,6 +1,6 @@
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { ClienteModel } from '../cliente.model';
-import { BadgeModule, FormModule, TableModule, TooltipModule } from '@coreui/angular';
+import { BadgeModule, FormModule, PaginationModule, TableModule, TooltipModule } from '@coreui/angular';
 import { ClienteService } from '../cliente.service';
 import { FormsModule } from '@angular/forms';
 import { ConstantsService } from 'src/app/constants.service';
@@ -9,7 +9,7 @@ import { IconDirective } from '@coreui/icons-angular';
 @Component({
   selector: 'listado-clientes',
   standalone: true,
-  imports: [TableModule, FormsModule, FormModule, BadgeModule, TooltipModule, IconDirective],
+  imports: [TableModule, FormsModule, FormModule, BadgeModule, TooltipModule, PaginationModule, IconDirective],
   templateUrl: './listado-clientes.component.html',
   styleUrl: './listado-clientes.component.scss'
 })
@@ -19,9 +19,12 @@ export class ListadoClientesComponent implements OnInit {
 
   public CONST = inject(ConstantsService);
 
-  clientes: ClienteModel[] = [];
-  filtro: ClienteModel = new ClienteModel();
-  clientesFiltrados: ClienteModel[] = [];
+  public clientes: ClienteModel[] = [];
+  public filtro: ClienteModel = new ClienteModel();
+  public clientesFiltrados: ClienteModel[] = [];
+
+  public clientesPorPagina: Array<ClienteModel[]> = [];
+  public paginaActual: number = 1;
 
   @Output() seleccionClienteEvent = new EventEmitter<ClienteModel>();
 
@@ -32,16 +35,26 @@ export class ListadoClientesComponent implements OnInit {
   }
 
   filtrar() {
-    if (!this.filtro.identificacion && !this.filtro.nombre && !this.filtro.celular) {
-      this.clientesFiltrados = [];
-      return;
-    }
+    // if (!this.filtro.identificacion && !this.filtro.nombre && !this.filtro.celular) {
+    //   this.clientesFiltrados = [];
+    // }
+    // else {
+      this.clientesFiltrados = this.clientes.filter(cliente =>
+        cliente.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
+        cliente.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&
+        cliente.celular.toLowerCase().includes(this.filtro.celular.toLowerCase())
+      )
+    // }
+    this.paginar();
+  }
 
-    this.clientesFiltrados = this.clientes.filter(cliente =>
-      cliente.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
-      cliente.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&
-      cliente.celular.toLowerCase().includes(this.filtro.celular.toLowerCase())
-    )
+  paginar() {
+    this.paginaActual = 1;
+    this.clientesPorPagina = [];
+    for (let i = 0; i < this.clientesFiltrados.length; i += this.CONST.CANT_FILAS_POR_PAGINA) {
+      const clientes = this.clientesFiltrados.slice(i, i + this.CONST.CANT_FILAS_POR_PAGINA);
+      this.clientesPorPagina.push(clientes);
+    };
   }
 
   seleccionarCliente(cliente: ClienteModel) {

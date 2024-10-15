@@ -5,31 +5,37 @@
     <c-card-body>
         <p>Órdenes de trabajo de la más reciente a la más antigua.</p>
         <c-row>
-            <c-col sm="6" lg="3" class="mb-3">
+            <c-col md="4" xl="3" class="mb-3">
                 <label cLabel="col" sizing="sm">Filtrar por estado de orden:</label>
-                <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="filtrar()" name="orderStatus"
-                    #orderStatus="ngModel" sizing="sm">
-                    <option [value]="">
-                    </option>
-                    <option [value]="CONST.ESTADO_ORDEN.VIGENTE">
-                        {{CONST.ESTADO_ORDEN.VIGENTE}}
-                    </option>
-                    <option [value]="CONST.ESTADO_ORDEN.FINALIZADA">
-                        {{CONST.ESTADO_ORDEN.FINALIZADA}}
-                    </option>
-                    <option [value]="CONST.ESTADO_ORDEN.ANULADA">
-                        {{CONST.ESTADO_ORDEN.ANULADA}}
-                    </option>
-                </select>
+                <c-input-group>
+                    <span cInputGroupText sizing="sm">
+                        <c-badge size="sm" class="text-info"
+                            cTooltip="Se obtienen las ultimas 300 órdenes de trabajo con el estado seleccionado">
+                            <svg cIcon name="cil-warning"></svg>
+                        </c-badge>
+                    </span>
+                    <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="filtrar()" name="orderStatus"
+                        #orderStatus="ngModel" sizing="sm">
+                        <option [value]="CONST.ESTADO_ORDEN.VIGENTE">
+                            {{CONST.ESTADO_ORDEN.VIGENTE}}
+                        </option>
+                        <option [value]="CONST.ESTADO_ORDEN.FINALIZADA">
+                            {{CONST.ESTADO_ORDEN.FINALIZADA}}
+                        </option>
+                        <option [value]="CONST.ESTADO_ORDEN.ANULADA">
+                            {{CONST.ESTADO_ORDEN.ANULADA}}
+                        </option>
+                    </select>
+                </c-input-group>
             </c-col>
         </c-row>
         <div class="overflow-auto">
-            <table cTable hover striped>
+            <table cTable hover striped small>
                 <thead>
                     <tr>
                         <th scope="col"></th>
                         <th scope="col">Estado orden</th>
-                        <th scope="col">Número</th>
+                        <th scope="col" style="min-width: 130px;">Número</th>
                         <th scope="col">Atendido por</th>
                         <th scope="col">Fecha creación</th>
                         <th scope="col">Identificación cliente</th>
@@ -102,7 +108,7 @@
                             </select>
                         </td>
                     </tr>
-                    @for (orden of ordenesFiltradas; track orden.numeroOrden) {
+                    @for (orden of ordenesPorPagina[paginaActual-1]; track orden.numeroOrden; let idx = $index) {
                     <tr>
                         <td>
                             <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
@@ -138,6 +144,28 @@
                     }
                 </tbody>
             </table>
+            @if (ordenesPorPagina.length) {
+            <c-pagination>
+                <li cPageItem [disabled]="paginaActual == 1">
+                    <a cPageLink role="button" (click)="paginaActual = 1">&laquo;</a>
+                </li>
+                <li cPageItem [disabled]="paginaActual == 1">
+                    <a cPageLink role="button" (click)="paginaActual = paginaActual-1">&lt;</a>
+                </li>
+                @for (pagina of ordenesPorPagina; track $index) {
+                <li cPageItem [active]="paginaActual == $index+1">
+                    <a cPageLink role="button" (click)="paginaActual = $index+1">{{ $index+1 }}</a>
+                </li>
+                }
+                <li cPageItem [disabled]="paginaActual == ordenesPorPagina.length">
+                    <a cPageLink role="button" (click)="paginaActual = paginaActual+1">&gt;</a>
+                </li>
+                <li cPageItem [disabled]="paginaActual == ordenesPorPagina.length">
+                    <a cPageLink role="button" (click)="paginaActual = ordenesPorPagina.length">&raquo;</a>
+                </li>
+            </c-pagination>
+            }
+            <p>{{ ordenesFiltradas.length }} resultados</p>
         </div>
     </c-card-body>
 </c-card>

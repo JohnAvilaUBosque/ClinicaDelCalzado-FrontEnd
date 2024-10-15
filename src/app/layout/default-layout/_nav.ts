@@ -34,6 +34,14 @@ export const navItems: INavData[] = [
     }
   },
   {
+    name: 'Migrar orden de trabajo',
+    url: '/ordenesdetrabajo/migrar',
+    iconComponent: { name: 'cil-notes' },
+    attributes: {
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
+    }
+  },
+  {
     title: true,
     name: 'Informes',
     attributes: {
@@ -66,7 +74,7 @@ export const navItems: INavData[] = [
   {
     name: 'Listado de operarios',
     url: '/operarios/listado',
-    iconComponent: { name: 'cil-people' },
+    iconComponent: { name: 'cil-address-book' },
     attributes: {
       'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
     }
@@ -74,7 +82,7 @@ export const navItems: INavData[] = [
   {
     name: 'Agregar operario',
     url: '/operarios/agregar',
-    iconComponent: { name: 'cil-user-plus' },
+    iconComponent: { name: 'cil-contact' },
     attributes: {
       'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
     }
