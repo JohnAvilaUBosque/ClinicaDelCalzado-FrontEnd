@@ -22,7 +22,7 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
 
   @Input() servicios: ServicioModel[] = [];
   @Input() esModoLectura: boolean = false;
-  @Input() esOrdenAnulada: boolean = false;
+  @Input() mostrarAcciones: boolean = false;
 
   public indexServicioSeleccionado: number = 0;
   public idServicioSeleccionado: number = 0;

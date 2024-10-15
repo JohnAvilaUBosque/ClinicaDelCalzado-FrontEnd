@@ -4,6 +4,25 @@
     </c-card-header>
     <c-card-body>
         <p>Órdenes de trabajo de la más reciente a la más antigua.</p>
+        <c-row>
+            <c-col sm="6" lg="3" class="mb-3">
+                <label cLabel="col" sizing="sm">Filtrar por estado de orden:</label>
+                <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="filtrar()" name="orderStatus"
+                    #orderStatus="ngModel" sizing="sm">
+                    <option [value]="">
+                    </option>
+                    <option [value]="CONST.ESTADO_ORDEN.VIGENTE">
+                        {{CONST.ESTADO_ORDEN.VIGENTE}}
+                    </option>
+                    <option [value]="CONST.ESTADO_ORDEN.FINALIZADA">
+                        {{CONST.ESTADO_ORDEN.FINALIZADA}}
+                    </option>
+                    <option [value]="CONST.ESTADO_ORDEN.ANULADA">
+                        {{CONST.ESTADO_ORDEN.ANULADA}}
+                    </option>
+                </select>
+            </c-col>
+        </c-row>
         <div class="overflow-auto">
             <table cTable hover striped>
                 <thead>
@@ -28,25 +47,11 @@
                     <tr>
                         <td class="text-center">
                             <c-badge size="sm" class="text-info"
-                                cTooltip="Se muestran las órdenes de trabajo que contengan una parte de los filtros definidos.">
+                                cTooltip="Se muestran las órdenes de trabajo que contengan los siguientes filtros:">
                                 <svg cIcon name="cil-warning"></svg>
                             </c-badge>
                         </td>
                         <td>
-                            <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="filtrar()"
-                                name="orderStatus" #orderStatus="ngModel" sizing="sm">
-                                <option [value]="">
-                                </option>
-                                <option [value]="CONST.ESTADO_ORDEN.VIGENTE">
-                                    {{CONST.ESTADO_ORDEN.VIGENTE}}
-                                </option>
-                                <option [value]="CONST.ESTADO_ORDEN.FINALIZADA">
-                                    {{CONST.ESTADO_ORDEN.FINALIZADA}}
-                                </option>
-                                <option [value]="CONST.ESTADO_ORDEN.ANULADA">
-                                    {{CONST.ESTADO_ORDEN.ANULADA}}
-                                </option>
-                            </select>
                         </td>
                         <td>
                             <input cFormControl type="text" [(ngModel)]="filtro.numeroOrden" (ngModelChange)="filtrar()"

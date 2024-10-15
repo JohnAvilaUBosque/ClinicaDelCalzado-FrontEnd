@@ -51,26 +51,34 @@ export class FormularioAdminComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.adminLocal = this.usuarioService.obtenerAdminLocal();
-
     this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
         this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + title + ' administrador');
 
+        this.adminLocal = this.usuarioService.obtenerAdminLocal();
+
         this.titulo = title;
         if (title == 'Agregar') {
-          this.admin.estado = this.CONST.ESTADO_ADMIN.ACTIVO;
-          this.btnRadioGroup.setValue({ radioEstado: this.admin.estado });
-          this.btnRadioGroup.disable();
           this.habilitarModoCreacion();
+          this.cambiarEstado(this.CONST.ESTADO_ADMIN.ACTIVO);
+          this.btnRadioGroup.disable();
         }
         else if (title == 'Editar') {
-          this.obtenerAdmin();
           this.habilitarModoEdicion();
+          this.obtenerAdmin();
         }
         else if (title == 'Ver') {
-          this.obtenerAdmin();
           this.habilitarModoLectura();
+          this.obtenerAdmin();
+        }
+        else if (title == 'Perfil') {
+          this.habilitarModoLectura();
+          this.titulo = 'Ver';
+          this.admin = this.adminLocal;
+          this.admin.datosSeguridad = new DatosSeguridadModel;
+          this.esInformacionPersonal = true;
+          this.cambiarEstado(this.admin.estado);
+          this.btnRadioGroup.disable();
         }
       }
     );
@@ -86,8 +94,8 @@ export class FormularioAdminComponent implements OnInit {
               this.admin.datosSeguridad = new DatosSeguridadModel;
               this.esInformacionPersonal = this.adminLocal.identificacion == this.admin.identificacion;
 
-              this.btnRadioGroup.setValue({ radioEstado: this.admin.estado });
-              if (this.esModoCreacion || this.esModoLectura || (this.esModoEdicion && (this.esInformacionPersonal || this.adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO))) {
+              this.cambiarEstado(this.admin.estado);
+              if (this.esModoLectura || (this.esModoEdicion && this.adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO)) {
                 this.btnRadioGroup.disable();
               }
             }

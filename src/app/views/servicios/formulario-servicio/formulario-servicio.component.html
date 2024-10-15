@@ -21,7 +21,7 @@
                 @if (servicio.estado == CONST.ESTADO_SERVICIO.DESPACHADO) {
                 <span cInputGroupText sizing="sm">
                     <c-badge size="sm" class="text-info"
-                        cTooltip="El operario no se puede cambiar si el servicio ya está en estado {{ CONST.ESTADO_SERVICIO.DESPACHADO }}.">
+                        cTooltip="El operario no se puede cambiar si el servicio está en estado {{ CONST.ESTADO_SERVICIO.DESPACHADO }}">
                         <svg cIcon name="cil-warning"></svg>
                     </c-badge>
                 </span>
@@ -46,7 +46,7 @@
                 <span cInputGroupText sizing="sm">
                     @if (servicio.precioEstablecido) {
                     <c-badge size="sm" class="text-info"
-                        cTooltip="El precio ya fue establecido previamente y no se puede volver a modificar.">
+                        cTooltip="El precio ya fue establecido y no se puede volver a modificar">
                         <svg cIcon name="cil-warning"></svg>
                     </c-badge>
                     }

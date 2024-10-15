@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, FormModule } from '@coreui/angular';
+import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, FormModule, GridModule } from '@coreui/angular';
 import { OrdenDeTrabajoService } from '../orden-de-trabajo.service'
 import { OrdenDeTrabajoModel } from '../orden-de-trabajo.model'
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'listado-ordenes',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, BadgeModule, ButtonModule, TooltipModule, FormsModule, FormModule, IconDirective, CurrencyPipe, UpperCasePipe],
+  imports: [CommonModule, CardModule, TableModule, GridModule, BadgeModule, ButtonModule, TooltipModule, FormsModule, FormModule, IconDirective, CurrencyPipe, UpperCasePipe],
   templateUrl: './listado-ordenes.component.html',
   styleUrl: './listado-ordenes.component.scss'
 })
@@ -43,13 +43,13 @@ export class ListadoOrdenesComponent implements OnInit {
 
   filtrar() {
     this.ordenesFiltradas = this.ordenes.filter(x =>
-      x.estadoOrden.toLowerCase().includes(this.filtro.estadoOrden.toLowerCase()) &&
+      (!this.filtro.estadoOrden || x.estadoOrden.toLowerCase() == this.filtro.estadoOrden.toLowerCase()) &&
       x.numeroOrden.toLowerCase().includes(this.filtro.numeroOrden.toLowerCase()) &&
       x.atendidoPor.toLowerCase().includes(this.filtro.atendidoPor.toLowerCase()) &&
       x.cliente.identificacion.toLowerCase().includes(this.filtro.cliente.identificacion.toLowerCase()) &&
       x.cliente.nombre.toLowerCase().includes(this.filtro.cliente.nombre.toLowerCase()) &&
       x.cliente.celular.toLowerCase().includes(this.filtro.cliente.celular.toLowerCase()) &&
-      x.estadoPago.toLowerCase().includes(this.filtro.estadoPago.toLowerCase())
+      (!this.filtro.estadoPago || x.estadoPago.toLowerCase() == this.filtro.estadoPago.toLowerCase())
     )
   }
 

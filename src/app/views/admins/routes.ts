@@ -40,6 +40,13 @@ export const routes: Routes = [
           title: 'Ver'
         }
       },
+      {
+        path: 'perfil',
+        loadComponent: () => import('./formulario-admin/formulario-admin.component').then(m => m.FormularioAdminComponent),
+        data: {
+          title: 'Perfil'
+        }
+      },
       { path: '**', redirectTo: 'listado' }
     ]
   }

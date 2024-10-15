@@ -6,7 +6,7 @@ export const navItems: INavData[] = [
     title: true,
     name: 'Órdenes de trabajo',
     attributes: {
-      'roles': [ROL_ADMIN.PRINCIPAL, ROL_ADMIN.SECUNDARIO]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL, ROL_ADMIN.SECUNDARIO]
     }
   },
   {
@@ -14,7 +14,7 @@ export const navItems: INavData[] = [
     url: '/ordenesdetrabajo/listado',
     iconComponent: { name: 'cil-list' },
     attributes: {
-      'roles': [ROL_ADMIN.PRINCIPAL, ROL_ADMIN.SECUNDARIO]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL, ROL_ADMIN.SECUNDARIO]
     }
   },
   {
@@ -22,7 +22,7 @@ export const navItems: INavData[] = [
     url: '/ordenesdetrabajo/crear',
     iconComponent: { name: 'cil-note-add' },
     attributes: {
-      'roles': [ROL_ADMIN.PRINCIPAL, ROL_ADMIN.SECUNDARIO]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL, ROL_ADMIN.SECUNDARIO]
     }
   },
   {
@@ -30,14 +30,14 @@ export const navItems: INavData[] = [
     url: '/ordenesdetrabajo/buscar',
     iconComponent: { name: 'cil-magnifying-glass' },
     attributes: {
-      'roles': [ROL_ADMIN.PRINCIPAL, ROL_ADMIN.SECUNDARIO]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL, ROL_ADMIN.SECUNDARIO]
     }
   },
   {
     title: true,
     name: 'Informes',
     attributes: {
-      'roles': [ROL_ADMIN.PRINCIPAL]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
     }
   },
   {
@@ -45,7 +45,7 @@ export const navItems: INavData[] = [
     url: '/informes/general',
     iconComponent: { name: 'cil-chart' },
     attributes: {
-      'roles': [ROL_ADMIN.PRINCIPAL]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
     }
   },
   {
@@ -53,14 +53,37 @@ export const navItems: INavData[] = [
     url: '/informes/detallado',
     iconComponent: { name: 'cil-description' },
     attributes: {
-      'roles': [ROL_ADMIN.PRINCIPAL]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
+    }
+  },
+  {
+    title: true,
+    name: 'Operarios',
+    attributes: {
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
+    }
+  },
+  {
+    name: 'Listado de operarios',
+    url: '/operarios/listado',
+    iconComponent: { name: 'cil-people' },
+    attributes: {
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
+    }
+  },
+  {
+    name: 'Agregar operario',
+    url: '/operarios/agregar',
+    iconComponent: { name: 'cil-user-plus' },
+    attributes: {
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
     }
   },
   {
     title: true,
     name: 'Administradores',
     attributes: {
-      'roles': [ROL_ADMIN.PRINCIPAL]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
     }
   },
   {
@@ -68,7 +91,7 @@ export const navItems: INavData[] = [
     url: '/admins/listado',
     iconComponent: { name: 'cil-people' },
     attributes: {
-      'roles': [ROL_ADMIN.PRINCIPAL]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
     }
   },
   {
@@ -76,7 +99,7 @@ export const navItems: INavData[] = [
     url: '/admins/agregar',
     iconComponent: { name: 'cil-user-plus' },
     attributes: {
-      'roles': [ROL_ADMIN.PRINCIPAL]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
     }
   }
 ];

@@ -107,7 +107,8 @@
             </c-row>
             <c-row>
                 <c-col xxl="8" class="mb-3"> <!-- Datos de los servicios -->
-                    <listado-servicios [servicios]="orden.servicios" [esModoLectura]="esModoLectura" [esOrdenAnulada]="orden.estadoOrden == CONST.ESTADO_ORDEN.ANULADA"
+                    <listado-servicios [servicios]="orden.servicios" [esModoLectura]="esModoLectura"
+                        [mostrarAcciones]="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA"
                         (cambiaronPreciosEvent)="calcularTotal()"
                         (esFormularioValidoEvent)="sonValidosServicios = $event"
                         (servicioEditadoEvent)="servicioEditado($event);"></listado-servicios>

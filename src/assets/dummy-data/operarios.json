@@ -3,52 +3,62 @@
         {
             "identificacion": "1023456789",
             "nombre": "Alex Medina",
-            "celular": "3124567890"
+            "celular": "3124567890",
+            "estado": "ACTIVO"
         },
         {
             "identificacion": "1034567890",
             "nombre": "Luis Vivas",
-            "celular": "3135678901"
+            "celular": "3135678901",
+            "estado": "ACTIVO"
         },
         {
             "identificacion": "1045678901",
             "nombre": "Sofía Herrera",
-            "celular": "3146789012"
+            "celular": "3146789012",
+            "estado": "ACTIVO"
         },
         {
             "identificacion": "1056789012",
             "nombre": "Carlos Pérez",
-            "celular": "3157890123"
+            "celular": "3157890123",
+            "estado": "ACTIVO"
         },
         {
             "identificacion": "1067890123",
             "nombre": "Laura Martínez",
-            "celular": "3168901234"
+            "celular": "3168901234",
+            "estado": "INACTIVO"
         },
         {
             "identificacion": "1078901234",
             "nombre": "Fernando Gómez",
-            "celular": "3179012345"
+            "celular": "3179012345",
+            "estado": "ACTIVO"
         },
         {
             "identificacion": "1089012345",
             "nombre": "María Ríos",
-            "celular": "3180123456"
+            "celular": "3180123456",
+            "estado": "ACTIVO"
         },
         {
             "identificacion": "1090123456",
             "nombre": "Javier Castillo",
-            "celular": "3191234567"
+            "celular": "3191234567",
+            "estado": "INACTIVO"
         },
         {
             "identificacion": "1101234567",
             "nombre": "Andrea Torres",
-            "celular": "3202345678"
+            "celular": "3202345678",
+            "estado": "ACTIVO"
         },
         {
             "identificacion": "1112345678",
             "nombre": "Diego Ramírez",
-            "celular": "3213456789"
+            "celular": "3213456789",
+            "estado": "ACTIVO"
         }
     ]
 }

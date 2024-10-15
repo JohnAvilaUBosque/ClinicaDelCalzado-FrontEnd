@@ -22,6 +22,11 @@ export enum ESTADO_SERVICIO {
     DESPACHADO = 'DESPACHADO'
 }
 
+export enum ESTADO_OPERARIO {
+    ACTIVO = 'ACTIVO',
+    INACTIVO = 'INACTIVO',
+}
+
 export enum ESTADO_ADMIN {
     ACTIVO = 'ACTIVO',
     INACTIVO = 'INACTIVO',

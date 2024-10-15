@@ -4,7 +4,7 @@
             <table cTable hover bordered style="margin-bottom: 0px;">
                 <thead>
                     <tr>
-                        @if (!esOrdenAnulada) {
+                        @if (mostrarAcciones) {
                         <th scope="col" class="col-auto" style="min-width: 50px"></th>
                         }
                         <th scope="col" class="col-6" style="min-width: 150px;"><label cLabel="col" sizing="sm">Listado
@@ -20,7 +20,7 @@
                 <tbody>
                     @for (servicio of servicios; track $index) {
                     <tr>
-                        @if (!esOrdenAnulada) {
+                        @if (mostrarAcciones) {
                         <td>
                             @if (esModoLectura) {
                             <button cButton color="primary" variant="outline" size="sm" shape="rounded-pill"
@@ -50,15 +50,23 @@
                             </c-form-feedback>
                         </td>
                         <td>
-                            <input cFormControl type="text"
-                                [ngModel]="servicio.precio | currency: 'COP' : 'symbol-narrow' : '1.0'"
-                                (ngModelChange)="cambiarPrecioIndividual($event, $index)" name="price{{$index}}"
-                                #price="ngModel" maxlength="11" required [pattern]="CONST.REGULAR_EXP.CURRENCY"
-                                [valid]="price.touched && price.invalid ? false : undefined" [readonly]="esModoLectura"
-                                [plaintext]="esModoLectura">
-                            <c-form-feedback *ngIf="!!(price.touched && price.invalid)" [valid]="false">
-                                Este campo es requerido y debe ser un valor monetario válido!
-                            </c-form-feedback>
+                            <div class="position-relative">
+                                <input cFormControl type="text"
+                                    [ngModel]="servicio.precio | currency: 'COP' : 'symbol-narrow' : '1.0'"
+                                    (ngModelChange)="cambiarPrecioIndividual($event, $index)" name="price{{$index}}"
+                                    #price="ngModel" maxlength="11" required [pattern]="CONST.REGULAR_EXP.CURRENCY"
+                                    [valid]="price.touched && price.invalid ? false : undefined"
+                                    [readonly]="esModoLectura" [plaintext]="esModoLectura">
+                                @if (esModoLectura && !servicio.precioEstablecido) {
+                                <c-badge size="sm" class="text-warning position-absolute" style="right: 0; top: 9px;"
+                                    cTooltip="Precio por establecer">
+                                    <svg cIcon name="cil-warning"></svg>
+                                </c-badge>
+                                }
+                                <c-form-feedback *ngIf="!!(price.touched && price.invalid)" [valid]="false">
+                                    Este campo es requerido y debe ser un valor monetario válido!
+                                </c-form-feedback>
+                            </div>
                         </td>
                         <td>
                             <c-input-group>
@@ -113,7 +121,7 @@
     </c-modal-header>
     <c-modal-body>
         @if (operarioModal.visible) {
-        <listado-operarios (seleccionOperarioEvent)="cambiarOperario($event);">
+        <listado-operarios [esEmbebido]="true" (seleccionOperarioEvent)="cambiarOperario($event);">
         </listado-operarios>
         }
     </c-modal-body>

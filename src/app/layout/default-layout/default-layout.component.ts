@@ -58,9 +58,9 @@ export class DefaultLayoutComponent implements OnInit {
   ngOnInit(): void {
     var adminLocal = this.usuarioService.obtenerAdminLocal();
     this.navItems = navItems.filter(n => {
-      if (n.attributes && n.attributes['roles']) {
-        var roles: string[] = n.attributes['roles'];
-        return roles.some(r => adminLocal.rol == r);
+      if (n.attributes && n.attributes['rolesAutorizados']) {
+        var rolesAutorizados: string[] = n.attributes['rolesAutorizados'];
+        return rolesAutorizados.some(r => adminLocal.rol == r);
       }
 
       return true;

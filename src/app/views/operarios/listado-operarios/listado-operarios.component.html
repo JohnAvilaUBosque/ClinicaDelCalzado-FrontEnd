@@ -1,43 +1,99 @@
-<p>Comience ingresando un filtro para mostrar los operarios encontrados.</p>
-<div class="overflow-auto">
-    <table cTable hover striped>
-        <thead>
-            <tr>
-                <th scope="col" class="col"></th>
-                <th scope="col" class="col">Identificación</th>
-                <th scope="col" class="col">Nombre</th>
-                <th scope="col" class="col">Celular</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="text-center">
-                    <c-badge size="sm" class="text-info"
-                        cTooltip="Se muestran los operarios que contengan una parte de los filtros definidos.">
-                        <svg cIcon name="cil-warning"></svg>
-                    </c-badge>
-                </td>
-                <td>
-                    <input cFormControl type="text" [(ngModel)]="filtro.identificacion" (ngModelChange)="filtrar()"
-                        name="identification" #identification="ngModel" maxlength="20" sizing="sm">
-                </td>
-                <td>
-                    <input cFormControl type="text" [(ngModel)]="filtro.nombre" (ngModelChange)="filtrar()"
-                        name="nameClient" #nameClient="ngModel" maxlength="20" sizing="sm">
-                </td>
-                <td>
-                    <input cFormControl type="text" [(ngModel)]="filtro.celular" (ngModelChange)="filtrar()"
-                        name="cellphone" #cellphone="ngModel" maxlength="20" sizing="sm">
-                </td>
-            </tr>
-            @for (operario of operariosFiltrados; track $index) {
-            <tr (click)="seleccionarOperario(operario)">
-                <td></td>
-                <td>{{operario.identificacion}}</td>
-                <td>{{operario.nombre}}</td>
-                <td>{{operario.celular}}</td>
-            </tr>
-            }
-        </tbody>
-    </table>
-</div>
+<div *ngIf="esEmbebido; then thenBlock else elseBlock"></div>
+<ng-template #thenBlock>
+    <p>Comience ingresando un filtro para mostrar los operarios encontrados.</p>
+    <ng-container *ngTemplateOutlet="operariosTemplate">
+    </ng-container>
+</ng-template>
+<ng-template #elseBlock>
+    <c-card>
+        <c-card-header>
+            <h5>Listado operarios</h5>
+        </c-card-header>
+        <c-card-body>
+            <ng-container *ngTemplateOutlet="operariosTemplate">
+            </ng-container>
+        </c-card-body>
+    </c-card>
+</ng-template>
+
+<ng-template #operariosTemplate>
+    <div class="overflow-auto">
+        <table cTable hover striped>
+            <thead>
+                <tr>
+                    <th scope="col" class="col">{{ esEmbebido ? "" : "Acciones" }}</th>
+                    <th scope="col" class="col">Identificación</th>
+                    <th scope="col" class="col">Nombre</th>
+                    <th scope="col" class="col">Celular</th>
+                    @if (!esEmbebido) {
+                    <th scope="col" class="col">Estado</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <c-badge size="sm" class="text-info"
+                            cTooltip="Se muestran los operarios que contengan los siguientes filtros:">
+                            <svg cIcon name="cil-warning"></svg>
+                        </c-badge>
+                    </td>
+                    <td>
+                        <input cFormControl type="text" [(ngModel)]="filtro.identificacion" (ngModelChange)="filtrar()"
+                            name="identification" #identification="ngModel" maxlength="20" sizing="sm">
+                    </td>
+                    <td>
+                        <input cFormControl type="text" [(ngModel)]="filtro.nombre" (ngModelChange)="filtrar()"
+                            name="nameClient" #nameClient="ngModel" maxlength="20" sizing="sm">
+                    </td>
+                    <td>
+                        <input cFormControl type="text" [(ngModel)]="filtro.celular" (ngModelChange)="filtrar()"
+                            name="cellphone" #cellphone="ngModel" maxlength="20" sizing="sm">
+                    </td>
+                    @if (!esEmbebido) {
+                    <td>
+                        <select cSelect [(ngModel)]="filtro.estado" (ngModelChange)="filtrar()" name="orderStatus"
+                            #orderStatus="ngModel" sizing="sm">
+                            <option [value]="">
+                            </option>
+                            <option [value]="CONST.ESTADO_OPERARIO.ACTIVO">
+                                {{CONST.ESTADO_OPERARIO.ACTIVO}}
+                            </option>
+                            <option [value]="CONST.ESTADO_OPERARIO.INACTIVO">
+                                {{CONST.ESTADO_OPERARIO.INACTIVO}}
+                            </option>
+                        </select>
+                    </td>
+                    }
+                </tr>
+                @for (operario of operariosFiltrados; track $index) {
+                <tr (click)="seleccionarOperario(operario)">
+                    <td>
+                        @if (!esEmbebido) {
+                        <a cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
+                            cTooltip="Ver operario" [routerLink]="['/operarios/ver/' + operario.identificacion]">
+                            <svg cIcon name="cil-external-link"></svg>
+                        </a>
+                        <a cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
+                            cTooltip="Editar operario" [routerLink]="['/operarios/editar/' + operario.identificacion]">
+                            <svg cIcon name="cil-pencil"></svg>
+                        </a>
+                        }
+                    </td>
+                    <td>{{operario.identificacion}}</td>
+                    <td>{{operario.nombre}}</td>
+                    <td>{{operario.celular}}</td>
+                    @if (!esEmbebido) {
+                    <td>
+                        <c-badge color="{{operario.estado == CONST.ESTADO_OPERARIO.ACTIVO ? 'info' : 'danger'}}"
+                            shape="rounded-pill">
+                            {{operario.estado | uppercase}}
+                        </c-badge>
+                    </td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</ng-template>

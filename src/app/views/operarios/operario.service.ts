@@ -25,4 +25,35 @@ export class OperarioService {
     ));
   }
 
+  obtenerOperario(id: string): Observable<OperarioModel | undefined> {
+    // return this.http.get<any>(this.url + '/' + idOrden);
+    return this.obtenerOperarios().pipe(map(
+      operarios => {
+        return operarios.find(admin => admin.identificacion == id);
+      }
+    ));
+  }
+
+  crearOperario(operarioNuevo: OperarioModel): Observable<any> {
+    // return this.http.post<any>(this.url, orden);
+    return this.obtenerOperarios().pipe(map(
+      operarios => {
+        operarios.push(operarioNuevo);
+        localStorage.setItem('OPERARIOS', JSON.stringify(operarios));
+        return true;
+      }
+    ));
+  }
+
+  editarOperario(operarioEditado: OperarioModel): Observable<any> {
+    // return this.http.post<any>(this.url, orden);
+    return this.obtenerOperarios().pipe(map(
+      operarios => {
+        var index = operarios.findIndex(admin => admin.identificacion == operarioEditado.identificacion);
+        operarios[index] = operarioEditado;
+        localStorage.setItem('OPERARIOS', JSON.stringify(operarios));
+      }
+    ));
+  }
+
 }
