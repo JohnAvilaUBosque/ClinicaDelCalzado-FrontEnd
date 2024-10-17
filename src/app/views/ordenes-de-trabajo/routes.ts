@@ -44,7 +44,7 @@ export const routes: Routes = [
         path: 'migrar',
         loadComponent: () => import('./formulario-orden/formulario-orden.component').then(m => m.FormularioOrdenComponent),
         data: {
-          title: 'Crear'
+          title: 'Migrar'
         }
       },
       { path: '**', redirectTo: 'listado' }

@@ -34,11 +34,13 @@ export class FormularioOrdenComponent implements OnInit {
 
   public CONST = inject(ConstantsService);
 
-  public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public esModoLectura: boolean = false;
+  public esModoMigracion: boolean = false;
+
+  public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public sonValidosServicios: boolean = false;
   public esFechaEntregaValida: boolean = false;
-
+  
   public whatsAppNumber: string = '';
   public commentarioNuevo: string = '';
   public abonoNuevo: number = 0;
@@ -57,6 +59,10 @@ export class FormularioOrdenComponent implements OnInit {
           this.orden.numeroOrden = this.CONST.ORDEN_NUMBER_DEFAULT;
           this.orden.atendidoPor = this.usuarioLocal.nombre;
           this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME);
+          this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
+        }
+        else if (title == 'Migrar') {
+          this.esModoMigracion = true;
           this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
         }
         else if (title == 'Ver') {
