@@ -2,7 +2,8 @@
     <c-card-header>
         <c-row>
             <c-col xs="auto" class="col-title">
-                <h5 class="me-2"> {{ esModoLectura ? 'Ver' : 'Crear'}} orden de trabajo</h5>
+                <h5 class="me-2"> {{ esModoLectura ? 'Ver' : esModoMigracion ? 'Migrar' : 'Crear'}} orden de trabajo
+                </h5>
             </c-col>
             @if (esModoLectura) {
             <c-col xs="auto">
@@ -41,35 +42,74 @@
         </c-row>
     </c-card-header>
     <c-card-body>
-        <form cForm #orderForm="ngForm" (ngSubmit)="crearOrden()">
-            @if (esModoMigracion || esModoLectura) {
+        <form cForm #orderForm="ngForm" (ngSubmit)="ngSubmit()">
             <c-row> <!-- Datos automaticos -->
+                @if (esModoLectura) {
                 <c-col sm="6" lg="4" class="mb-3">
                     <label cLabel="col" sizing="sm">Número de orden:</label>
-                    <input cFormControl type="text" readOnly plaintext [ngModel]="orden.numeroOrden" name="orderNumber">
+                    <input cFormControl type="text" [ngModel]="orden.numeroOrden" name="orderNumber" readOnly plaintext>
                 </c-col>
                 <c-col sm="6" lg="4" class="mb-3">
                     <label cLabel="col" sizing="sm">Atendido por:</label>
-                    <input cFormControl type="text" [ngModel]="orden.atendidoPor" name="attendedBy "
-                        #attendedBy="ngModel" requerid
-                        [valid]="attendedBy.touched && attendedBy.invalid ? false : undefined"
-                        [readonly]="esModoLectura" [plaintext]="esModoLectura">
-                    <c-form-feedback *ngIf="!!(attendedBy.touched && attendedBy.invalid)" [valid]="false">
-                        Este campo es requerido y debe ser numérico!
-                    </c-form-feedback>
+                    <input cFormControl type="text" [ngModel]="orden.atendidoPor" name="attendedBy" readonly plaintext>
                 </c-col>
                 <c-col sm="6" lg="4" class="mb-3">
                     <label cLabel="col" sizing="sm">Fecha de creación:</label>
                     <input cFormControl type="text" [ngModel]="orden.fechaCreacion | date:CONST.FORMATS_VIEW.DATETIME"
-                        name="createDate" #createDate="ngModel" required
-                        [valid]="createDate.touched && createDate.invalid ? false : undefined"
-                        [readonly]="esModoLectura" [plaintext]="esModoLectura">
-                    <c-form-feedback *ngIf="!!(createDate.touched && createDate.invalid)" [valid]="false">
-                        Este campo es requerido y debe ser una fecha válida!
+                        name="createDate" readonly plaintext>
+                </c-col>
+                }
+                @if (esModoMigracion) {
+                <c-col sm="6" lg="4" class="mb-3">
+                    <label cLabel="col" sizing="sm">Atendido por:</label>
+                    <select cSelect [(ngModel)]="orden.atendidoPor" name="attendedBy" #attendedBy="ngModel" required
+                        [valid]="attendedBy.touched && attendedBy.invalid ? false : undefined">
+                        @for (admin of administradores; track $index) {
+                        <option [value]="admin.nombre">
+                            {{admin.nombre}}
+                        </option>
+                        }
+                    </select>
+                    <c-form-feedback *ngIf="!!(attendedBy.touched && attendedBy.invalid)" [valid]="false">
+                        Este campo es requerido!
                     </c-form-feedback>
                 </c-col>
+                <c-col sm="6" lg="4" class="mb-3">
+                    <label cLabel="col" sizing="sm">Fecha de creación:</label>
+                    <input cFormControl type="date" [(ngModel)]="fechaCreacion"
+                        (ngModelChange)="validarFechaDeCreacion($event)" name="createDate" #createDate="ngModel"
+                        required
+                        [valid]="createDate.touched && (createDate.invalid || !esValidaFechaCreacion) ? false : undefined">
+                    <c-form-feedback *ngIf="!!(createDate.touched && (createDate.invalid || !esValidaFechaCreacion))"
+                        [valid]="false">
+                        Este campo es requerido y debe ser una fecha anterior o igual al día actual!!
+                    </c-form-feedback>
+                </c-col>
+                <c-col sm="6" lg="4" class="mb-3">
+                    <label cLabel="col" sizing="sm">Hora de creación:</label>
+                    <c-input-group>
+                        <input cFormControl type="text" [(ngModel)]="horaCreacion" name="createTime" #createTime="ngModel"
+                            required maxlength="5" [pattern]="CONST.REGULAR_EXP.TIME"
+                            [valid]="createTime.touched && createTime.invalid ? false : undefined"
+                            [placeholder]="CONST.FORMATS_VIEW.TIME_ONLY">
+                        <select cSelect [(ngModel)]="amOpm" name="amOpmSelect" #amOpmSelect="ngModel" required
+                            [valid]="amOpmSelect.touched && amOpmSelect.invalid ? false : undefined">
+                            <option [value]="'AM'">
+                                AM
+                            </option>
+                            <option [value]="'PM'">
+                                PM
+                            </option>
+                        </select>
+                        <c-form-feedback
+                            *ngIf="(createTime.touched && createTime.invalid) || (amOpmSelect.touched && amOpmSelect.invalid)"
+                            [valid]="false">
+                            Este campo es requerido y debe ser una hora válida!
+                        </c-form-feedback>
+                    </c-input-group>
+                </c-col>
+                }
             </c-row>
-            }
             <c-row> <!-- Datos del cliente -->
                 <c-col sm="6" lg="4" class="mb-3">
                     <label cLabel="col" sizing="sm">Identificación cliente:</label>
@@ -176,10 +216,10 @@
                                     <input cFormControl type="date" [(ngModel)]="orden.fechaEntrega"
                                         (ngModelChange)="validarFechaDeEntrega($event)" name="deliveryDate"
                                         #deliveryDate="ngModel" required
-                                        [valid]="deliveryDate.touched && (deliveryDate.invalid || !esFechaEntregaValida) ? false : undefined"
+                                        [valid]="deliveryDate.touched && (deliveryDate.invalid || !esValidaFechaEntrega) ? false : undefined"
                                         [readonly]="esModoLectura" [plaintext]="esModoLectura">
                                     <c-form-feedback
-                                        *ngIf="!!(deliveryDate.touched && (deliveryDate.invalid || !esFechaEntregaValida))"
+                                        *ngIf="!!(deliveryDate.touched && (deliveryDate.invalid || !esValidaFechaEntrega))"
                                         [valid]="false">
                                         Este campo es requerido y debe ser una fecha posterior al día actual!
                                     </c-form-feedback>
@@ -220,7 +260,7 @@
                 }
             </c-row>
             @if (!esModoLectura) {
-            <input cButton color="primary" type="submit" value="Crear orden"
+            <input cButton color="primary" type="submit" value="{{esModoCreacion ? 'Crear' : 'Migrar'}} orden"
                 [disabled]="orderForm.invalid || !sonValidosServicios">
             }
         </form>
@@ -283,7 +323,7 @@
         <button [cModalToggle]="descargarModal.id" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-        
+
     </c-modal-body>
     <c-modal-footer>
         <button [cModalToggle]="descargarModal.id" cButton color="secondary">

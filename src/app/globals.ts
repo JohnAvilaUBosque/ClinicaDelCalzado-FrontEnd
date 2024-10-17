@@ -54,7 +54,8 @@ export enum FORMATS_API {
 export enum FORMATS_VIEW {
     DATETIME = 'dd/MM/yyyy hh:mm a',
     DATE = 'dd/MM/yyyy',
-    TIME = 'hh:mm a'
+    TIME = 'hh:mm a',
+    TIME_ONLY = 'hh:mm'
 };
 
 export class REGULAR_EXP {
@@ -62,4 +63,5 @@ export class REGULAR_EXP {
     readonly NOT_NUMBER = /[^0-9]/g;
     readonly NUMBER = /^\d+$/;
     readonly PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    readonly TIME = "^(0?[1-9]|1[0-2]):[0-5][0-9]$";
 };

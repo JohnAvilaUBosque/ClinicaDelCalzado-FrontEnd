@@ -57,6 +57,27 @@ export class OrdenDeTrabajoService {
     ));
   }
 
+  migrarOrden(ordenNueva: OrdenDeTrabajoModel): Observable<any> {
+    // return this.http.post<any>(this.url, orden);
+    return this.obtenerOrdenes().pipe(map(
+      ordenes => {
+        var servicios: ServicioModel[] = [];
+        ordenes.forEach(orden => servicios.push(...orden.servicios));
+        var ultimoId = servicios.sort(s => s.id).map((s => s.id)).pop();
+        ordenNueva.servicios.forEach(s => {
+          if (ultimoId) {
+            ultimoId++;
+            s.id = ultimoId;
+          }
+        })
+
+        ordenNueva.numeroOrden = this.obtenerSiguienteNumero(ordenes, ordenNueva.fechaCreacion);
+        ordenes.push(ordenNueva);
+        localStorage.setItem('ORDENES', JSON.stringify(ordenes));
+      }
+    ));
+  }
+
   editarOrden(ordenEditada: OrdenDeTrabajoModel): Observable<any> {
     // return this.http.post<any>(this.url, orden);
     return this.obtenerOrdenes().pipe(map(

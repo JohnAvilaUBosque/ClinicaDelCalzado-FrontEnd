@@ -6,7 +6,7 @@ import { OrdenDeTrabajoModel, ComentarioModel } from '../orden-de-trabajo.model'
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs';
+import { map, min } from 'rxjs';
 import { UsuarioService } from '../../usuarios/usuario.service';
 import { ConstantsService } from 'src/app/constants.service';
 import { ListadoServiciosComponent } from '../../servicios/listado-servicios/listado-servicios.component';
@@ -16,6 +16,7 @@ import { Title } from '@angular/platform-browser';
 import { ClienteModel } from '../../clientes/cliente.model';
 import { ServicioModel } from '../../servicios/servicio.model';
 import { AdministradorModel } from '../../admins/administrador.model';
+import { AdministradorService } from '../../admins/administrador.service';
 
 @Component({
   selector: 'formulario-orden',
@@ -27,6 +28,7 @@ import { AdministradorModel } from '../../admins/administrador.model';
 export class FormularioOrdenComponent implements OnInit {
 
   private ordenDeTrabajoService = inject(OrdenDeTrabajoService);
+  private adminService = inject(AdministradorService);
   private usuarioService = inject(UsuarioService);
   private titleService = inject(Title);
   private router = inject(Router);
@@ -34,13 +36,20 @@ export class FormularioOrdenComponent implements OnInit {
 
   public CONST = inject(ConstantsService);
 
+  public esModoCreacion: boolean = false;
   public esModoLectura: boolean = false;
   public esModoMigracion: boolean = false;
 
   public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public sonValidosServicios: boolean = false;
-  public esFechaEntregaValida: boolean = false;
-  
+  public esValidaFechaEntrega: boolean = false;
+
+  public administradores: AdministradorModel[] = [];
+  public fechaCreacion: string = '';
+  public horaCreacion: string = '';
+  public amOpm: string = '';
+  public esValidaFechaCreacion: boolean = false;
+
   public whatsAppNumber: string = '';
   public commentarioNuevo: string = '';
   public abonoNuevo: number = 0;
@@ -56,6 +65,7 @@ export class FormularioOrdenComponent implements OnInit {
         this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + title + ' orden de trabajo');
 
         if (title == 'Crear') {
+          this.esModoCreacion = true;
           this.orden.numeroOrden = this.CONST.ORDEN_NUMBER_DEFAULT;
           this.orden.atendidoPor = this.usuarioLocal.nombre;
           this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME);
@@ -64,6 +74,7 @@ export class FormularioOrdenComponent implements OnInit {
         else if (title == 'Migrar') {
           this.esModoMigracion = true;
           this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
+          this.obtenerAdministradores();
         }
         else if (title == 'Ver') {
           this.esModoLectura = true;
@@ -77,6 +88,10 @@ export class FormularioOrdenComponent implements OnInit {
     );
   }
 
+  obtenerAdministradores() {
+    this.adminService.obtenerAdministradores().subscribe(admins => this.administradores = admins);
+  }
+
   obtenerOrden(numeroOrden: string) {
     this.ordenDeTrabajoService.obtenerOrden(numeroOrden).subscribe(
       ordenEncontrada => {
@@ -88,6 +103,13 @@ export class FormularioOrdenComponent implements OnInit {
           this.router.navigate(['ordenesdetrabajo/buscar/'], { queryParams: { ordenNoEncontrada: numeroOrden } });
       }
     );
+  }
+
+  ngSubmit() {
+    if (this.esModoCreacion)
+      this.crearOrden();
+    else
+      this.migrarOrden();
   }
 
   crearOrden() {
@@ -109,13 +131,47 @@ export class FormularioOrdenComponent implements OnInit {
     );
   }
 
+  migrarOrden() {
+    this.orden.fechaCreacion = this.CONST.fechaATexto(this.fechaCreacion + ' ' + this.horaCreacion + ' ' + this.amOpm, this.CONST.FORMATS_API.DATETIME);
+    this.orden.fechaEntrega = this.CONST.fechaATexto(this.orden.fechaEntrega, this.CONST.FORMATS_API.DATE);
+    this.orden.estadoPago = this.orden.saldo != 0 ?
+      this.CONST.ESTADO_PAGO.PENDIENTE :
+      this.orden.servicios.some(s => s.precio == 0) ?
+        this.CONST.ESTADO_PAGO.PENDIENTE :
+        this.CONST.ESTADO_PAGO.PAGADO;
+
+    if (this.commentarioNuevo)
+      this.agregarComentarioAOrden(this.commentarioNuevo);
+
+    this.ordenDeTrabajoService.migrarOrden(this.orden).subscribe(
+      respuesta => {
+        this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
+      }
+    );
+  }
+
+  editarOrden() {
+    this.ordenDeTrabajoService.editarOrden(this.orden).subscribe(
+      respuesta => {
+        this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
+      }
+    );
+  }
+
+  validarFechaDeCreacion(fecha: any) {
+    var fechaDeCreacion = new Date(fecha);
+    var fechaActual = this.CONST.textoAFecha(Date.now());
+    if (fechaDeCreacion && fechaActual)
+      this.esValidaFechaCreacion = fechaDeCreacion <= fechaActual;
+  }
+
   calcularTotal() {
     this.orden.precioTotal = this.orden.servicios?.length ? this.orden.servicios.map(s => s.precio).reduce((a, c) => a + c) : 0;
     this.calcularSaldo();
   }
 
-  cambiarAbono(value: string) {
-    var abono = Number.parseInt(value.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
+  cambiarAbono(valor: string) {
+    var abono = Number.parseInt(valor.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
     this.orden.abono = Number.isNaN(abono) ? 0 : abono;
     this.calcularSaldo();
   }
@@ -124,8 +180,8 @@ export class FormularioOrdenComponent implements OnInit {
     this.orden.saldo = this.orden.precioTotal - this.orden.abono;
   }
 
-  cambiarAbonoNuevo(value: string) {
-    var abonoNuevo = Number.parseInt(value.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
+  cambiarAbonoNuevo(valor: string) {
+    var abonoNuevo = Number.parseInt(valor.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
     this.abonoNuevo = Number.isNaN(abonoNuevo) ? 0 : abonoNuevo;
     this.calcularSaldoNuevo();
   }
@@ -138,7 +194,7 @@ export class FormularioOrdenComponent implements OnInit {
     var fechaDeEntrega = new Date(fecha);
     var fechaActual = this.CONST.textoAFecha(Date.now());
     if (fechaDeEntrega && fechaActual)
-      this.esFechaEntregaValida = fechaDeEntrega > fechaActual;
+      this.esValidaFechaEntrega = fechaDeEntrega > fechaActual;
   }
 
   agregarComentarioAOrden(comentario: string) {
@@ -148,14 +204,6 @@ export class FormularioOrdenComponent implements OnInit {
       fecha: this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME)
     }
     this.orden.comentarios.push(commentarioObject);
-  }
-
-  editarOrden() {
-    this.ordenDeTrabajoService.editarOrden(this.orden).subscribe(
-      respuesta => {
-        this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
-      }
-    );
   }
 
   private calcularEstados() {
