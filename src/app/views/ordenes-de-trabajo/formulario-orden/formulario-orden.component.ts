@@ -33,16 +33,18 @@ export class FormularioOrdenComponent implements OnInit {
 
   public CONST = inject(ConstantsService);
 
-  public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public esModoLectura: boolean = false;
+  public esModoMigracion: boolean = false;
+
+  public orden: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
   public sonValidosServicios: boolean = false;
   public esFechaEntregaValida: boolean = false;
-
+  
   public whatsAppNumber: string = '';
   public commentarioNuevo: string = '';
   public abonoNuevo: number = 0;
   public saldoNuevo: number = 0;
-
+  
   ngOnInit(): void {
     const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
@@ -52,6 +54,10 @@ export class FormularioOrdenComponent implements OnInit {
           this.orden.numeroOrden = this.CONST.ORDEN_NUMBER_DEFAULT;
           this.orden.atendidoPor = this.usuarioService.obtenerAdminLocal()?.nombre;
           this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME);
+          this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
+        }
+        else if (title == 'Migrar') {
+          this.esModoMigracion = true;
           this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
         }
         else if (title == 'Ver') {

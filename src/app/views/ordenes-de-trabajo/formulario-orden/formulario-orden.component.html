@@ -41,7 +41,7 @@
     </c-card-header>
     <c-card-body>
         <form cForm #orderForm="ngForm" (ngSubmit)="crearOrden()">
-            @if (esModoLectura) {
+            @if (esModoMigracion || esModoLectura) {
             <c-row> <!-- Datos automaticos -->
                 <c-col sm="6" lg="4" class="mb-3">
                     <label cLabel="col" sizing="sm">Número de orden:</label>
@@ -49,12 +49,23 @@
                 </c-col>
                 <c-col sm="6" lg="4" class="mb-3">
                     <label cLabel="col" sizing="sm">Atendido por:</label>
-                    <input cFormControl type="text" readOnly plaintext [ngModel]="orden.atendidoPor" name="attendedBy">
+                    <input cFormControl type="text" [ngModel]="orden.atendidoPor" name="attendedBy "
+                        #attendedBy="ngModel" requerid
+                        [valid]="attendedBy.touched && attendedBy.invalid ? false : undefined"
+                        [readonly]="esModoLectura" [plaintext]="esModoLectura">
+                    <c-form-feedback *ngIf="!!(attendedBy.touched && attendedBy.invalid)" [valid]="false">
+                        Este campo es requerido y debe ser numérico!
+                    </c-form-feedback>
                 </c-col>
                 <c-col sm="6" lg="4" class="mb-3">
                     <label cLabel="col" sizing="sm">Fecha de creación:</label>
-                    <input cFormControl type="text" readOnly plaintext
-                        [ngModel]="orden.fechaCreacion | date:CONST.FORMATS_VIEW.DATETIME" name="createDate">
+                    <input cFormControl type="text" [ngModel]="orden.fechaCreacion | date:CONST.FORMATS_VIEW.DATETIME"
+                        name="createDate" #createDate="ngModel" required
+                        [valid]="createDate.touched && createDate.invalid ? false : undefined"
+                        [readonly]="esModoLectura" [plaintext]="esModoLectura">
+                    <c-form-feedback *ngIf="!!(createDate.touched && createDate.invalid)" [valid]="false">
+                        Este campo es requerido y debe ser una fecha válida!
+                    </c-form-feedback>
                 </c-col>
             </c-row>
             }
