@@ -53,24 +53,74 @@
   </c-container>
 </div>
 
+<!-- TOASTERS -->
+
 <c-toaster [placement]="'bottom-end'" class="p-3" position="fixed">
-  <c-toast #toastCredencialesIncorrectas="cToast" [visible]="false" color="danger" class="text-white">
+  <c-toast #toastError="cToast" [visible]="false" color="danger" class="text-white">
     <div class="d-flex">
       <c-toast-body>
-        <span>Credenciales incorrectas.</span>
+        <span>{{ mensajeError }}</span>
       </c-toast-body>
-      <button cButtonClose white class="me-2 m-auto" (click)="toastCredencialesIncorrectas.visible = false"></button>
+      <button cButtonClose white class="me-2 m-auto" (click)="toastError.visible = false"></button>
     </div>
   </c-toast>
 </c-toaster>
 
-<c-toaster [placement]="'bottom-end'" class="p-3" position="fixed">
-  <c-toast #toastUsuarioInactivo="cToast" [visible]="false" color="warning">
-    <div class="d-flex">
-      <c-toast-body>
-        <span>Usuario inactivo, comuniquese con el administrador.</span>
-      </c-toast-body>
-      <button cButtonClose class="me-2 m-auto" (click)="toastUsuarioInactivo.visible = false"></button>
-    </div>
-  </c-toast>
-</c-toaster>
+<!-- MODALS -->
+
+<c-modal #cambiarClaveModal backdrop="static" id="cambiarClaveModal">
+  <form cForm #cambiarClaveForm="ngForm">
+    <c-modal-header>
+      <h5 cModalTitle>Cambiar contraseña personal</h5>
+      <button [cModalToggle]="cambiarClaveModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      @if (cambiarClaveModal.visible) {
+      <p>Debe cambiar su contraseña temporal por una contraseña única para poder continuar.</p>
+      <c-row>
+        <c-col xs="12" class="mb-3">
+          <label cLabel="col" sizing="sm">Contraseña actual:</label>
+          <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveActual" name="password"
+            #password="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
+            [valid]="password.touched && password.invalid ? false : undefined">
+          <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
+            La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1
+            número y 1 símbolo!
+          </c-form-feedback>
+        </c-col>
+        <c-col xs="12" class="mb-3">
+          <label cLabel="col" sizing="sm">Contraseña nueva:</label>
+          <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveNueva" name="passwordNew"
+            #passwordNew="ngModel" (ngModelChange)="confirmarClave()" maxlength="20"
+            [pattern]="CONST.REGULAR_EXP.PASSWORD" required
+            [valid]="passwordNew.touched && passwordNew.invalid ? false : undefined">
+          <c-form-feedback *ngIf="!!(passwordNew.touched && passwordNew.invalid)" [valid]="false">
+            La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1
+            número y 1 símbolo!
+          </c-form-feedback>
+        </c-col>
+        <c-col xs="12" class="mb-3">
+          <label cLabel="col" sizing="sm">Confimación de contraseña:</label>
+          <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveConfirmacion" name="passwordConfirm"
+            #passwordConfirm="ngModel" (ngModelChange)="confirmarClave()" maxlength="20" required
+            [valid]="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden) ? false : undefined">
+          <c-form-feedback *ngIf="!!(passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden))"
+            [valid]="false">
+            Las contraseña no coinciden!
+          </c-form-feedback>
+        </c-col>
+      </c-row>
+      }
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="cambiarClaveModal.id" cButton color="secondary">
+        Cerrar
+      </button>
+      <button cButton color="warning" (click)="cambiarClave()"
+        [disabled]="cambiarClaveForm.invalid || !lasClavesCoinciden">
+        Cambiar contraseña
+        <svg cIcon name="cil-asterisk-circle"></svg>
+      </button>
+    </c-modal-footer>
+  </form>
+</c-modal>

@@ -44,7 +44,6 @@ export class OrdenDeTrabajoService {
         ordenes.forEach(orden => servicios.push(...orden.servicios));
         var ultimoId = servicios.sort(s => s.id).map((s => s.id)).pop();
         ordenNueva.servicios.forEach(s => {
-          s.precioEstablecido = s.precio != 0;
           if (ultimoId) {
             ultimoId++;
             s.id = ultimoId;

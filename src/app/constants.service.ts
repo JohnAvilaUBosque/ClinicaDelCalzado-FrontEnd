@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FORMATS_VIEW, FORMATS_API, API_URL, ORDEN_NUMBER_DEFAULT, REGULAR_EXP, ESTADO_PAGO, ESTADO_SERVICIO, ESTADO_ORDEN, ESTADO_ADMIN, ROL_ADMIN, NOMBRE_EMPRESA, WHATSAPP_URL, ESTADO_OPERARIO, CANT_FILAS_POR_PAGINA } from './globals'
 import { formatCurrency, formatDate } from '@angular/common';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root'
@@ -25,20 +26,35 @@ export class ConstantsService {
   public readonly FORMATS_API = FORMATS_API;
   public readonly REGULAR_EXP = new REGULAR_EXP();
 
-  fechaATexto(fecha: string | number | Date, formato: string) {
+  fechaATexto(fecha: string | number | Date, formato: string): string {
     return formatDate(fecha, formato, 'en-US');
   }
 
-  monedaATexto(valor: number) : string {
+  textoAFecha(texto: string | number): Date | null {
+    var fecha = this.fechaATexto(texto, this.FORMATS_API.DATE);
+
+    if (!fecha)
+      return null;
+
+    return new Date(fecha);
+  }
+
+  monedaATexto(valor: number): string {
     return formatCurrency(valor, 'en-US', '$', 'COP', '1.0');
   }
 
-  textoAFecha(texto: string): Date | null {
-    var tiempo = Date.parse(texto);
+  private readonly secretKey = 'g35*SFG842356/G56Yhg-rfs541';
 
-    if (isNaN(tiempo))
-      return null;
+  encriptarTexto(texto: string | null): string | null {
+    if (!texto) return texto;
 
-    return new Date(tiempo);
+    return CryptoJS.AES.encrypt(texto, this.secretKey).toString();
+  }
+
+  desencriptarTexto(textoEncriptado: string | null): string | null {
+    if (!textoEncriptado) return textoEncriptado;
+
+    const bytes = CryptoJS.AES.decrypt(textoEncriptado, this.secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
   }
 }

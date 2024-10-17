@@ -36,7 +36,6 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
   @ViewChildren('textareaElement') textareas!: QueryList<ElementRef>;
 
   @ViewChild('operarioModal') operarioModal!: ModalComponent;
-
   @ViewChild('editarServicioModal') editarServicioModal!: ModalComponent;
   @ViewChild('formularioServicio') formularioServicio!: FormularioServicioComponent;
 
@@ -66,23 +65,25 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
   cambiarPrecioIndividual(value: string, index: number) {
     var valorIndividual = Number.parseInt(value.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
     this.servicios[index].precio = Number.isNaN(valorIndividual) ? 0 : valorIndividual;
+    this.servicios[index].precioEstablecido = this.servicios[index].precio != 0;
     this.cambiaronPreciosEvent.emit();
   }
 
   cambiarOperario(operario: OperarioModel) {
-    if (this.esModoLectura)
-      this.formularioServicio.servicio.operario = operario;
-    else
+    if (!this.esModoLectura) {
       this.servicios[this.indexServicioSeleccionado].operario = operario;
+      this.adjustTextareasHeight()
+    }
 
     this.operarioModal.visible = false;
-    if (this.esModoLectura)
-      this.editarServicioModal.visible = true;
 
-    this.adjustTextareasHeight()
+    if (this.esModoLectura) {
+      this.formularioServicio.servicio.operario = operario;
+      this.editarServicioModal.visible = true;
+    }
   }
 
-  borrarServicio(borrarServicioModel: ModalComponent, index: number) {
+  borrarServicio(index: number, borrarServicioModel: ModalComponent) {
     this.servicios.splice(index, 1);
     this.cambiaronPreciosEvent.emit();
 

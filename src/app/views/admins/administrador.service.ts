@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { AdministradorModel } from './administrador.model';
+import { CambioDeClaveModel } from '../usuarios/usuario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,15 @@ export class AdministradorService {
 
   obtenerAdministradores(): Observable<AdministradorModel[]> {
     return this.http.get<any>(this.url).pipe(map(
-      administradores => {
-        var administradoresJson = localStorage.getItem('ADMINS');
-        if (administradoresJson)
-          return JSON.parse(administradoresJson);
+      data => {
+        var administradores = localStorage.getItem('ADMINS');
+        if (administradores)
+          return JSON.parse(administradores);
 
-        localStorage.setItem('ADMINS', JSON.stringify(administradores['admins']));
-        return administradores['admins'];
+        administradores = data['admins'];
+        localStorage.setItem('ADMINS', JSON.stringify(administradores));
+
+        return administradores;
       }
     ));
   }
@@ -51,7 +54,22 @@ export class AdministradorService {
       administradores => {
         var index = administradores.findIndex(admin => admin.identificacion == administradorEditado.identificacion);
         administradores[index] = administradorEditado;
+        if (administradores[index].tieneClaveTemporal) administradores[index].clave = 'Temp1234*'
         localStorage.setItem('ADMINS', JSON.stringify(administradores));
+        return administradores[index];
+      }
+    ));
+  }
+
+  cambiarClave(cambioDeClave: CambioDeClaveModel): Observable<any> {
+    // return this.http.post<any>(this.url, orden);
+    return this.obtenerAdministradores().pipe(map(
+      administradores => {
+        var index = administradores.findIndex(admin => admin.identificacion == cambioDeClave.identificacion);
+        administradores[index].clave = cambioDeClave.claveNueva;
+        administradores[index].tieneClaveTemporal = false;
+        localStorage.setItem('ADMINS', JSON.stringify(administradores));
+        return administradores[index];
       }
     ));
   }

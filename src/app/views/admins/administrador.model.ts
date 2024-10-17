@@ -9,4 +9,5 @@ export class AdministradorModel {
     estado: string = '';
     rol: string = '';
     datosSeguridad: DatosSeguridadModel = new DatosSeguridadModel();
+    tieneClaveTemporal: boolean = false;
 }

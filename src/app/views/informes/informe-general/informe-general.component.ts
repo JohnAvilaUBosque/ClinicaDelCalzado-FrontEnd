@@ -114,7 +114,7 @@ export class InformeGeneralComponent implements OnInit {
 
   filtrar() {
     var fechaFinalMasUnDia = new Date(this.fechaFinal);
-    fechaFinalMasUnDia.setDate(new Date(this.fechaFinal).getDate() + 1);
+    fechaFinalMasUnDia.setDate(fechaFinalMasUnDia.getDate() + 1);
     this.diasFiltrados = this.dias.filter(
       dia =>
         new Date(this.fechaInicial) <= new Date(dia.fecha)

@@ -1,36 +1,40 @@
 {
     "admins": [
         {
-            "identificacion": 123456789,
+            "identificacion": "123456789",
             "nombre": "Liliana Rodriguez",
             "celular": "3216549870",
             "estado": "ACTIVO",
             "rol": "PRINCIPAL",
-            "clave": "Abcd1234*"
+            "clave": "Abcd1234*",
+            "tieneClaveTemporal": false
         },
         {
-            "identificacion": 321654987,
+            "identificacion": "321654987",
             "nombre": "Ana Nuñez",
             "celular": "3197624850",
             "estado": "INACTIVO",
             "rol": "PRINCIPAL",
-            "clave": "Abcd1234*"
+            "clave": "Abcd1234*",
+            "tieneClaveTemporal": false
         },
         {
-            "identificacion": 789456123,
+            "identificacion": "789456123",
             "nombre": "Yesid Rivera",
             "celular": "3456789120",
             "estado": "ACTIVO",
             "rol": "SECUNDARIO",
-            "clave": "Abcd1234*"
+            "clave": "Abcd1234*",
+            "tieneClaveTemporal": true
         },
         {
-            "identificacion": 987654321,
+            "identificacion": "987654321",
             "nombre": "Eduardo Fonseca",
             "celular": "3123456789",
             "estado": "INACTIVO",
             "rol": "SECUNDARIO",
-            "clave": "Abcd1234*"
+            "clave": "Abcd1234*",
+            "tieneClaveTemporal": false
         }
     ]
 }

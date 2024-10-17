@@ -30,12 +30,12 @@
                     <tr>
                         <td>
                             <a cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
-                                [cTooltip]="adminLocal.identificacion == admin.identificacion ? 'Ver perfil' : 'Ver'"
+                                [cTooltip]="adminLocal.identificacion == admin.identificacion ? 'Ver perfil' : 'Ver administrador'"
                                 (click)="navegarAFormulario(admin.identificacion)">
                                 <svg cIcon name="cil-external-link"></svg>
                             </a>
                             <a cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
-                                [cTooltip]="adminLocal.identificacion == admin.identificacion ? 'Editar perfil' : 'Editar'"
+                                [cTooltip]="adminLocal.identificacion == admin.identificacion ? 'Editar perfil' : 'Editar administrador'"
                                 [routerLink]="['/admins/editar/' + admin.identificacion]">
                                 <svg cIcon name="cil-pencil"></svg>
                             </a>

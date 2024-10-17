@@ -123,9 +123,20 @@
                     </c-button-group>
                 </c-col>
             </c-row>
+            @if (esModoEdicion && !esInformacionPersonal) {
+            <c-row>
+                <c-col class="mb-3">
+                    <c-form-check sizing="lg" switch>
+                        <input cFormCheckInput type="checkbox" [(ngModel)]="asignarClaveTemporal" name="checkSecurity"
+                            role="button" />
+                        <label cFormCheckLabel>Cambiar clave temporal</label>
+                    </c-form-check>
+                </c-col>
+            </c-row>
+            }
             @if (esModoEdicion && esInformacionPersonal) {
             <c-row>
-                <c-col sm="6" class="mb-3">
+                <c-col class="mb-3">
                     <c-form-check sizing="lg" switch>
                         <input cFormCheckInput type="checkbox" [(ngModel)]="editarDatosSeguridad" name="checkSecurity"
                             role="button" />
@@ -150,6 +161,8 @@
     </c-card-body>
 </c-card>
 
+<!-- MODALS -->
+
 <c-modal #cambiarClaveModal backdrop="static" id="cambiarClaveModal">
     <form cForm #cambiarClaveForm="ngForm">
         <c-modal-header>
@@ -157,6 +170,7 @@
             <button [cModalToggle]="cambiarClaveModal.id" cButtonClose></button>
         </c-modal-header>
         <c-modal-body>
+            @if (cambiarClaveModal.visible) {
             <c-row>
                 <c-col xs="12" class="mb-3">
                     <label cLabel="col" sizing="sm">Contraseña actual:</label>
@@ -192,16 +206,33 @@
                     </c-form-feedback>
                 </c-col>
             </c-row>
+            }
         </c-modal-body>
         <c-modal-footer>
             <button [cModalToggle]="cambiarClaveModal.id" cButton color="secondary">
                 Cerrar
             </button>
             <button cButton color="warning" (click)="cambiarClave(cambiarClaveModal)"
-                [disabled]="cambiarClaveForm.invalid">
+                [disabled]="cambiarClaveForm.invalid || !lasClavesCoinciden">
                 Cambiar contraseña
                 <svg cIcon name="cil-asterisk-circle"></svg>
             </button>
         </c-modal-footer>
     </form>
+</c-modal>
+
+<c-modal #claveTemporalModal backdrop="static" id="claveTemporalModal">
+    <c-modal-header>
+        <h5 cModalTitle>Clave temporal generada</h5>
+        <button (click)="irAVerAdmin()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <c-alert color="info">{{claveTemporal}}</c-alert>
+    </c-modal-body>
+    <c-modal-footer>
+        <button cButton color="primary" (click)="irAVerAdmin()" class="text-white">
+            Cerrar
+            <svg cIcon name="cil-x"></svg>
+        </button>
+    </c-modal-footer>
 </c-modal>

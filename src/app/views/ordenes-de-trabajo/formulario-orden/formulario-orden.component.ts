@@ -15,6 +15,7 @@ import { ListadoOperariosComponent } from '../../operarios/listado-operarios/lis
 import { Title } from '@angular/platform-browser';
 import { ClienteModel } from '../../clientes/cliente.model';
 import { ServicioModel } from '../../servicios/servicio.model';
+import { AdministradorModel } from '../../admins/administrador.model';
 
 @Component({
   selector: 'formulario-orden',
@@ -43,14 +44,18 @@ export class FormularioOrdenComponent implements OnInit {
   public abonoNuevo: number = 0;
   public saldoNuevo: number = 0;
 
+  public usuarioLocal: AdministradorModel = new AdministradorModel();
+
   ngOnInit(): void {
+    this.usuarioLocal = this.usuarioService.obtenerAdminLocal();
+
     const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
         this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + title + ' orden de trabajo');
 
         if (title == 'Crear') {
           this.orden.numeroOrden = this.CONST.ORDEN_NUMBER_DEFAULT;
-          this.orden.atendidoPor = this.usuarioService.obtenerAdminLocal()?.nombre;
+          this.orden.atendidoPor = this.usuarioLocal.nombre;
           this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME);
           this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
         }
@@ -85,8 +90,8 @@ export class FormularioOrdenComponent implements OnInit {
     this.orden.estadoPago = this.orden.saldo != 0 ?
       this.CONST.ESTADO_PAGO.PENDIENTE :
       this.orden.servicios.some(s => s.precio == 0) ?
-      this.CONST.ESTADO_PAGO.PENDIENTE :
-      this.CONST.ESTADO_PAGO.PAGADO;
+        this.CONST.ESTADO_PAGO.PENDIENTE :
+        this.CONST.ESTADO_PAGO.PAGADO;
 
     if (this.commentarioNuevo)
       this.agregarComentarioAOrden(this.commentarioNuevo);
@@ -124,30 +129,22 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   validarFechaDeEntrega(fecha: any) {
-    this.esFechaEntregaValida = new Date(fecha) > new Date();
+    var fechaDeEntrega = new Date(fecha);
+    var fechaActual = this.CONST.textoAFecha(Date.now());
+    if (fechaDeEntrega && fechaActual)
+      this.esFechaEntregaValida = fechaDeEntrega > fechaActual;
   }
 
   agregarComentarioAOrden(comentario: string) {
     var commentarioObject: ComentarioModel = {
       descripcion: comentario,
-      nombreAdmin: this.usuarioService.obtenerAdminLocal()?.nombre,
+      nombreAdmin: this.usuarioLocal.nombre,
       fecha: this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME)
     }
     this.orden.comentarios.push(commentarioObject);
   }
 
   editarOrden() {
-    this.orden.estadoPago = this.orden.saldo != 0 ?
-    this.CONST.ESTADO_PAGO.PENDIENTE :
-    this.orden.servicios.every(s => s.precioEstablecido) ?
-      this.CONST.ESTADO_PAGO.PAGADO : this.CONST.ESTADO_PAGO.PENDIENTE;
-
-    this.orden.estadoOrden =
-      this.orden.estadoPago == this.CONST.ESTADO_PAGO.PAGADO
-        && this.orden.servicios.every(s => s.estado == this.CONST.ESTADO_SERVICIO.DESPACHADO)
-        ? this.CONST.ESTADO_ORDEN.FINALIZADA
-        : this.CONST.ESTADO_ORDEN.VIGENTE;
-
     this.ordenDeTrabajoService.editarOrden(this.orden).subscribe(
       respuesta => {
         this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
@@ -155,11 +152,25 @@ export class FormularioOrdenComponent implements OnInit {
     );
   }
 
+  private calcularEstados() {
+    this.orden.estadoPago = this.orden.saldo != 0 ?
+      this.CONST.ESTADO_PAGO.PENDIENTE :
+      this.orden.servicios.every(s => s.precioEstablecido) ?
+        this.CONST.ESTADO_PAGO.PAGADO : this.CONST.ESTADO_PAGO.PENDIENTE;
+
+    this.orden.estadoOrden =
+      this.orden.estadoPago == this.CONST.ESTADO_PAGO.PAGADO
+        && this.orden.servicios.every(s => s.estado == this.CONST.ESTADO_SERVICIO.DESPACHADO)
+        ? this.CONST.ESTADO_ORDEN.FINALIZADA
+        : this.CONST.ESTADO_ORDEN.VIGENTE;
+  }
+
   servicioEditado(servicio: ServicioModel) {
     this.obtenerOrden(this.orden.numeroOrden);
     setTimeout(() => {
       this.agregarComentarioAOrden('Se edito el servicio "' + servicio.descripcion + '"');
       this.calcularTotal();
+      this.calcularEstados();
       this.editarOrden();
     }, 100);
   }
@@ -211,6 +222,7 @@ export class FormularioOrdenComponent implements OnInit {
     this.saldoNuevo = 0;
 
     abonarModal.visible = false;
+    this.calcularEstados();
     this.editarOrden();
   }
 
@@ -225,10 +237,9 @@ export class FormularioOrdenComponent implements OnInit {
 
   anular(anularModal: ModalComponent) {
     this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.ANULADA
-    this.agregarComentarioAOrden('Se canceló la orden de trabajo');
+    this.agregarComentarioAOrden('Se anuló la orden de trabajo');
 
     anularModal.visible = false;
     this.editarOrden();
   }
-
 }

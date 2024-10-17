@@ -15,7 +15,7 @@
                             <label cLabel="col" sizing="sm">Precio:</label>
                             @if (!esModoLectura) {
                             <c-badge size="sm" class="text-info"
-                                cTooltip="Si el precio se deja en $0, se puede establecer después">
+                                cTooltip="Si queda el precio en $0, se puede establecer después">
                                 <svg cIcon name="cil-warning"></svg>
                             </c-badge>
                             }
@@ -36,7 +36,7 @@
                         @if (mostrarAcciones) {
                         <td>
                             @if (esModoLectura) {
-                            <button cButton color="primary" variant="outline" size="sm" shape="rounded-pill"
+                            <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
                                 cTooltip="Editar servicio" [cModalToggle]="editarServicioModal.id"
                                 (click)="idServicioSeleccionado = servicio.id" class="ms-1 mt-1">
                                 <svg cIcon name="cil-pencil"></svg>
@@ -70,7 +70,7 @@
                                     #price="ngModel" maxlength="11" required [pattern]="CONST.REGULAR_EXP.CURRENCY"
                                     [valid]="price.touched && price.invalid ? false : undefined"
                                     [readonly]="esModoLectura" [plaintext]="esModoLectura" sizing="sm">
-                                @if (esModoLectura && !servicio.precioEstablecido) {
+                                @if (esModoLectura && mostrarAcciones && !servicio.precioEstablecido) {
                                 <c-badge size="sm" class="text-warning position-absolute" style="right: 0; top: 5px;"
                                     cTooltip="Precio por establecer">
                                     <svg cIcon name="cil-warning"></svg>
@@ -183,7 +183,7 @@
         <button [cModalToggle]="borrarServicioModal.id" cButton color="secondary">
             Cerrar
         </button>
-        <button cButton color="danger" (click)="borrarServicio(borrarServicioModal, indexServicioSeleccionado)"
+        <button cButton color="danger" (click)="borrarServicio(indexServicioSeleccionado, borrarServicioModal)"
             class="text-white">
             Borrar
             <svg cIcon name="cil-x"></svg>

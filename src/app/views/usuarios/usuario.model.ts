@@ -4,6 +4,7 @@ export class UsuarioModel {
 }
 
 export class CambioDeClaveModel {
+    identificacion: string = '';
     claveActual: string = '';
     claveNueva: string = '';
     claveConfirmacion: string = '';

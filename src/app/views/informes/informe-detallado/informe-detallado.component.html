@@ -110,6 +110,8 @@
     </c-card-body>
 </c-card>
 
+ <!-- TOASTERS -->
+
 <c-toaster [placement]="'bottom-end'" class="p-3" position="fixed">
     <c-toast #toastSinResultados="cToast" [visible]="false" color="info" class="text-white">
         <div class="d-flex">
@@ -143,15 +145,15 @@
     </c-toast>
 </c-toaster>
 
+ <!-- MODALS -->
+
 <c-modal #descargarModal backdrop="static" id="descargarModal">
     <c-modal-header>
         <h5 cModalTitle>Descargar informe detallado</h5>
         <button [cModalToggle]="descargarModal.id" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-        @if (descargarModal.visible) {
-
-        }
+        
     </c-modal-body>
     <c-modal-footer>
         <button [cModalToggle]="descargarModal.id" cButton color="secondary">

@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { BadgeComponent, ButtonGroupComponent, ButtonModule, CardModule, FormCheckLabelDirective, FormModule, GridModule, ModalComponent, ModalModule, TooltipModule } from '@coreui/angular';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { AlertModule, BadgeComponent, ButtonGroupComponent, ButtonModule, CardModule, FormCheckLabelDirective, FormModule, GridModule, ModalComponent, ModalModule, TooltipModule } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { AdministradorService } from '../administrador.service';
 import { AdministradorModel } from '../administrador.model';
@@ -16,7 +16,7 @@ import { DatosSeguridadComponent } from '../../usuarios/datos-seguridad/datos-se
 @Component({
   selector: 'formulario-admin',
   standalone: true,
-  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, ReactiveFormsModule, ModalModule, RouterModule, ButtonGroupComponent, IconDirective, BadgeComponent, FormCheckLabelDirective, DatosSeguridadComponent],
+  imports: [CommonModule, CardModule, FormModule, GridModule, ButtonModule, TooltipModule, FormsModule, ReactiveFormsModule, ModalModule, RouterModule, AlertModule, ButtonGroupComponent, IconDirective, BadgeComponent, FormCheckLabelDirective, DatosSeguridadComponent],
   templateUrl: './formulario-admin.component.html',
   styleUrl: './formulario-admin.component.scss'
 })
@@ -36,10 +36,14 @@ export class FormularioAdminComponent implements OnInit {
   public esModoCreacion: boolean = false;
   public esModoEdicion: boolean = false;
   public esModoLectura: boolean = false;
-  public esInformacionPersonal: boolean = false;
 
   public admin: AdministradorModel = new AdministradorModel();
   public lasClavesCoinciden: boolean = false;
+
+  public asignarClaveTemporal: boolean = false;
+  public claveTemporal: string = '';
+
+  public esInformacionPersonal: boolean = false;
   public editarDatosSeguridad: boolean = false;
   public sonValidosDatosSeguridad: boolean = false;
 
@@ -50,12 +54,14 @@ export class FormularioAdminComponent implements OnInit {
     radioEstado: new FormControl('')
   });
 
+  @ViewChild('claveTemporalModal') claveTemporalModal!: ModalComponent;
+
   ngOnInit(): void {
+    this.adminLocal = this.usuarioService.obtenerAdminLocal();
+
     this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
         this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + title + ' administrador');
-
-        this.adminLocal = this.usuarioService.obtenerAdminLocal();
 
         this.titulo = title;
         if (title == 'Agregar') {
@@ -72,11 +78,12 @@ export class FormularioAdminComponent implements OnInit {
           this.obtenerAdmin();
         }
         else if (title == 'Perfil') {
-          this.habilitarModoLectura();
           this.titulo = 'Ver';
+          this.habilitarModoLectura();
+          this.esInformacionPersonal = true;
+
           this.admin = this.adminLocal;
           this.admin.datosSeguridad = new DatosSeguridadModel;
-          this.esInformacionPersonal = true;
           this.cambiarEstado(this.admin.estado);
           this.btnRadioGroup.disable();
         }
@@ -95,7 +102,9 @@ export class FormularioAdminComponent implements OnInit {
               this.esInformacionPersonal = this.adminLocal.identificacion == this.admin.identificacion;
 
               this.cambiarEstado(this.admin.estado);
-              if (this.esModoLectura || (this.esModoEdicion && this.adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO)) {
+              if (this.esModoLectura
+                || (this.esModoEdicion && this.adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO)
+                || this.esInformacionPersonal) {
                 this.btnRadioGroup.disable();
               }
             }
@@ -109,18 +118,43 @@ export class FormularioAdminComponent implements OnInit {
 
   onSubmit() {
     if (this.esModoEdicion) {
+      if (this.asignarClaveTemporal) this.admin.tieneClaveTemporal = this.asignarClaveTemporal;
+
       this.administradorService.editarAdministrador(this.admin).subscribe(
         respuesta => {
-          this.router.navigate(['admins/ver/' + this.admin.identificacion]);
+          if (this.asignarClaveTemporal) {
+            this.claveTemporal = respuesta.clave;
+            this.claveTemporalModal.visible = true;
+            return;
+          }
+
+          this.irAVerAdmin();
         }
       );
     } else {
+      this.admin.tieneClaveTemporal = true;
       this.administradorService.crearAdministrador(this.admin).subscribe(
         respuesta => {
-          this.router.navigate(['admins/ver/' + this.admin.identificacion]);
+          this.irAVerAdmin();
         }
       );
     }
+  }
+
+  cambiarClave(cambiarClaveModal: ModalComponent): void {
+    this.cambioDeClave.identificacion = this.admin.identificacion;
+
+    this.administradorService.cambiarClave(this.cambioDeClave).subscribe(
+      respuesta => {
+        cambiarClaveModal.visible = false;
+        this.cambioDeClave = new CambioDeClaveModel();
+        this.lasClavesCoinciden = false;
+      }
+    );
+  }
+
+  irAVerAdmin() {
+    this.router.navigate(['admins/ver/' + this.admin.identificacion]);
   }
 
   habilitarModoCreacion() {
@@ -154,12 +188,4 @@ export class FormularioAdminComponent implements OnInit {
     this.lasClavesCoinciden = this.cambioDeClave.claveNueva == this.cambioDeClave.claveConfirmacion;
   }
 
-  cambiarClave(cambiarClaveModal: ModalComponent): void {
-    console.log(this.cambioDeClave);
-
-    this.cambioDeClave = new CambioDeClaveModel();
-    this.lasClavesCoinciden = false;
-
-    cambiarClaveModal.visible = false;
-  }
 }

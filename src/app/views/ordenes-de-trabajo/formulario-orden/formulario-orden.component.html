@@ -25,7 +25,8 @@
                     <svg cIcon name="cil-short-text"></svg>
                 </button>
                 <button cButton color="danger" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Anular orden"
-                    [cModalToggle]="anularModal.id" *ngIf="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE">
+                    [cModalToggle]="anularModal.id"
+                    *ngIf="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE && usuarioLocal.rol == CONST.ROL_ADMIN.PRINCIPAL">
                     <svg cIcon name="cil-x"></svg>
                 </button>
             </c-col>
@@ -105,7 +106,7 @@
             <c-row>
                 <c-col xxl="8" class="mb-3"> <!-- Datos de los servicios -->
                     <listado-servicios [servicios]="orden.servicios" [esModoLectura]="esModoLectura"
-                        [mostrarAcciones]="orden.estadoOrden != CONST.ESTADO_ORDEN.ANULADA"
+                        [mostrarAcciones]="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE"
                         (cambiaronPreciosEvent)="calcularTotal()"
                         (esFormularioValidoEvent)="sonValidosServicios = $event"
                         (servicioEditadoEvent)="servicioEditado($event);"></listado-servicios>
@@ -271,9 +272,7 @@
         <button [cModalToggle]="descargarModal.id" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-        @if (descargarModal.visible) {
-
-        }
+        
     </c-modal-body>
     <c-modal-footer>
         <button [cModalToggle]="descargarModal.id" cButton color="secondary">
@@ -388,6 +387,7 @@
             @if (orden.abono) {
             <p>Para poder anular la orden de trabajo, por favor comente que se hizo con lo ya abonado ({{orden.abono |
                 currency: 'COP' : 'symbol-narrow' : '1.0'}}).</p>
+            }
             <label cLabel="col" sizing="sm">Comentario:</label>
             <textarea cFormControl rows="5" [(ngModel)]="commentarioNuevo" name="commentNew" #commentNew="ngModel"
                 maxlength="500" required
@@ -395,10 +395,6 @@
             <c-form-feedback *ngIf="!!(commentNew.touched && commentNew.invalid)" [valid]="false">
                 Este campo es requerido!
             </c-form-feedback>
-            }
-            @else {
-            <p>¿ Está seguro de anular esta orden de trabajo ?</p>
-            }
             }
         </c-modal-body>
         <c-modal-footer>
