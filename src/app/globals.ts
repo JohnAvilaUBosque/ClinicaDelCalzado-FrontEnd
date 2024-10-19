@@ -63,5 +63,5 @@ export class REGULAR_EXP {
     readonly NOT_NUMBER = /[^0-9]/g;
     readonly NUMBER = /^\d+$/;
     readonly PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-    readonly TIME = "^(0?[1-9]|1[0-2]):[0-5][0-9]$";
+    readonly TIME = '^(0?[1-9]|1[0-2]):[0-5][0-9]$';
 };

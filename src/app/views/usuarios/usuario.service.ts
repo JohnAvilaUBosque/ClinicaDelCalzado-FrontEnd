@@ -45,22 +45,22 @@ export class UsuarioService extends BaseService {
         var admin = respuesta.find(admin => admin.identificacion == usuario.identificacion);
         if (!admin || admin.clave != usuario.clave) {
           return {
-            error: "UNAUTHORIZED",
-            message: "Credenciales inválidas, intente nuevamente!"
+            error: 'UNAUTHORIZED',
+            message: 'Credenciales inválidas, intente nuevamente!'
           };
         }
 
         if (admin.estado == this.CONST.ESTADO_ADMIN.INACTIVO) {
           return {
-            error: "UNAUTHORIZED",
-            message: "Usuario inactivo, contacte al administrador principal!"
+            error: 'UNAUTHORIZED',
+            message: 'Usuario inactivo, contacte al administrador principal!'
           };
         }
 
         return {
-          message: "Inicio de sesión exitoso",
-          access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-          token_type: "Bearer ",
+          message: 'Inicio de sesión exitoso',
+          access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+          token_type: 'Bearer ',
           has_temporary_password: true
        };
       }
@@ -69,7 +69,7 @@ export class UsuarioService extends BaseService {
 
   cambiarAdminLocal(admin: AdministradorModel) {
     var adminJson = admin ? JSON.stringify(admin) : '';
-    localStorage.setItem(this.localStorageKeyUser, this.CONST.encriptarTexto(adminJson) ?? "")
+    localStorage.setItem(this.localStorageKeyUser, this.CONST.encriptarTexto(adminJson) ?? '')
   }
 
   obtenerAdminLocal(): AdministradorModel {
@@ -78,7 +78,7 @@ export class UsuarioService extends BaseService {
   }
 
   cambiarToken(token: string) {
-    localStorage.setItem(this.localStorageKeyToken, this.CONST.encriptarTexto(token) ?? "")
+    localStorage.setItem(this.localStorageKeyToken, this.CONST.encriptarTexto(token) ?? '')
   }
 
   obtenerToken(): string | null {

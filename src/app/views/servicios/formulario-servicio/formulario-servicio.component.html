@@ -1,12 +1,17 @@
 <form cForm #servicioForm="ngForm" (ngSubmit)="editarServicio()">
     <c-row>
+        <c-col class="align-self-center">
+            <label cLabel="col" class="text-danger float-end" sizing="sm">* Campos requeridos</label>
+        </c-col>
+    </c-row>
+    <c-row>
         <c-col class="mb-3">
             <label cLabel="col" sizing="sm">Descripción:</label>
             <textarea #textareaElement cFormControl rows="1" [(ngModel)]="servicio.descripcion" name="nameService"
                 #nameService="ngModel" (input)="adjustTextareasHeight()" maxlength="100" required
                 [valid]="nameService.touched && nameService.invalid ? false : undefined" disabled>
             </textarea>
-            <c-form-feedback *ngIf="!!(nameService.touched && nameService.invalid)" [valid]="false">
+            <c-form-feedback *ngIf="nameService.touched && nameService.invalid" [valid]="false">
                 Este campo es requerido!
             </c-form-feedback>
         </c-col>
@@ -42,6 +47,7 @@
     <c-row>
         <c-col class="mb-3">
             <label cLabel="col" sizing="sm">{{servicio.precioEstablecido ? "Precio" : "Establecer precio"}}:</label>
+            <span class="text-danger" *ngIf="establecerPrecio"> *</span>
             <c-input-group>
                 <span cInputGroupText sizing="sm">
                     @if (servicio.precioEstablecido) {
@@ -61,15 +67,15 @@
                     (ngModelChange)="cambiarPrecioIndividual($event)" name="price" #price="ngModel" maxlength="11"
                     required [pattern]="CONST.REGULAR_EXP.CURRENCY"
                     [valid]="price.touched && price.invalid ? false : undefined" [disabled]="!establecerPrecio">
-                <c-form-feedback *ngIf="!!(price.touched && price.invalid)" [valid]="false">
-                    Este campo es requerido y debe ser un valor monetario válido!
+                <c-form-feedback *ngIf="price.touched && price.invalid" [valid]="false">
+                    Este campo debe ser un valor monetario válido!
                 </c-form-feedback>
             </c-input-group>
         </c-col>
     </c-row>
     <c-row>
         <c-col class="mb-3" style="margin-top: 31px;">
-            <label cLabel="col" sizing="sm">Estado:</label>
+            <label cLabel="col" sizing="sm">Estado:</label><span class="text-danger"> *</span>
             <c-button-group [formGroup]="btnRadioGroup" class="ms-4">
                 @if (servicio.estado == CONST.ESTADO_SERVICIO.RECIBIDO) {
                 <input class="btn-check" formControlName="radioEstado" id="radio1" type="radio"

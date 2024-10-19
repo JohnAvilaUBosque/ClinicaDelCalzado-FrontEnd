@@ -16,7 +16,7 @@
                     <input cFormControl type="text" [(ngModel)]="usuario.identificacion" name="identification"
                       #identification="ngModel" placeholder="Identificación" maxlength="20" required
                       [valid]="identification.touched && identification.invalid ? false : undefined" />
-                    <c-form-feedback *ngIf="!!(identification.touched && identification.invalid)" [valid]="false">
+                    <c-form-feedback *ngIf="identification.touched && identification.invalid" [valid]="false">
                       Este campo es requerido!
                     </c-form-feedback>
                   </c-input-group>
@@ -29,7 +29,7 @@
                     <input cFormControl type="password" [(ngModel)]="usuario.clave" name="password" #password="ngModel"
                       placeholder="Contraseña" maxlength="20" required
                       [valid]="password.touched && password.invalid ? false : undefined" />
-                    <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
+                    <c-form-feedback *ngIf="password.touched && password.invalid" [valid]="false">
                       Este campo es requerido!
                     </c-form-feedback>
                   </c-input-group>
@@ -79,32 +79,32 @@
       <p>Debe cambiar su contraseña temporal por una contraseña única para poder continuar.</p>
       <c-row>
         <c-col xs="12" class="mb-3">
-          <label cLabel="col" sizing="sm">Contraseña actual:</label>
+          <label cLabel="col" sizing="sm">Contraseña actual:</label><span class="text-danger"> *</span>
           <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveActual" name="password"
             #password="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
             [valid]="password.touched && password.invalid ? false : undefined">
-          <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
+          <c-form-feedback *ngIf="password.touched && password.invalid" [valid]="false">
             La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1
             número y 1 símbolo!
           </c-form-feedback>
         </c-col>
         <c-col xs="12" class="mb-3">
-          <label cLabel="col" sizing="sm">Contraseña nueva:</label>
+          <label cLabel="col" sizing="sm">Contraseña nueva:</label><span class="text-danger"> *</span>
           <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveNueva" name="passwordNew"
             #passwordNew="ngModel" (ngModelChange)="confirmarClave()" maxlength="20"
             [pattern]="CONST.REGULAR_EXP.PASSWORD" required
             [valid]="passwordNew.touched && passwordNew.invalid ? false : undefined">
-          <c-form-feedback *ngIf="!!(passwordNew.touched && passwordNew.invalid)" [valid]="false">
+          <c-form-feedback *ngIf="passwordNew.touched && passwordNew.invalid" [valid]="false">
             La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1
             número y 1 símbolo!
           </c-form-feedback>
         </c-col>
         <c-col xs="12" class="mb-3">
-          <label cLabel="col" sizing="sm">Confimación de contraseña:</label>
+          <label cLabel="col" sizing="sm">Confimación de contraseña:</label><span class="text-danger"> *</span>
           <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveConfirmacion" name="passwordConfirm"
             #passwordConfirm="ngModel" (ngModelChange)="confirmarClave()" maxlength="20" required
             [valid]="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden) ? false : undefined">
-          <c-form-feedback *ngIf="!!(passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden))"
+          <c-form-feedback *ngIf="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden)"
             [valid]="false">
             Las contraseña no coinciden!
           </c-form-feedback>

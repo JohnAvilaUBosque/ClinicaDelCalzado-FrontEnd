@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { BadgeComponent, ButtonModule, CardModule, FormModule, GridModule, ModalComponent, ModalModule, TooltipModule } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { OrdenDeTrabajoService } from '../orden-de-trabajo.service';
@@ -51,11 +51,14 @@ export class FormularioOrdenComponent implements OnInit {
   public esValidaFechaCreacion: boolean = false;
 
   public whatsAppNumber: string = '';
-  public commentarioNuevo: string = '';
   public abonoNuevo: number = 0;
   public saldoNuevo: number = 0;
+  public comentarioNuevo: string = '';
+  public comentarioAnulacion: string = '';
 
   public usuarioLocal: AdministradorModel = new AdministradorModel();
+
+  @ViewChild('elementoADescargar') elementoADescargar!: ElementRef;
 
   ngOnInit(): void {
     this.usuarioLocal = this.usuarioService.obtenerAdminLocal();
@@ -92,12 +95,13 @@ export class FormularioOrdenComponent implements OnInit {
     this.adminService.obtenerAdministradores().subscribe(admins => this.administradores = admins);
   }
 
-  obtenerOrden(numeroOrden: string) {
+  obtenerOrden(numeroOrden: string, funcion?: Function) {
     this.ordenDeTrabajoService.obtenerOrden(numeroOrden).subscribe(
       ordenEncontrada => {
         if (ordenEncontrada) {
           this.orden = ordenEncontrada;
           this.whatsAppNumber = ordenEncontrada.cliente.celular;
+          if (funcion) funcion();
         }
         else
           this.router.navigate(['ordenesdetrabajo/buscar/'], { queryParams: { ordenNoEncontrada: numeroOrden } });
@@ -121,8 +125,8 @@ export class FormularioOrdenComponent implements OnInit {
         this.CONST.ESTADO_PAGO.PENDIENTE :
         this.CONST.ESTADO_PAGO.PAGADO;
 
-    if (this.commentarioNuevo)
-      this.agregarComentarioAOrden(this.commentarioNuevo);
+    if (this.comentarioNuevo)
+      this.agregarComentarioAOrden(this.comentarioNuevo);
 
     this.ordenDeTrabajoService.crearOrden(this.orden).subscribe(
       respuesta => {
@@ -140,8 +144,8 @@ export class FormularioOrdenComponent implements OnInit {
         this.CONST.ESTADO_PAGO.PENDIENTE :
         this.CONST.ESTADO_PAGO.PAGADO;
 
-    if (this.commentarioNuevo)
-      this.agregarComentarioAOrden(this.commentarioNuevo);
+    if (this.comentarioNuevo)
+      this.agregarComentarioAOrden(this.comentarioNuevo);
 
     this.ordenDeTrabajoService.migrarOrden(this.orden).subscribe(
       respuesta => {
@@ -194,7 +198,7 @@ export class FormularioOrdenComponent implements OnInit {
     var fechaDeEntrega = new Date(fecha);
     var fechaActual = this.CONST.textoAFecha(Date.now());
     if (fechaDeEntrega && fechaActual)
-      this.esValidaFechaEntrega = fechaDeEntrega > fechaActual;
+      this.esValidaFechaEntrega = fechaDeEntrega >= fechaActual;
   }
 
   agregarComentarioAOrden(comentario: string) {
@@ -219,14 +223,13 @@ export class FormularioOrdenComponent implements OnInit {
         : this.CONST.ESTADO_ORDEN.VIGENTE;
   }
 
-  servicioEditado(servicio: ServicioModel) {
-    this.obtenerOrden(this.orden.numeroOrden);
-    setTimeout(() => {
-      this.agregarComentarioAOrden('Se edito el servicio "' + servicio.descripcion + '"');
+  servicioEditado(comentario: string) {
+    this.obtenerOrden(this.orden.numeroOrden, () => {
+      this.agregarComentarioAOrden(comentario);
       this.calcularTotal();
       this.calcularEstados();
       this.editarOrden();
-    }, 100);
+    });
   }
 
   // Funciones de modales
@@ -255,9 +258,9 @@ export class FormularioOrdenComponent implements OnInit {
     whatsAppModal.visible = false;
   }
 
-  descargar(descargarModal: ModalComponent) {
-
-    descargarModal.visible = false;
+  descargar() {
+    var nombrePDF = this.orden.numeroOrden + '-' + this.CONST.fechaATexto(new Date, this.CONST.FORMATS_VIEW.DATE);
+    this.CONST.descargarPDF(this.elementoADescargar.nativeElement, nombrePDF);
   }
 
   abonar(abonarModal: ModalComponent) {
@@ -281,17 +284,19 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   agregarNuevoComentario(comentarioModal: ModalComponent) {
-    this.agregarComentarioAOrden(this.commentarioNuevo);
+    this.agregarComentarioAOrden(this.comentarioNuevo);
 
-    this.commentarioNuevo = '';
+    this.comentarioNuevo = '';
 
     comentarioModal.visible = false;
     this.editarOrden();
   }
 
   anular(anularModal: ModalComponent) {
-    this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.ANULADA
-    this.agregarComentarioAOrden('Se anuló la orden de trabajo');
+    this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.ANULADA;
+    this.agregarComentarioAOrden('Se anuló la orden de trabajo, ' + this.comentarioAnulacion);
+
+    this.comentarioAnulacion = '';
 
     anularModal.visible = false;
     this.editarOrden();

@@ -10,7 +10,7 @@
         <form cForm #datosSeguridadForm="ngForm">
             <c-row>
                 <c-col lg="6" class="mb-3">
-                    <label cLabel="col" sizing="sm">Pregunta 1:</label>
+                    <label cLabel="col" sizing="sm">Pregunta 1:</label><span class="text-danger"> *</span>
                     <select cSelect [(ngModel)]="datosSeguridad.pregunta1" name="pregunta1" #pregunta1="ngModel"
                         required [valid]="pregunta1.touched && pregunta1.invalid ? false : undefined">
                         @for (pregunta of preguntas; track $index) {
@@ -18,23 +18,23 @@
                         </option>
                         }
                     </select>
-                    <c-form-feedback *ngIf="!!(pregunta1.touched && pregunta1.invalid)" [valid]="false">
+                    <c-form-feedback *ngIf="pregunta1.touched && pregunta1.invalid" [valid]="false">
                         Este campo es requerido!
                     </c-form-feedback>
                 </c-col>
                 <c-col lg="6" class="mb-3">
-                    <label cLabel="col" sizing="sm">Respuesta 1:</label>
+                    <label cLabel="col" sizing="sm">Respuesta 1:</label><span class="text-danger"> *</span>
                     <input cFormControl type="text" [(ngModel)]="datosSeguridad.respuesta1" name="respuesta1"
                         #respuesta1="ngModel" maxlength="20" required
                         [valid]="respuesta1.touched && respuesta1.invalid ? false : undefined">
-                    <c-form-feedback *ngIf="!!(respuesta1.touched && respuesta1.invalid)" [valid]="false">
+                    <c-form-feedback *ngIf="respuesta1.touched && respuesta1.invalid" [valid]="false">
                         Este campo es requerido!
                     </c-form-feedback>
                 </c-col>
             </c-row>
             <c-row>
                 <c-col lg="6" class="mb-3">
-                    <label cLabel="col" sizing="sm">Pregunta 2:</label>
+                    <label cLabel="col" sizing="sm">Pregunta 2:</label><span class="text-danger"> *</span>
                     <select cSelect [(ngModel)]="datosSeguridad.pregunta2" name="pregunta2" #pregunta2="ngModel"
                         required [valid]="pregunta2.touched && pregunta2.invalid ? false : undefined">
                         @for (pregunta of preguntas; track $index) {
@@ -42,23 +42,23 @@
                         </option>
                         }
                     </select>
-                    <c-form-feedback *ngIf="!!(pregunta2.touched && pregunta2.invalid)" [valid]="false">
+                    <c-form-feedback *ngIf="pregunta2.touched && pregunta2.invalid" [valid]="false">
                         Este campo es requerido!
                     </c-form-feedback>
                 </c-col>
                 <c-col lg="6" class="mb-3">
-                    <label cLabel="col" sizing="sm">Respuesta 2:</label>
+                    <label cLabel="col" sizing="sm">Respuesta 2:</label><span class="text-danger"> *</span>
                     <input cFormControl type="text" [(ngModel)]="datosSeguridad.respuesta2" name="respuesta2"
                         #respuesta2="ngModel" maxlength="20" required
                         [valid]="respuesta2.touched && respuesta2.invalid ? false : undefined">
-                    <c-form-feedback *ngIf="!!(respuesta2.touched && respuesta2.invalid)" [valid]="false">
+                    <c-form-feedback *ngIf="respuesta2.touched && respuesta2.invalid" [valid]="false">
                         Este campo es requerido!
                     </c-form-feedback>
                 </c-col>
             </c-row>
             <c-row>
                 <c-col lg="6" class="mb-3">
-                    <label cLabel="col" sizing="sm">Pregunta 3:</label>
+                    <label cLabel="col" sizing="sm">Pregunta 3:</label><span class="text-danger"> *</span>
                     <select cSelect [(ngModel)]="datosSeguridad.pregunta3" name="pregunta3" #pregunta3="ngModel"
                         required [valid]="pregunta3.touched && pregunta3.invalid ? false : undefined">
                         @for (pregunta of preguntas; track $index) {
@@ -66,16 +66,16 @@
                         </option>
                         }
                     </select>
-                    <c-form-feedback *ngIf="!!(pregunta3.touched && pregunta3.invalid)" [valid]="false">
+                    <c-form-feedback *ngIf="pregunta3.touched && pregunta3.invalid" [valid]="false">
                         Este campo es requerido!
                     </c-form-feedback>
                 </c-col>
                 <c-col lg="6" class="mb-3">
-                    <label cLabel="col" sizing="sm">Respuesta 3:</label>
+                    <label cLabel="col" sizing="sm">Respuesta 3:</label><span class="text-danger"> *</span>
                     <input cFormControl type="text" [(ngModel)]="datosSeguridad.respuesta3" name="respuesta3"
                         #respuesta3="ngModel" maxlength="20" required
                         [valid]="respuesta3.touched && respuesta3.invalid ? false : undefined">
-                    <c-form-feedback *ngIf="!!(respuesta3.touched && respuesta3.invalid)" [valid]="false">
+                    <c-form-feedback *ngIf="respuesta3.touched && respuesta3.invalid" [valid]="false">
                         Este campo es requerido!
                     </c-form-feedback>
                 </c-col>

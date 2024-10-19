@@ -9,13 +9,14 @@
                         </th>
                         }
                         <th scope="col" class="col-6" style="min-width: 150px;">
-                            <label cLabel="col" sizing="sm">Listado de servicios:</label>
+                            <label cLabel="col" sizing="sm">Servicios:</label><span class="text-danger"
+                                *ngIf="!esModoLectura"> *</span>
                         </th>
                         <th scope="col" class="col-auto" style="min-width: 85px;">
                             <label cLabel="col" sizing="sm">Precio:</label>
                             @if (!esModoLectura) {
                             <c-badge size="sm" class="text-info"
-                                cTooltip="Si queda el precio en $0, se puede establecer después">
+                                cTooltip="Si queda el precio en $0, se le puede establecer después">
                                 <svg cIcon name="cil-warning"></svg>
                             </c-badge>
                             }
@@ -26,6 +27,11 @@
                         @if (esModoLectura) {
                         <th scope="col" class="col-auto">
                             <label cLabel="col" sizing="sm">Estado:</label>
+                        </th>
+                        }
+                        @if (puedeCambiarEstado) {
+                        <th scope="col" class="col-auto" style="min-width: 145px;">
+                            <label cLabel="col" sizing="sm">Estado:</label><span class="text-danger"> *</span>
                         </th>
                         }
                     </tr>
@@ -42,7 +48,7 @@
                                 <svg cIcon name="cil-pencil"></svg>
                             </button>
                             }
-                            @else if ($index != 0) {
+                            @else if (servicios.length != 1) {
                             <button cButton color="danger" variant="outline" size="sm" shape="rounded-pill"
                                 cTooltip="Borrar servicio" [cModalToggle]="borrarServicioModal.id"
                                 (click)="indexServicioSeleccionado = $index" class="ms-1 mt-1">
@@ -58,7 +64,7 @@
                                 [valid]="nameService.touched && nameService.invalid ? false : undefined"
                                 [readonly]="esModoLectura" [plaintext]="esModoLectura" sizing="sm">
                             </textarea>
-                            <c-form-feedback *ngIf="!!(nameService.touched && nameService.invalid)" [valid]="false">
+                            <c-form-feedback *ngIf="nameService.touched && nameService.invalid" [valid]="false">
                                 Este campo es requerido!
                             </c-form-feedback>
                         </td>
@@ -76,8 +82,8 @@
                                     <svg cIcon name="cil-warning"></svg>
                                 </c-badge>
                                 }
-                                <c-form-feedback *ngIf="!!(price.touched && price.invalid)" [valid]="false">
-                                    Este campo es requerido y debe ser un valor monetario válido!
+                                <c-form-feedback *ngIf="price.touched && price.invalid" [valid]="false">
+                                    Este campo debe ser un valor monetario válido!
                                 </c-form-feedback>
                             </div>
                         </td>
@@ -102,6 +108,19 @@
                                 shape="rounded-pill" class="mt-2">
                                 {{servicio.estado | uppercase}}
                             </c-badge>
+                        </td>
+                        }
+                        @else if (puedeCambiarEstado) {
+                        <td>
+                            <select cSelect [(ngModel)]="servicio.estado" name="state" #state="ngModel" required
+                                [valid]="state.touched && state.invalid ? false : undefined" sizing="sm">
+                                <option [value]="CONST.ESTADO_SERVICIO.RECIBIDO">{{CONST.ESTADO_SERVICIO.RECIBIDO}}
+                                </option>
+                                <option [value]="CONST.ESTADO_SERVICIO.TERMINADO">{{CONST.ESTADO_SERVICIO.TERMINADO}}
+                                </option>
+                                <option [value]="CONST.ESTADO_SERVICIO.DESPACHADO">{{CONST.ESTADO_SERVICIO.DESPACHADO}}
+                                </option>
+                            </select>
                         </td>
                         }
                     </tr>

@@ -9,20 +9,25 @@
                             <p class="text-body-secondary">Ingresa tu identificación, tus datos de seguridad y la
                                 contraseña nueva</p>
                             <c-row>
-                                <c-col xs="12" class="mb-3">
+                                <c-col sm="6" class="mb-3">
+                                    <label cLabel="col" sizing="sm">Identificación:</label><span class="text-danger">
+                                        *</span>
                                     <c-input-group>
                                         <span cInputGroupText>
                                             <svg cIcon name="cilUser"></svg>
                                         </span>
                                         <input cFormControl type="text" [(ngModel)]="recuperacion.identificacion"
-                                            name="identification" #identification="ngModel" placeholder="Identificación"
-                                            maxlength="20" required
+                                            name="identification" #identification="ngModel" maxlength="20" required
                                             [valid]="identification.touched && identification.invalid ? false : undefined" />
-                                        <c-form-feedback *ngIf="!!(identification.touched && identification.invalid)"
+                                        <c-form-feedback *ngIf="identification.touched && identification.invalid"
                                             [valid]="false">
                                             Este campo es requerido!
                                         </c-form-feedback>
                                     </c-input-group>
+                                </c-col>
+                                <c-col sm="6" class="align-self-center mb-3">
+                                    <label cLabel="col" class="text-danger float-end" sizing="sm">* Campos
+                                        requeridos</label>
                                 </c-col>
                             </c-row>
                             <c-row>
@@ -33,25 +38,27 @@
                             </c-row>
                             <c-row>
                                 <c-col sm="6" class="mb-3">
-                                    <label cLabel="col" sizing="sm">Contraseña nueva:</label>
+                                    <label cLabel="col" sizing="sm">Contraseña nueva:</label><span class="text-danger">
+                                        *</span>
                                     <input cFormControl type="password" [(ngModel)]="recuperacion.claveNueva"
                                         name="password" #password="ngModel" (ngModelChange)="confirmarClave()"
                                         maxlength="20" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
                                         [valid]="password.touched && password.invalid ? false : undefined">
-                                    <c-form-feedback *ngIf="!!(password.touched && password.invalid)" [valid]="false">
+                                    <c-form-feedback *ngIf="password.touched && password.invalid" [valid]="false">
                                         La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra
                                         minúscula, 1
                                         número y 1 símbolo!
                                     </c-form-feedback>
                                 </c-col>
                                 <c-col sm="6" class="mb-3">
-                                    <label cLabel="col" sizing="sm">Confimación de contraseña:</label>
+                                    <label cLabel="col" sizing="sm">Confimación de contraseña:</label><span
+                                        class="text-danger"> *</span>
                                     <input cFormControl type="password" [(ngModel)]="recuperacion.claveConfirmacion"
                                         name="passwordConfirm" #passwordConfirm="ngModel"
                                         (ngModelChange)="confirmarClave()" maxlength="20" required
                                         [valid]="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden) ? false : undefined">
                                     <c-form-feedback
-                                        *ngIf="!!(passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden))"
+                                        *ngIf="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden)"
                                         [valid]="false">
                                         Las contraseñas no coinciden!
                                     </c-form-feedback>

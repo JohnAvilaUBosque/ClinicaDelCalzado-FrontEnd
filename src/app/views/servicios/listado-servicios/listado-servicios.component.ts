@@ -21,8 +21,9 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
   public CONST = inject(ConstantsService);
 
   @Input() servicios: ServicioModel[] = [];
-  @Input() esModoLectura: boolean = false;
   @Input() mostrarAcciones: boolean = false;
+  @Input() esModoLectura: boolean = false;
+  @Input() puedeCambiarEstado: boolean = false;
 
   public indexServicioSeleccionado: number = 0;
   public idServicioSeleccionado: number = 0;
@@ -30,7 +31,7 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
 
   @Output() cambiaronPreciosEvent = new EventEmitter<string>();
   @Output() esFormularioValidoEvent = new EventEmitter<boolean>();
-  @Output() servicioEditadoEvent = new EventEmitter<ServicioModel>();
+  @Output() servicioEditadoEvent = new EventEmitter<string>();
 
   @ViewChild('serviciosForm') form!: NgForm;
   @ViewChildren('textareaElement') textareas!: QueryList<ElementRef>;
@@ -90,8 +91,8 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
     borrarServicioModel.visible = false;
   }
 
-  servicioEditado(servicio: ServicioModel) {
-    this.servicioEditadoEvent.emit(servicio);
+  servicioEditado(comentario: string) {
+    this.servicioEditadoEvent.emit(comentario);
     this.idServicioSeleccionado = 0;
   }
 

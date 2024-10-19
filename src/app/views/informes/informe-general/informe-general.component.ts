@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, GridModule, FormModule, ToastModule, ToastComponent, ModalModule, ModalComponent } from '@coreui/angular';
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
@@ -36,6 +36,7 @@ export class InformeGeneralComponent implements OnInit {
 
   public totales: OrdenDeTrabajoModel = new OrdenDeTrabajoModel();
 
+  @ViewChild('elementoADescargar') elementoADescargar!: ElementRef;
   @ViewChild('toastSinResultados') toastSinResultados!: ToastComponent;
   @ViewChild('fechaInicialInvalida') fechaInicialInvalida!: ToastComponent;
   @ViewChild('fechaFinalInvalida') fechaFinalInvalida!: ToastComponent;
@@ -78,8 +79,8 @@ export class InformeGeneralComponent implements OnInit {
         params => {
           if (!params['fechaInicial'] && !params['fechaFinal']) {
             this.diasFiltrados = [];
-            this.fechaInicial = "";
-            this.fechaFinal = "";
+            this.fechaInicial = '';
+            this.fechaFinal = '';
             return;
           }
 
@@ -104,11 +105,11 @@ export class InformeGeneralComponent implements OnInit {
     })
   }
 
-  verInformeGeneral() {
+  irAInformeGeneralConFiltros() {
     this.router.navigate(['informes/general'], { queryParams: { fechaInicial: this.fechaInicial, fechaFinal: this.fechaFinal } });
   }
 
-  verInformeDetallado(dia: DiaInformeGeneral) {
+  irAInformeDetalladoConFiltros(dia: DiaInformeGeneral) {
     this.router.navigate(['informes/detallado'], { queryParams: { fechaInicial: dia.fecha, fechaFinal: dia.fecha } });
   }
 
@@ -136,9 +137,10 @@ export class InformeGeneralComponent implements OnInit {
     this.sonFechasValidas = new Date(this.fechaInicial) <= new Date(this.fechaFinal);
   }
 
-  descargar(descargarModal: ModalComponent) {
-
-    descargarModal.visible = false;
+  descargar() {
+    var nombrePDF = 'Informe-general-'
+      + this.CONST.fechaATexto(this.fechaInicial, this.CONST.FORMATS_VIEW.DATE)
+      + '-' + this.CONST.fechaATexto(this.fechaFinal, this.CONST.FORMATS_VIEW.DATE);
+    this.CONST.descargarPDF(this.elementoADescargar.nativeElement, nombrePDF);
   }
-
 }

@@ -1,18 +1,18 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, FormModule, GridModule, PaginationModule } from '@coreui/angular';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { TableModule, CardModule, BadgeModule, ButtonModule, TooltipModule, FormModule, GridModule, PaginationModule, ToastComponent, ToastModule } from '@coreui/angular';
 import { OrdenDeTrabajoService } from '../orden-de-trabajo.service'
 import { OrdenDeTrabajoModel } from '../orden-de-trabajo.model'
 import { CommonModule, CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { IconDirective } from '@coreui/icons-angular';
 import { ConstantsService } from '../../../constants.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'listado-ordenes',
   standalone: true,
-  imports: [CommonModule, CardModule, TableModule, GridModule, BadgeModule, ButtonModule, TooltipModule, FormsModule, FormModule, PaginationModule, IconDirective, CurrencyPipe, UpperCasePipe],
+  imports: [CommonModule, CardModule, TableModule, GridModule, BadgeModule, ButtonModule, TooltipModule, FormsModule, FormModule, PaginationModule, ToastModule, IconDirective, CurrencyPipe, UpperCasePipe],
   templateUrl: './listado-ordenes.component.html',
   styleUrl: './listado-ordenes.component.scss'
 })
@@ -21,6 +21,7 @@ export class ListadoOrdenesComponent implements OnInit {
   private ordenDeTrabajoService = inject(OrdenDeTrabajoService);
   private titleService = inject(Title);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   public CONST = inject(ConstantsService);
 
@@ -32,6 +33,8 @@ export class ListadoOrdenesComponent implements OnInit {
   public ordenesPorPagina: Array<OrdenDeTrabajoModel[]> = [];
   public paginaActual: number = 1;
 
+  @ViewChild('estadoOrdenInvalido') estadoOrdenInvalido!: ToastComponent;
+
   ngOnInit(): void {
     this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Órdenes de trabajo');
 
@@ -39,9 +42,31 @@ export class ListadoOrdenesComponent implements OnInit {
       this.ordenes = data.sort(orden => new Date(orden.fechaCreacion).getTime())
         .reverse();
 
-      this.filtro.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
-      this.filtrar();
+      this.route.queryParams.subscribe(
+        params => {
+          if (!params['estadoOrden']) {
+            this.filtro.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
+            this.ordenesFiltradas = [];
+            this.filtrar();
+            return;
+          }
+
+          var filtroEstadoOrden = (params['estadoOrden'] as string).toUpperCase();
+          if (this.CONST.validarValorEnumerador(filtroEstadoOrden, this.CONST.ESTADO_ORDEN)) {
+            this.filtro.estadoOrden = filtroEstadoOrden;
+          } else {
+            this.estadoOrdenInvalido.visible = true;
+            this.filtro.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
+          }
+
+          this.filtrar();
+        }
+      );
     })
+  }
+
+  irAListadoOrdenesConFiltros() {
+    this.router.navigate(['ordenesdetrabajo/listado'], { queryParams: { estadoOrden: this.filtro.estadoOrden } });
   }
 
   filtrar() {

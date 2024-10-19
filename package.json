@@ -38,6 +38,8 @@
     "@coreui/utils": "^2.0.2",
     "chart.js": "^4.4.3",
     "crypto-js": "^4.2.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.2",
     "lodash-es": "^4.17.21",
     "ngx-scrollbar": "^13.0.3",
     "rxjs": "~7.8.1",

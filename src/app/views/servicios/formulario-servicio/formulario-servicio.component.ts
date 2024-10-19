@@ -35,7 +35,7 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
   });
 
   @Output() esFormularioValidoEvent = new EventEmitter<boolean>();
-  @Output() servicioEditadoEvent = new EventEmitter<ServicioModel>();
+  @Output() servicioEditadoEvent = new EventEmitter<string>();
   @Output() seleccionarOperarioEvent = new EventEmitter();
 
   @ViewChild('servicioForm') form!: NgForm;
@@ -59,6 +59,11 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
           if (servicio) {
             this.servicio = servicio;
             this.btnRadioGroup.setValue({ radioEstado: servicio.estado });
+            if (servicio.estado == this.CONST.ESTADO_SERVICIO.DESPACHADO)
+              this.btnRadioGroup.disable();
+            else
+              this.btnRadioGroup.enable();
+
             this.establecerPrecio = false;
             this.adjustTextareasHeight();
           }
@@ -87,7 +92,7 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
     if (!this.servicio.precioEstablecido) this.servicio.precioEstablecido = this.establecerPrecio;
     this.servicioService.editarServicio(this.servicio).subscribe(
       respuesta => {
-        this.servicioEditadoEvent.emit(this.servicio);
+        this.servicioEditadoEvent.emit(respuesta);
       }
     );
   }

@@ -1,17 +1,24 @@
 <c-card>
     <c-card-header>
-        <h5> Buscar orden de trabajo</h5>
+        <c-row>
+            <c-col>
+                <h5> Buscar orden de trabajo</h5>
+            </c-col>
+            <c-col class="align-self-center">
+                <label cLabel="col" class="text-danger float-end" sizing="sm">* Campos requeridos</label>
+            </c-col>
+        </c-row>
     </c-card-header>
     <c-card-body>
         <form cForm #buscarOrdenForm="ngForm" (ngSubmit)="buscarOrden()">
             <c-row>
                 <c-col xs="12" sm="10">
                     <div class="mb-3">
-                        <label cLabel="col" sizing="sm">Número de orden:</label>
+                        <label cLabel="col" sizing="sm">Número de orden:</label><span class="text-danger"> *</span>
                         <input cFormControl type="text" [(ngModel)]="numeroOrden" name="ordenNumber"
                             #ordenNumber="ngModel" [placeholder]="CONST.ORDEN_NUMBER_DEFAULT" maxlength="20" required
                             [valid]="ordenNumber.touched && ordenNumber.invalid ? false : undefined">
-                        <c-form-feedback *ngIf="!!(ordenNumber.touched && ordenNumber.invalid)" [valid]="false">
+                        <c-form-feedback *ngIf="ordenNumber.touched && ordenNumber.invalid" [valid]="false">
                             Este campo es requerido!
                         </c-form-feedback>
                     </div>

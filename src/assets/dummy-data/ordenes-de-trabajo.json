@@ -1076,7 +1076,7 @@
                     "descripcion": "Tintura de chaqueta de cuero",
                     "precio": 20000,
                     "precioEstablecido": true,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
                     "operador": {
                         "nombre": "Luis Vivas"
                     }
@@ -1086,7 +1086,7 @@
                     "descripcion": "Reparación de costuras en pantalón",
                     "precio": 15000,
                     "precioEstablecido": true,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
                     "operador": {
                         "nombre": "Carlos Pérez"
                     }
@@ -1122,7 +1122,7 @@
                     "descripcion": "Reparación de bolsillos en chaqueta",
                     "precio": 17000,
                     "precioEstablecido": true,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
                     "operador": {
                         "nombre": "Luis Vivas"
                     }
@@ -1132,7 +1132,7 @@
                     "descripcion": "Limpieza y pulido de zapatos",
                     "precio": 30000,
                     "precioEstablecido": true,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
                     "operador": {
                         "nombre": "Alex Medina"
                     }
@@ -1168,7 +1168,7 @@
                     "descripcion": "Cambio de forro de chaqueta de cuero",
                     "precio": 35000,
                     "precioEstablecido": true,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
                     "operador": {
                         "nombre": "Carlos Pérez"
                     }
@@ -1178,7 +1178,7 @@
                     "descripcion": "Reparación de cierres",
                     "precio": 25000,
                     "precioEstablecido": true,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
                     "operador": {
                         "nombre": "Luis Vivas"
                     }
@@ -1214,7 +1214,7 @@
                     "descripcion": "Cambio de tacones en botas",
                     "precio": 27000,
                     "precioEstablecido": true,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
                     "operador": {
                         "nombre": "Carlos Pérez"
                     }
@@ -1224,7 +1224,7 @@
                     "descripcion": "Reparación de costuras en bolso",
                     "precio": 25000,
                     "precioEstablecido": true,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
                     "operador": {
                         "nombre": "Luis Vivas"
                     }
@@ -1444,7 +1444,7 @@
                     "descripcion": "Cambio de suela en botas",
                     "precio": 15000,
                     "precioEstablecido": true,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
                     "operador": {
                         "nombre": "Alex Medina"
                     }
@@ -1454,7 +1454,7 @@
                     "descripcion": "Arreglo de costuras en chaqueta",
                     "precio": 13000,
                     "precioEstablecido": true,
-                    "estado": "RECIBIDO",
+                    "estado": "EN PROCESO",
                     "operador": {
                         "nombre": "Luis Vivas"
                     }

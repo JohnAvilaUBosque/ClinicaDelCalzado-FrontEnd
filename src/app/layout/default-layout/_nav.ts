@@ -38,7 +38,7 @@ export const navItems: INavData[] = [
     url: '/ordenesdetrabajo/migrar',
     iconComponent: { name: 'cil-notes' },
     attributes: {
-      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL]
+      'rolesAutorizados': [ROL_ADMIN.PRINCIPAL, ROL_ADMIN.SECUNDARIO]
     }
   },
   {

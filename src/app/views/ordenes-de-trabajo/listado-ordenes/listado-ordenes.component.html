@@ -14,7 +14,7 @@
                             <svg cIcon name="cil-warning"></svg>
                         </c-badge>
                     </span>
-                    <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="filtrar()" name="orderStatus"
+                    <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="irAListadoOrdenesConFiltros()" name="orderStatus"
                         #orderStatus="ngModel" sizing="sm">
                         <option [value]="CONST.ESTADO_ORDEN.VIGENTE">
                             {{CONST.ESTADO_ORDEN.VIGENTE}}
@@ -53,7 +53,7 @@
                     <tr>
                         <td class="text-center">
                             <c-badge size="sm" class="text-info"
-                                cTooltip="Se muestran las órdenes de trabajo que contengan los filtros ingresados">
+                                cTooltip="Se muestran las órdenes de trabajo {{ filtro.estadoOrden }}S que contengan los filtros ingresados">
                                 <svg cIcon name="cil-warning"></svg>
                             </c-badge>
                         </td>
@@ -169,3 +169,16 @@
         </div>
     </c-card-body>
 </c-card>
+
+ <!-- TOASTERS -->
+
+<c-toaster [placement]="'bottom-end'" class="p-3" position="fixed">
+    <c-toast #estadoOrdenInvalido="cToast" [visible]="false" color="danger" class="text-white">
+        <div class="d-flex">
+            <c-toast-body>
+                <span>Estado de orden inválido, se muestran por defecto las órdenes de trabajo {{ CONST.ESTADO_ORDEN.VIGENTE }}S.</span>
+            </c-toast-body>
+            <button cButtonClose white class="me-2 m-auto" (click)="estadoOrdenInvalido.visible = false"></button>
+        </div>
+    </c-toast>
+</c-toaster>

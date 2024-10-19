@@ -40,7 +40,7 @@ export class ServicioService {
     ));
   }
 
-  editarServicio(servicioEditado: ServicioModel): Observable<any> {
+  editarServicio(servicio: ServicioModel): Observable<any> {
     return this.http.get<any>(this.url).pipe(map(x => {
       var ordenes: OrdenDeTrabajoModel[] = [];
       var ordenesLocalStorage = localStorage.getItem('ORDENES');
@@ -50,21 +50,30 @@ export class ServicioService {
       else {
         ordenes = x['ordenes'];
       }
-      
+
       var index: number;
+      var comentario: string = '';
 
-      ordenes.forEach(orden => {
-        if (index > -1) return false;
+      ordenes.forEach(o => {
+        if (index > -1) return;
 
-        index = orden.servicios.findIndex(s => s.id == servicioEditado.id);
+        index = o.servicios.findIndex(s => s.id == servicio.id);
         if (index > -1) {
-          orden.servicios[index] = servicioEditado;
-          return true;
+          comentario = 'Se edito el servicio "' + servicio.descripcion + '"';
+          if (servicio.operario.nombre != o.servicios[index].operario.nombre)
+            comentario += ', se cambió el operador a ' + servicio.operario.nombre;
+          if (servicio.precio != o.servicios[index].precio)
+            comentario += ', se cambió el precio a ' + servicio.precio;
+          if (servicio.estado != o.servicios[index].estado)
+            comentario += ', se cambió el estado a "' + servicio.estado;
+
+          o.servicios[index] = servicio;
         }
-        return false;
       });
 
       localStorage.setItem('ORDENES', JSON.stringify(ordenes));
+
+      return comentario;
     }));
   }
 }

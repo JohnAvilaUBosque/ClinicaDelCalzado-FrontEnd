@@ -6,38 +6,36 @@
             </c-col>
             <c-col xs="auto">
                 <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Descargar"
-                    [cModalToggle]="descargarModal.id">
+                    (click)="descargar()" *ngIf="ordenesFiltradas.length != 0">
                     <svg cIcon name="cil-data-transfer-down"></svg>
                 </button>
+            </c-col>
+            <c-col class="align-self-center">
+                <label cLabel="col" class="text-danger float-end" sizing="sm">* Campos requeridos</label>
             </c-col>
         </c-row>
     </c-card-header>
     <c-card-body>
         <p>Filtre las órdenes de trabajo en un rango de fechas.</p>
-        <form cForm #informeDetalladoForm="ngForm" (ngSubmit)="verInformeDetallado()">
+        <form cForm #informeDetalladoForm="ngForm" (ngSubmit)="irAInformeDetalladoConFiltros()">
             <c-row>
                 <c-col md="5" class="mb-3">
-                    <label cLabel="col" sizing="sm">Fecha inicial:</label>
+                    <label cLabel="col" sizing="sm">Fecha inicial:</label><span class="text-danger"> *</span>
                     <input cFormControl type="date" [(ngModel)]="fechaInicial" (ngModelChange)="validarFechas()"
                         name="startDate" #startDate="ngModel" required
                         [valid]="startDate.touched && (startDate.invalid || !sonFechasValidas) ? false : undefined">
-                    <c-form-feedback *ngIf="!!(startDate.touched && startDate.invalid)" [valid]="false">
-                        Este campo es requerido!
-                    </c-form-feedback>
-                    <c-form-feedback *ngIf="!sonFechasValidas" [valid]="false">
-                        Debe ser una fecha igual o anterior a la fecha final!
+                    <c-form-feedback *ngIf="startDate.touched && startDate.invalid && !sonFechasValidas"
+                        [valid]="false">
+                        Esta fecha debe ser anterior o igual a la fecha final!
                     </c-form-feedback>
                 </c-col>
                 <c-col md="5" class="mb-3">
-                    <label cLabel="col" sizing="sm">Fecha final:</label>
+                    <label cLabel="col" sizing="sm">Fecha final:</label><span class="text-danger"> *</span>
                     <input cFormControl type="date" [(ngModel)]="fechaFinal" (ngModelChange)="validarFechas()"
                         name="endDate" #endDate="ngModel" required
                         [valid]="endDate.touched && (endDate.invalid || !sonFechasValidas) ? false : undefined">
-                    <c-form-feedback *ngIf="!!(endDate.touched && endDate.invalid)" [valid]="false">
-                        Este campo es requerido!
-                    </c-form-feedback>
-                    <c-form-feedback *ngIf="!sonFechasValidas" [valid]="false">
-                        Debe ser una fecha igual o posterior a la fecha inicial!
+                    <c-form-feedback *ngIf="endDate.touched && endDate.invalid && !sonFechasValidas" [valid]="false">
+                        Esta fecha debe ser posterior o igual a la fecha inicial!
                     </c-form-feedback>
                 </c-col>
                 <c-col md="2" class="mb-3" style="margin-top: 31px;">
@@ -47,7 +45,7 @@
             </c-row>
         </form>
         @if (ordenesFiltradas.length != 0) {
-        <div class="overflow-auto">
+        <div class="overflow-auto" #elementoADescargar>
             <table cTable hover striped small>
                 <thead>
                     <tr>
@@ -68,7 +66,7 @@
                     <tr>
                         <td>
                             <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
-                                cTooltip="Ver orden" (click)="verOrden(orden)">
+                                cTooltip="Ver orden" (click)="irAVerOrden(orden)">
                                 <svg cIcon name="cil-external-link"></svg>
                             </button>
                         </td>
@@ -110,7 +108,7 @@
     </c-card-body>
 </c-card>
 
- <!-- TOASTERS -->
+<!-- TOASTERS -->
 
 <c-toaster [placement]="'bottom-end'" class="p-3" position="fixed">
     <c-toast #toastSinResultados="cToast" [visible]="false" color="info" class="text-white">
@@ -129,7 +127,7 @@
             <c-toast-body>
                 <span>Fecha inicial inválida: {{ fechaInicial }}</span>
             </c-toast-body>
-            <button cButtonClose white class="me-2 m-auto" (click)="toastSinResultados.visible = false"></button>
+            <button cButtonClose white class="me-2 m-auto" (click)="fechaInicialInvalida.visible = false"></button>
         </div>
     </c-toast>
 </c-toaster>
@@ -140,28 +138,7 @@
             <c-toast-body>
                 <span>Fecha final inválida: {{ fechaFinal }}</span>
             </c-toast-body>
-            <button cButtonClose white class="me-2 m-auto" (click)="toastSinResultados.visible = false"></button>
+            <button cButtonClose white class="me-2 m-auto" (click)="fechaFinalInvalida.visible = false"></button>
         </div>
     </c-toast>
 </c-toaster>
-
- <!-- MODALS -->
-
-<c-modal #descargarModal backdrop="static" id="descargarModal">
-    <c-modal-header>
-        <h5 cModalTitle>Descargar informe detallado</h5>
-        <button [cModalToggle]="descargarModal.id" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body>
-        
-    </c-modal-body>
-    <c-modal-footer>
-        <button [cModalToggle]="descargarModal.id" cButton color="secondary">
-            Cerrar
-        </button>
-        <button cButton color="primary" (click)="descargar(descargarModal)">
-            Descargar
-            <svg cIcon name="cil-data-transfer-down"></svg>
-        </button>
-    </c-modal-footer>
-</c-modal>

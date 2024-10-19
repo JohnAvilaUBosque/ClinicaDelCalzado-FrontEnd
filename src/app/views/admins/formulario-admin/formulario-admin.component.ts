@@ -65,21 +65,21 @@ export class FormularioAdminComponent implements OnInit {
 
         this.titulo = title;
         if (title == 'Agregar') {
-          this.habilitarModoCreacion();
+          this.esModoCreacion = true;
           this.cambiarEstado(this.CONST.ESTADO_ADMIN.ACTIVO);
           this.btnRadioGroup.disable();
         }
         else if (title == 'Editar') {
-          this.habilitarModoEdicion();
+          this.esModoEdicion = true;
           this.obtenerAdmin();
         }
         else if (title == 'Ver') {
-          this.habilitarModoLectura();
+          this.esModoLectura = true;
           this.obtenerAdmin();
         }
         else if (title == 'Perfil') {
           this.titulo = 'Ver';
-          this.habilitarModoLectura();
+          this.esModoLectura = true;
           this.esInformacionPersonal = true;
 
           this.admin = this.adminLocal;
@@ -155,24 +155,6 @@ export class FormularioAdminComponent implements OnInit {
 
   irAVerAdmin() {
     this.router.navigate(['admins/ver/' + this.admin.identificacion]);
-  }
-
-  habilitarModoCreacion() {
-    this.esModoCreacion = true;
-    this.esModoEdicion = false;
-    this.esModoLectura = false;
-  }
-
-  habilitarModoEdicion() {
-    this.esModoCreacion = false;
-    this.esModoEdicion = true;
-    this.esModoLectura = false;
-  }
-
-  habilitarModoLectura() {
-    this.esModoCreacion = false;
-    this.esModoEdicion = false;
-    this.esModoLectura = true;
   }
 
   cambiarEstado(value: string): void {
