@@ -35,7 +35,7 @@ export class ListadoAdminsComponent implements OnInit {
 
     this.adminLocal = this.usuarioService.obtenerAdminLocal();
 
-    this.administradorService.obtenerAdministradores().subscribe(data => {
+    this.administradorService.obtenerAdmins().subscribe(data => {
       this.administradores = data;
     });
   }

@@ -1,94 +1,115 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AdministradorModel } from '../admins/administrador.model';
-import { UsuarioModel } from './usuario.model';
-import { HttpClient } from '@angular/common/http';
+import { DatosSeguridadModel, RecuperacionModel, UsuarioModel } from './usuario.model';
 import { map, Observable } from 'rxjs';
-import { ConstantsService } from 'src/app/constants.service';
 import { BaseService } from 'src/app/base.service';
+import { ErrorModel } from 'src/app/error.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService extends BaseService {
 
-  private http = inject(HttpClient);
-
-  private CONST = inject(ConstantsService);
-
   private readonly localStorageKeyUser: string = 'U';
   private readonly localStorageKeyToken: string = 'T';
 
-  private url: string = '/assets/dummy-data/administradores.json';
+  private readonly URL: string = this.CONST.API_URL + '/api/v1/auth';
 
-  obtenerAdministradores(): Observable<AdministradorModel[]> {
-    return this.http.get<any>(this.url).pipe(map(
+  public iniciarSesion(usuario: UsuarioModel): Observable<ErrorModel | any> {
+    var usuarioMapeado = this.mapearUsuario(usuario);
+
+    return this.http.post<any>(this.URL + '/login', usuarioMapeado).pipe(map(
       respuesta => {
-        this.validarRespuesta(respuesta);
-
-        var administradores = localStorage.getItem('ADMINS');
-        if (administradores)
-          return JSON.parse(administradores);
-
-        administradores = respuesta['admins'];
-        localStorage.setItem('ADMINS', JSON.stringify(administradores));
-
-        return administradores;
-      }
-    ));
-  }
-
-  iniciarSesion(usuario: UsuarioModel): Observable<any> {
-    return this.obtenerAdministradores().pipe(map(
-      respuesta => {
-        this.validarRespuesta(respuesta);
-
-        var admin = respuesta.find(admin => admin.identificacion == usuario.identificacion);
-        if (!admin || admin.clave != usuario.clave) {
-          return {
-            error: 'UNAUTHORIZED',
-            message: 'Credenciales inválidas, intente nuevamente!'
-          };
-        }
-
-        if (admin.estado == this.CONST.ESTADO_ADMIN.INACTIVO) {
-          return {
-            error: 'UNAUTHORIZED',
-            message: 'Usuario inactivo, contacte al administrador principal!'
-          };
-        }
+        var respuestaMapeada = this.validarRespuesta(respuesta);
+        if (respuestaMapeada.esError) return respuestaMapeada;
 
         return {
-          message: 'Inicio de sesión exitoso',
-          access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-          token_type: 'Bearer ',
-          has_temporary_password: true
-       };
+          mensaje: respuesta.message,
+          token: respuesta.access_token,
+          tipoToken: respuesta.token_type,
+          esClaveTemporal: respuesta.has_temporary_password
+        };
       }
     ));
   }
 
-  cambiarAdminLocal(admin: AdministradorModel) {
+  public recuperarClave(recuperacion: RecuperacionModel): Observable<ErrorModel | any> {
+    var recuperacionMapeada = this.mapearRecuperacion(recuperacion);
+
+    return this.http.post<any>(this.URL + '/password-recovery', recuperacionMapeada).pipe(map(
+      respuesta => {
+        var respuestaMapeada = this.validarRespuesta(respuesta);
+        if (respuestaMapeada.esError) return respuestaMapeada;
+
+        return {
+          mensaje: respuesta.message
+        };
+      }
+    ));
+  }
+
+  public cerrarSesion() {
+    this.borrarAdminLocal();
+    this.borrarToken();
+  }
+
+  private mapearUsuario(usuario: UsuarioModel): any {
+    return {
+      identification: usuario.identificacion,
+      password: usuario.clave
+    };
+  }
+
+  private mapearRecuperacion(recuperacion: RecuperacionModel): any {
+    return {
+      identification: recuperacion.identificacion,
+      answers_security: this.mapearDatosSeguridad(recuperacion.datosSeguridad),
+      new_password: recuperacion.claveNueva,
+      confirm_new_password: recuperacion.claveConfirmacion
+    };
+  }
+
+  private mapearDatosSeguridad(datosSeguridad: DatosSeguridadModel): any {
+    return [
+      {
+        id_question: datosSeguridad.pregunta1,
+        answer: datosSeguridad.respuesta1
+      },
+      {
+        id_question: datosSeguridad.pregunta2,
+        answer: datosSeguridad.respuesta2
+      },
+      {
+        id_question: datosSeguridad.pregunta3,
+        answer: datosSeguridad.respuesta3
+      }
+    ];
+  }
+
+  public cambiarAdminLocal(admin: AdministradorModel) {
     var adminJson = admin ? JSON.stringify(admin) : '';
     localStorage.setItem(this.localStorageKeyUser, this.CONST.encriptarTexto(adminJson) ?? '')
   }
 
-  obtenerAdminLocal(): AdministradorModel {
+  public obtenerAdminLocal(): AdministradorModel {
     var adminJson = this.CONST.desencriptarTexto(localStorage.getItem(this.localStorageKeyUser));
     return adminJson ? JSON.parse(adminJson ?? '') : null;
   }
 
-  cambiarToken(token: string) {
-    localStorage.setItem(this.localStorageKeyToken, this.CONST.encriptarTexto(token) ?? '')
+  public borrarAdminLocal() {
+    localStorage.removeItem(this.localStorageKeyUser);
   }
 
-  obtenerToken(): string | null {
+  public cambiarToken(token: string) {
+    localStorage.setItem(this.localStorageKeyToken, this.CONST.encriptarTexto(token) ?? "")
+  }
+
+  public obtenerToken(): string | null {
     var token = this.CONST.desencriptarTexto(localStorage.getItem(this.localStorageKeyToken));
     return token;
   }
 
-  cerrarSesion() {
-    localStorage.removeItem(this.localStorageKeyUser);
+  public borrarToken() {
     localStorage.removeItem(this.localStorageKeyToken);
   }
-
 }

@@ -15,12 +15,10 @@ export class OrdenDeTrabajoModel {
     servicios: ServicioModel[] = [];
     cantidadServicios: number = 0;
     comentarios: ComentarioModel[] = [];
-    serviciosRecibidos: number = 0;
-    serviciosTerminados: number = 0;
-    serviciosDespachados: number = 0;
 }
 
 export class ComentarioModel {
+    id: number = 0;
     descripcion: string = '';
     nombreAdmin: string = '';
     fecha: string = '';

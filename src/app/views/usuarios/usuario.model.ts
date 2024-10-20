@@ -18,10 +18,10 @@ export class RecuperacionModel {
 }
 
 export class DatosSeguridadModel {
-    pregunta1: string = '';
+    pregunta1: number = 0;
     respuesta1: string = '';
-    pregunta2: string = '';
+    pregunta2: number = 0;
     respuesta2: string = '';
-    pregunta3: string = '';
+    pregunta3: number = 0;
     respuesta3: string = '';
 }

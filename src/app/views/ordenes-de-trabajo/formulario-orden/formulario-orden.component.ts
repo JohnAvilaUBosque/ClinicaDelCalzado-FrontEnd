@@ -92,7 +92,7 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   obtenerAdministradores() {
-    this.adminService.obtenerAdministradores().subscribe(admins => this.administradores = admins);
+    this.adminService.obtenerAdmins().subscribe(admins => this.administradores = admins);
   }
 
   obtenerOrden(numeroOrden: string, funcion?: Function) {

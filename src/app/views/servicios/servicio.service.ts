@@ -1,79 +1,105 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { ServicioModel } from './servicio.model';
 import { OrdenDeTrabajoModel } from '../ordenes-de-trabajo/orden-de-trabajo.model';
 import { map, Observable } from 'rxjs';
+import { OperarioModel } from '../operarios/operario.model';
+import { BaseService } from 'src/app/base.service';
+import { OperarioService } from '../operarios/operario.service';
+import { ErrorModel } from 'src/app/error.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServicioService {
+export class ServicioService extends BaseService {
 
-  private http = inject(HttpClient);
+  public operarioService = inject(OperarioService);
 
-  url: string = '/assets/dummy-data/ordenes-de-trabajo.json';
+  private readonly URL_ORDERS: string = this.CONST.API_URL + '/api/v1/work-orders';
+  private readonly URL_SERVICE: string = this.CONST.API_URL + '/api/v1/services';
 
-  obtenerServicios(): Observable<ServicioModel[]> {
-    return this.http.get<any>(this.url).pipe(map(x => {
-      var ordenes: OrdenDeTrabajoModel[] = [];
-      var servicios: ServicioModel[] = [];
-      var ordenesLocalStorage = localStorage.getItem('ORDENES');
-      if (ordenesLocalStorage) {
-        ordenes = JSON.parse(ordenesLocalStorage);
-      }
-      else {
-        ordenes = x['ordenes'];
-        localStorage.setItem('ORDENES', JSON.stringify(ordenes));
-      }
-      ordenes.forEach(orden => servicios.push(...orden.servicios));
+  public obtenerServicios(): Observable<ErrorModel | ServicioModel[]> {
+    return this.http.get<any>(this.URL_SERVICE + '/list').pipe(map(
+      respuesta => {
+        var respuestaMapeada = this.validarRespuesta(respuesta);
+        if (respuestaMapeada.esError) return respuestaMapeada;
 
-      return servicios;
-    }));
-  }
-
-  obtenerServicio(idServicio: number): Observable<ServicioModel | undefined> {
-    // return this.http.get<any>(this.url + '/' + idServicio);
-    return this.obtenerServicios().pipe(map(
-      servicios => {
-        return servicios.find(servicio => servicio.id == idServicio);
+        return this.mapearAServicios(respuesta.services);
       }
     ));
   }
 
-  editarServicio(servicio: ServicioModel): Observable<any> {
-    return this.http.get<any>(this.url).pipe(map(x => {
-      var ordenes: OrdenDeTrabajoModel[] = [];
-      var ordenesLocalStorage = localStorage.getItem('ORDENES');
-      if (ordenesLocalStorage) {
-        ordenes = JSON.parse(ordenesLocalStorage);
+  public obtenerServicio(idServicio: number): Observable<ErrorModel | ServicioModel> {
+    return this.http.get<any>(this.URL_SERVICE + '/' + idServicio).pipe(map(
+      respuesta => {
+        var respuestaMapeada = this.validarRespuesta(respuesta);
+        if (respuestaMapeada.esError) return respuestaMapeada;
+
+        return this.mapearAServicio(respuesta.service);
       }
-      else {
-        ordenes = x['ordenes'];
+    ));
+  }
+
+  public editarServicio(servicio: ServicioModel): Observable<ErrorModel | any> {
+    var servicioMapeado = this.mapearServicio(servicio);
+
+    return this.http.put<any>(this.URL_ORDERS + '/updated/service/' + servicio.id, servicioMapeado).pipe(map(
+      respuesta => {
+        var respuestaMapeada = this.validarRespuesta(respuesta);
+        if (respuestaMapeada.esError) return respuestaMapeada;
+
+        return {
+          mensaje: respuesta.message
+        };
       }
+    ));
+  }
 
-      var index: number;
-      var comentario: string = '';
-
-      ordenes.forEach(o => {
-        if (index > -1) return;
-
-        index = o.servicios.findIndex(s => s.id == servicio.id);
-        if (index > -1) {
-          comentario = 'Se edito el servicio "' + servicio.descripcion + '"';
-          if (servicio.operario.nombre != o.servicios[index].operario.nombre)
-            comentario += ', se cambió el operador a ' + servicio.operario.nombre;
-          if (servicio.precio != o.servicios[index].precio)
-            comentario += ', se cambió el precio a ' + servicio.precio;
-          if (servicio.estado != o.servicios[index].estado)
-            comentario += ', se cambió el estado a "' + servicio.estado;
-
-          o.servicios[index] = servicio;
-        }
+  public mapearServicios(servicios: ServicioModel[]): any[] {
+    return servicios.map(
+      servicio => {
+        return this.mapearServicio(servicio);
       });
+  }
 
-      localStorage.setItem('ORDENES', JSON.stringify(ordenes));
+  public mapearServicio(servicio: ServicioModel): any {
+    return {
+      id: servicio.id,
+      name: servicio.descripcion,
+      service_name: servicio.descripcion, // TO DO: Pendiente definir si quitar
+      service_status: servicio.estado,
+      price: servicio.precio,
+      has_pending_price: servicio.precioEstablecido,
+      operator_id: servicio.operario.identificacion || null, // TO DO: Pendiente definir si quitar
+      operator: servicio.operario.identificacion ? this.operarioService.mapearOperario(servicio.operario) : null
+    };
+  }
 
-      return comentario;
-    }));
+  public mapearAServicios(servicios: any[]): ServicioModel[] {
+    return servicios.map(
+      servicio => {
+        return this.mapearAServicio(servicio);;
+      });
+  }
+
+  public mapearAServicio(servicio: any): ServicioModel {
+    return {
+      id: servicio.id,
+      descripcion: servicio.name,
+      estado: servicio.service_status,
+      precio: servicio.price,
+      precioEstablecido: servicio.has_pending_price,
+      operario: servicio.operator?.id_operator ? this.operarioService.mapearAOperario(servicio.operator) : new OperarioModel()
+    };
+  }
+
+  private generarComentario(comentario: string, servicio: ServicioModel, o: OrdenDeTrabajoModel, index: number) {
+    comentario = 'Se edito el servicio "' + servicio.descripcion + '"';
+    if (servicio.operario.nombre != o.servicios[index].operario.nombre)
+      comentario += ', se cambió el operador a ' + servicio.operario.nombre;
+    if (servicio.precio != o.servicios[index].precio)
+      comentario += ', se cambió el precio a ' + servicio.precio;
+    if (servicio.estado != o.servicios[index].estado)
+      comentario += ', se cambió el estado a "' + servicio.estado;
+    return comentario;
   }
 }

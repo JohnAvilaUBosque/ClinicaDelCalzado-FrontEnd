@@ -5,7 +5,7 @@ import { IconDirective } from '@coreui/icons-angular';
 import { ConstantsService } from '../../../constants.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { OrdenDeTrabajoService } from '../../ordenes-de-trabajo/orden-de-trabajo.service';
+import { InformesService } from '../informe.service';
 import { OrdenDeTrabajoModel } from '../../ordenes-de-trabajo/orden-de-trabajo.model';
 import { FormsModule } from '@angular/forms';
 import { sum } from 'lodash-es';
@@ -20,7 +20,7 @@ import { map } from 'rxjs';
 })
 export class InformeDetalladoComponent implements OnInit {
 
-  private ordenDeTrabajoService = inject(OrdenDeTrabajoService);
+  private informesService = inject(InformesService);
   private titleService = inject(Title);
   private router = inject(Router);
   private route = inject(ActivatedRoute);

@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
   private obtenerAdmin() {
     this.toastError.visible = false;
 
-    this.adminService.obtenerAdministrador(this.usuario.identificacion).subscribe(
+    this.adminService.obtenerAdmin(this.usuario.identificacion).subscribe(
       admin => {
         if (admin) this.usuarioService.cambiarAdminLocal(admin);
         

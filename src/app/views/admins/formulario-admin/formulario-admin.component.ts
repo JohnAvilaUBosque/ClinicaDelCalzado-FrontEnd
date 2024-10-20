@@ -94,7 +94,7 @@ export class FormularioAdminComponent implements OnInit {
   private obtenerAdmin() {
     this.route.params.pipe(map((p) => p['id-admin'])).subscribe(
       idAdmin => {
-        this.administradorService.obtenerAdministrador(idAdmin).subscribe(
+        this.administradorService.obtenerAdmin(idAdmin).subscribe(
           adminEncontrado => {
             if (adminEncontrado) {
               this.admin = adminEncontrado;
@@ -133,7 +133,7 @@ export class FormularioAdminComponent implements OnInit {
       );
     } else {
       this.admin.tieneClaveTemporal = true;
-      this.administradorService.crearAdministrador(this.admin).subscribe(
+      this.administradorService.crearAdmin(this.admin).subscribe(
         respuesta => {
           this.irAVerAdmin();
         }
