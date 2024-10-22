@@ -1,0 +1,30 @@
+<router-outlet />
+
+<c-toaster [placement]="'bottom-end'" class="p-3" position="fixed">
+  <c-toast #toastError="cToast" [visible]="false" color="danger" class="text-white">
+    <div class="d-flex">
+      <c-toast-body>
+        <span>{{ mensajeError }}</span>
+      </c-toast-body>
+      <button cButtonClose white class="me-2 m-auto" (click)="toastError.visible = false"></button>
+    </div>
+  </c-toast>
+</c-toaster>
+
+<c-toaster [placement]="'bottom-end'" class="p-3" position="fixed">
+  <c-toast #toastExitoso="cToast" [visible]="false" color="success" class="text-white">
+    <div class="d-flex">
+      <c-toast-body>
+        <span>{{ mensajeExitoso }}</span>
+      </c-toast-body>
+      <button cButtonClose white class="me-2 m-auto" (click)="toastExitoso.visible = false"></button>
+    </div>
+  </c-toast>
+</c-toaster>
+
+<c-modal #cargandoModal backdrop="static" alignment="center" size="sm" id="cargandoModal" class="modalTransparent">
+  <section>
+    <c-spinner color="light" class="spinnerBig"></c-spinner>
+    <span class="text-light">Cargando...</span>
+  </section>
+</c-modal>

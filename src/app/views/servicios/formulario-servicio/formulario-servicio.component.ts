@@ -54,22 +54,33 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.idServicio && changes['idServicio'].currentValue != changes['idServicio'].previousValue) {
-      this.servicioService.obtenerServicio(this.idServicio).subscribe(
-        servicio => {
-          if (servicio) {
-            this.servicio = servicio;
-            this.btnRadioGroup.setValue({ radioEstado: servicio.estado });
-            if (servicio.estado == this.CONST.ESTADO_SERVICIO.DESPACHADO)
-              this.btnRadioGroup.disable();
-            else
-              this.btnRadioGroup.enable();
-
-            this.establecerPrecio = false;
-            this.adjustTextareasHeight();
-          }
-        }
-      );
+      this.obtenerServicio();
     }
+  }
+
+  obtenerServicio() {
+    this.CONST.mostrarCargando();
+
+    this.servicioService.obtenerServicio(this.idServicio).subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.servicio = respuesta.objeto;
+        this.cambiarEstado(this.servicio.estado);
+        if (this.servicio.estado == this.CONST.ESTADO_SERVICIO.DESPACHADO)
+          this.btnRadioGroup.disable();
+        else
+          this.btnRadioGroup.enable();
+
+        this.establecerPrecio = false;
+        this.adjustTextareasHeight();
+        this.CONST.ocultarCargando();
+      }
+    );
   }
 
   cambiarPrecioIndividual(value: string) {
@@ -88,11 +99,21 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
   }
 
   editarServicio() {
+    this.CONST.mostrarCargando();
+
     this.servicio.estado = this.btnRadioGroup.get('radioEstado')?.value ?? this.servicio.estado;
     if (!this.servicio.precioEstablecido) this.servicio.precioEstablecido = this.establecerPrecio;
+
     this.servicioService.editarServicio(this.servicio).subscribe(
       respuesta => {
-        this.servicioEditadoEvent.emit(respuesta);
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.servicioEditadoEvent.emit(respuesta.objeto.mensaje);
+        this.CONST.ocultarCargando();
       }
     );
   }

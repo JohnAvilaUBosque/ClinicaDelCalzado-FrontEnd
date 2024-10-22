@@ -4,8 +4,9 @@ import { map, Observable } from 'rxjs';
 import { formatDate } from '@angular/common';
 import { BaseService } from 'src/app/base.service';
 import { ClienteModel } from '../clientes/cliente.model';
-import { ErrorModel } from 'src/app/error.model';
 import { ServicioService } from '../servicios/servicio.service';
+import { RespuestaModel } from 'src/app/respuesta.model';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -16,99 +17,125 @@ export class OrdenDeTrabajoService extends BaseService {
 
   private readonly URL: string = this.CONST.API_URL + '/api/v1/work-orders';
 
-  public obtenerOrdenes(): Observable<ErrorModel | OrdenDeTrabajoModel[]> {
-    return this.http.get<any>(this.URL + '/list').pipe(map(
+  public obtenerOrdenes(estadoOrden: string): Observable<RespuestaModel<OrdenDeTrabajoModel[]>> {
+    const headers = this.obtenerHeaders();
+
+    const params = new HttpParams()
+      .set('order_status', estadoOrden);
+
+    return this.http.get<any>(this.URL + '/list', { params, headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<OrdenDeTrabajoModel[]>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return this.mapearAOrdenes(respuesta.orders);
+        respuestaMapeada.objeto = this.mapearAOrdenes(respuesta.orders);
+        return respuestaMapeada;
       }
     ));
   }
 
-  public obtenerOrden(idOrden: string): Observable<ErrorModel | OrdenDeTrabajoModel> {
-    return this.http.get<any>(this.URL + '/' + idOrden).pipe(map(
+  public obtenerOrden(idOrden: string): Observable<RespuestaModel<OrdenDeTrabajoModel>> {
+    const headers = this.obtenerHeaders();
+    
+    return this.http.get<any>(this.URL + '/' + idOrden, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<OrdenDeTrabajoModel>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return this.mapearAOrden(respuesta);
+        respuestaMapeada.objeto = this.mapearAOrden(respuesta);
+        return respuestaMapeada;
       }
     ));
   }
 
-  public crearOrden(orden: OrdenDeTrabajoModel): Observable<ErrorModel | any> {
+  public crearOrden(orden: OrdenDeTrabajoModel): Observable<RespuestaModel<any>> {
+    const headers = this.obtenerHeaders();
+    
     var ordenMapeada = this.mapearOrden(orden);
 
-    return this.http.post<any>(this.URL + '/created', ordenMapeada).pipe(map(
+    return this.http.post<any>(this.URL + '/created', ordenMapeada, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return {
+        respuestaMapeada.objeto = {
           mensaje: respuesta.message,
           numeroOrden: respuesta.order_Number
         };
+        return respuestaMapeada;
       }
     ));
   }
 
-  public migrarOrden(orden: OrdenDeTrabajoModel): Observable<ErrorModel | any> {
+  public migrarOrden(orden: OrdenDeTrabajoModel): Observable<RespuestaModel<any>> {
+    const headers = this.obtenerHeaders();
+    
     var ordenMapeada = this.mapearOrden(orden);
 
-    return this.http.post<any>(this.URL + '/created', ordenMapeada).pipe(map(
+    return this.http.post<any>(this.URL + '/created', ordenMapeada, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return {
+        respuestaMapeada.objeto = {
           mensaje: respuesta.message,
           numeroOrden: respuesta.order_Number
         };
+        return respuestaMapeada;
       }
     ));
   }
 
-  public anularOrden(numeroOrden: number): Observable<ErrorModel | any> {
-    return this.http.put<any>(this.URL + '/cancel/' + numeroOrden, null).pipe(map(
-      respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
-        if (respuestaMapeada.esError) return respuestaMapeada;
-
-        return {
-          mensaje: respuesta.message
-        };
-      }
-    ));
-  }
-
-  public abonarAOrden(numeroOrden: number, abono: number): Observable<ErrorModel | any> {
+  public abonarAOrden(numeroOrden: string, abono: number): Observable<RespuestaModel<any>> {
+    const headers = this.obtenerHeaders();
+    
     var objeto = { "payment_amount": abono };
 
-    return this.http.put<any>(this.URL + '/payment/' + numeroOrden, objeto).pipe(map(
+    return this.http.put<any>(this.URL + '/payment/' + numeroOrden, objeto, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return {
+        respuestaMapeada.objeto = {
           mensaje: respuesta.message
         };
+        return respuestaMapeada;
       }
     ));
   }
 
-  public comentarOrden(numeroOrden: number, comentario: number): Observable<ErrorModel | any> {
+  public comentarOrden(numeroOrden: string, comentario: string): Observable<RespuestaModel<any>> {
+    const headers = this.obtenerHeaders();
+    
     var objeto = { "comment": comentario };
 
-    return this.http.put<any>(this.URL + '/comment/' + numeroOrden, objeto).pipe(map(
+    return this.http.put<any>(this.URL + '/comment/' + numeroOrden, objeto, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return {
+        respuestaMapeada.objeto = {
           mensaje: respuesta.message
         };
+        return respuestaMapeada;
+      }
+    ));
+  }
+
+  public anularOrden(numeroOrden: string, comentario: string): Observable<RespuestaModel<any>> {
+    const headers = this.obtenerHeaders();
+    
+    var objeto = { "comment": comentario };
+
+    return this.http.put<any>(this.URL + '/cancel/' + numeroOrden, objeto, { headers }).pipe(map(
+      respuesta => {
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
+        if (respuestaMapeada.esError) return respuestaMapeada;
+
+        respuestaMapeada.objeto = {
+          mensaje: respuesta.message
+        };
+        return respuestaMapeada;
       }
     ));
   }
@@ -116,6 +143,7 @@ export class OrdenDeTrabajoService extends BaseService {
   private mapearOrden(orden: OrdenDeTrabajoModel): any {
     return {
       attended_by: orden.atendidoPor,
+      attended_by_id: orden.atendidoPorId,
       create_date: orden.fechaCreacion,
       client: this.mapearCliente(orden.cliente),
       down_payment: orden.abono,
@@ -133,15 +161,6 @@ export class OrdenDeTrabajoService extends BaseService {
     };
   }
 
-  private mapearComentario(comentario: ComentarioModel): any {
-    return {
-      id_operator: comentario.id,
-      operator_name: comentario.descripcion,
-      x: comentario.nombreAdmin, // TO DO: Pendiente definir
-      y: comentario.fecha, // TO DO: Pendiente definir
-    };
-  }
-
   private mapearAOrdenes(ordenes: any[]): OrdenDeTrabajoModel[] {
     return ordenes.map(
       orden => {
@@ -152,6 +171,7 @@ export class OrdenDeTrabajoService extends BaseService {
   private mapearAOrden(orden: any): OrdenDeTrabajoModel {
     return {
       numeroOrden: orden.order_number,
+      atendidoPorId: orden.attended_by_id,
       atendidoPor: orden.attended_by,
       fechaCreacion: orden.create_date,
       estadoOrden: orden.order_status,
@@ -181,8 +201,8 @@ export class OrdenDeTrabajoService extends BaseService {
         return {
           id: comentario.id_operator,
           descripcion: comentario.operator_name,
-          nombreAdmin: comentario.x, // TO DO: Pendiente definir
-          fecha: comentario.y, // TO DO: Pendiente definir
+          nombreAdmin: comentario.comment_by,
+          fecha: comentario.creation_date,
         };
       });
   }

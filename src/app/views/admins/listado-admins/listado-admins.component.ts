@@ -35,12 +35,26 @@ export class ListadoAdminsComponent implements OnInit {
 
     this.adminLocal = this.usuarioService.obtenerAdminLocal();
 
-    this.administradorService.obtenerAdmins().subscribe(data => {
-      this.administradores = data;
-    });
+    this.obtenerAdmins();
   }
 
-  navegarAFormulario(idAdmin: string) {
+  obtenerAdmins() {
+    this.CONST.mostrarCargando();
+    
+    this.administradorService.obtenerAdmins().subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.administradores = respuesta.objeto;
+        this.CONST.ocultarCargando();
+      });
+  }
+
+  navegarAVerAdmin(idAdmin: string) {
     if (this.adminLocal.identificacion == idAdmin)
       this.router.navigate(['admins/perfil']);
     else

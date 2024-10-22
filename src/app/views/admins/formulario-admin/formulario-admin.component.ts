@@ -91,25 +91,31 @@ export class FormularioAdminComponent implements OnInit {
     );
   }
 
-  private obtenerAdmin() {
+  obtenerAdmin() {
+    this.CONST.mostrarCargando();
+
     this.route.params.pipe(map((p) => p['id-admin'])).subscribe(
       idAdmin => {
         this.administradorService.obtenerAdmin(idAdmin).subscribe(
-          adminEncontrado => {
-            if (adminEncontrado) {
-              this.admin = adminEncontrado;
-              this.admin.datosSeguridad = new DatosSeguridadModel;
-              this.esInformacionPersonal = this.adminLocal.identificacion == this.admin.identificacion;
-
-              this.cambiarEstado(this.admin.estado);
-              if (this.esModoLectura
-                || (this.esModoEdicion && this.adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO)
-                || this.esInformacionPersonal) {
-                this.btnRadioGroup.disable();
-              }
+          respuesta => {
+            if (respuesta.esError) {
+              this.CONST.ocultarCargando();
+              this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+              this.navegarAListado();
+              return;
             }
-            else
-              this.router.navigate(['admins/listado']);
+
+            this.admin = respuesta.objeto;
+            this.admin.datosSeguridad = new DatosSeguridadModel;
+            this.esInformacionPersonal = this.adminLocal.identificacion == this.admin.identificacion;
+
+            this.cambiarEstado(this.admin.estado);
+            if (this.esModoLectura
+              || (this.esModoEdicion && this.adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO)
+              || this.esInformacionPersonal) {
+              this.btnRadioGroup.disable();
+            }
+            this.CONST.ocultarCargando();
           }
         );
       }
@@ -117,43 +123,75 @@ export class FormularioAdminComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.esModoEdicion) {
-      if (this.asignarClaveTemporal) this.admin.tieneClaveTemporal = this.asignarClaveTemporal;
+    this.CONST.mostrarCargando();
 
-      this.administradorService.editarAdministrador(this.admin).subscribe(
+    if (this.esModoEdicion) {
+      if (this.asignarClaveTemporal) {
+        this.admin.tieneClaveTemporal = this.asignarClaveTemporal;
+        this.admin.clave = this.CONST.generarClaveAleatoria();
+      }
+
+      this.administradorService.editarAdmin(this.admin).subscribe(
         respuesta => {
+          if (respuesta.esError) {
+            this.CONST.ocultarCargando();
+            this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+            return;
+          }
+
           if (this.asignarClaveTemporal) {
-            this.claveTemporal = respuesta.clave;
+            this.claveTemporal = this.admin.clave;
             this.claveTemporalModal.visible = true;
             return;
           }
 
-          this.irAVerAdmin();
+          this.navegarAVerAdmin();
+          this.CONST.ocultarCargando();
         }
       );
     } else {
-      this.admin.tieneClaveTemporal = true;
+      // this.admin.tieneClaveTemporal = true; // TO DO: Pendiente definir si activar
       this.administradorService.crearAdmin(this.admin).subscribe(
         respuesta => {
-          this.irAVerAdmin();
+          if (respuesta.esError) {
+            this.CONST.ocultarCargando();
+            this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+            return;
+          }
+
+          this.navegarAVerAdmin();
+          this.CONST.ocultarCargando();
         }
       );
     }
   }
 
   cambiarClave(cambiarClaveModal: ModalComponent): void {
+    this.CONST.mostrarCargando();
+
     this.cambioDeClave.identificacion = this.admin.identificacion;
 
     this.administradorService.cambiarClave(this.cambioDeClave).subscribe(
       respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
         cambiarClaveModal.visible = false;
         this.cambioDeClave = new CambioDeClaveModel();
         this.lasClavesCoinciden = false;
+        this.CONST.ocultarCargando();
       }
     );
   }
 
-  irAVerAdmin() {
+  navegarAListado() {
+    this.router.navigate(['admins/listado']);
+  }
+
+  navegarAVerAdmin() {
     this.router.navigate(['admins/ver/' + this.admin.identificacion]);
   }
 

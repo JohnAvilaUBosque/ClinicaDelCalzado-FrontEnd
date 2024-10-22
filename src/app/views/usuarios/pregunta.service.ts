@@ -1,19 +1,40 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { PreguntaModel } from './pregunta.model';
 import { map, Observable } from 'rxjs';
+import { BaseService } from 'src/app/base.service';
+import { RespuestaModel } from 'src/app/respuesta.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PreguntaService {
+export class PreguntaService extends BaseService {
 
-  private http = inject(HttpClient);
+  private readonly URL: string = this.CONST.API_URL + '/api/v1/questions';
 
-  url: string = '/assets/dummy-data/preguntas.json';
+  public obtenerPreguntas(): Observable<RespuestaModel<PreguntaModel[]>> {
+    return this.http.get<any>(this.URL).pipe(map(
+      respuesta => {
+        var respuestaMapeada = this.validarRespuesta<PreguntaModel[]>(respuesta);
+        if (respuestaMapeada.esError) return respuestaMapeada;
 
-  obtenerPreguntas(): Observable<PreguntaModel[]> {
-    return this.http.get<any>(this.url).pipe(map(x => x['preguntas']));
+        respuestaMapeada.objeto = this.mapearAPreguntas(respuesta.questions);
+        return respuestaMapeada;
+      }
+    ));
+  }
+
+  private mapearAPreguntas(preguntas: any[]): PreguntaModel[] {
+    return preguntas.map(
+      pregunta => {
+        return this.mapearAPregunta(pregunta);
+      });
+  }
+
+  private mapearAPregunta(pregunta: any): PreguntaModel {
+    return {
+      id: pregunta.id_question,
+      descripcion: pregunta.question
+    };
   }
 
 }

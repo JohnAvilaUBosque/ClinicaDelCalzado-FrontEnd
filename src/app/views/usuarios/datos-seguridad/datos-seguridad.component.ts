@@ -5,6 +5,7 @@ import { DatosSeguridadModel } from '../usuario.model';
 import { PreguntaModel } from '../pregunta.model';
 import { PreguntaService } from '../pregunta.service';
 import { CommonModule } from '@angular/common';
+import { ConstantsService } from 'src/app/constants.service';
 
 @Component({
   selector: 'datos-seguridad',
@@ -17,6 +18,8 @@ export class DatosSeguridadComponent implements OnInit, AfterViewInit {
 
   private preguntaService = inject(PreguntaService);
 
+  public CONST = inject(ConstantsService);
+
   @Input() datosSeguridad: DatosSeguridadModel = new DatosSeguridadModel;
 
   public preguntas: Array<PreguntaModel> = [];
@@ -26,9 +29,23 @@ export class DatosSeguridadComponent implements OnInit, AfterViewInit {
   @Output() esFormularioValidoEvent = new EventEmitter<boolean>();
 
   ngOnInit(): void {
-    this.preguntaService.obtenerPreguntas().subscribe(data => {
-      this.preguntas = data;
-    });
+    this.obtenerPreguntas();
+  }
+
+  obtenerPreguntas() {
+    this.CONST.mostrarCargando();
+
+    this.preguntaService.obtenerPreguntas().subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.preguntas = respuesta.objeto;
+        this.CONST.ocultarCargando();
+      });
   }
 
   ngAfterViewInit() {

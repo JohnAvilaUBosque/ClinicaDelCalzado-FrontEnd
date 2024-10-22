@@ -1,51 +1,51 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { BaseService } from 'src/app/base.service';
-import { InformeDetalladoModel } from './informe.model';
-import { ErrorModel } from 'src/app/error.model';
-import { ServicioService } from '../servicios/servicio.service';
+import { InformeDetalladoModel, InformeGeneralModel } from './informe.model';
+import { RespuestaModel } from 'src/app/respuesta.model';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InformesService extends BaseService {
 
-  public servicioService = inject(ServicioService);
-
   private readonly URL: string = this.CONST.API_URL + '/api/v1/reports';
 
   public obtenerInformeDetallado(fechaInicial: string, fechaFinal: string, estadoOrden?: string)
-    : Observable<ErrorModel | InformeDetalladoModel[]> {
-    var objeto = {
-      start_date: fechaInicial,
-      end_date: fechaFinal,
-      order_status: estadoOrden
-    };
+    : Observable<RespuestaModel<InformeDetalladoModel[]>> {
+    const headers = this.obtenerHeaders();
 
-    return this.http.post<any>(this.URL + '/detailed', objeto).pipe(map(
+    const params = new HttpParams()
+      .set('start_date', fechaInicial)
+      .set('end_date', fechaFinal);
+
+    return this.http.post<any>(this.URL + '/detailed', null, { params, headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<InformeDetalladoModel[]>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return this.mapearAInformeDetallado(respuesta.orders);
+        respuestaMapeada.objeto = this.mapearAInformeDetallado(respuesta.orders);
+        return respuestaMapeada;
       }
     ));
   }
 
   public obtenerInformeGeneral(fechaInicial: string, fechaFinal: string, estadoOrden?: string)
-    : Observable<ErrorModel | InformeDetalladoModel[]> {
-    var objeto = {
-      start_date: fechaInicial,
-      end_date: fechaFinal,
-      order_status: estadoOrden
-    };
+    : Observable<RespuestaModel<InformeGeneralModel[]>> {
+    const headers = this.obtenerHeaders();
 
-    return this.http.post<any>(this.URL + '/detailed', objeto).pipe(map(
+    const params = new HttpParams()
+      .set('start_date', fechaInicial)
+      .set('end_date', fechaFinal);
+
+    return this.http.post<any>(this.URL + '/general', null, { params, headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<InformeGeneralModel[]>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return this.mapearAInformeDetallado(respuesta.orders);
+        respuestaMapeada.objeto = this.mapearAInformeGeneral(respuesta.orders);
+        return respuestaMapeada;
       }
     ));
   }
@@ -59,6 +59,9 @@ export class InformesService extends BaseService {
 
   private mapearAOrden(orden: any): InformeDetalladoModel {
     return {
+      // estadoOrden: orden.order_status, // TO DO: Pendiente definir si activar
+      estadoOrden: orden.services_received == 0 && orden.services_completed == 0 && orden.balance == 0
+        ? this.CONST.ESTADO_ORDEN.FINALIZADA : this.CONST.ESTADO_ORDEN.VIGENTE, // TO DO: Pendiente definir si quitar
       numeroOrden: orden.order_number,
       fechaCreacion: orden.create_date,
       precioTotal: orden.total_value,
@@ -69,4 +72,24 @@ export class InformesService extends BaseService {
       serviciosDespachados: orden.services_dispatched,
     };
   }
+
+  private mapearAInformeGeneral(dias: any[]): InformeGeneralModel[] {
+    return dias.map(
+      dia => {
+        return this.mapearADia(dia);
+      });
+  }
+
+  private mapearADia(dia: any): InformeGeneralModel {
+    return {
+      fecha: dia.creation_date,
+      precioTotal: dia.total_value,
+      abono: dia.down_payment,
+      saldo: dia.balance,
+      serviciosRecibidos: dia.services_received,
+      serviciosTerminados: dia.services_completed,
+      serviciosDespachados: dia.services_dispatched,
+    };
+  }
+
 }

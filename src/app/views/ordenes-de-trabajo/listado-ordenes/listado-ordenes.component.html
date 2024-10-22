@@ -14,7 +14,7 @@
                             <svg cIcon name="cil-warning"></svg>
                         </c-badge>
                     </span>
-                    <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="irAListadoOrdenesConFiltros()" name="orderStatus"
+                    <select cSelect [(ngModel)]="filtro.estadoOrden" (ngModelChange)="navegarAListado()" name="orderStatus"
                         #orderStatus="ngModel" sizing="sm">
                         <option [value]="CONST.ESTADO_ORDEN.VIGENTE">
                             {{CONST.ESTADO_ORDEN.VIGENTE}}
@@ -112,7 +112,7 @@
                     <tr>
                         <td>
                             <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
-                                cTooltip="Ver orden" (click)="verOrden(orden)">
+                                cTooltip="Ver orden" (click)="navegarAVerOrden(orden)">
                                 <svg cIcon name="cil-external-link"></svg>
                             </button>
                         </td>

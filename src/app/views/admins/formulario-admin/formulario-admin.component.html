@@ -232,13 +232,13 @@
 <c-modal #claveTemporalModal backdrop="static" id="claveTemporalModal">
     <c-modal-header>
         <h5 cModalTitle>Clave temporal generada</h5>
-        <button (click)="irAVerAdmin()" cButtonClose></button>
+        <button (click)="navegarAVerAdmin()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
         <c-alert color="info">{{claveTemporal}}</c-alert>
     </c-modal-body>
     <c-modal-footer>
-        <button cButton color="primary" (click)="irAVerAdmin()" class="text-white">
+        <button cButton color="primary" (click)="navegarAVerAdmin()" class="text-white">
             Cerrar
             <svg cIcon name="cil-x"></svg>
         </button>

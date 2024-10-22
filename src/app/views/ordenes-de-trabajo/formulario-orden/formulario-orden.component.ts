@@ -63,19 +63,20 @@ export class FormularioOrdenComponent implements OnInit {
   ngOnInit(): void {
     this.usuarioLocal = this.usuarioService.obtenerAdminLocal();
 
-    const action = this.route.data.pipe(map((d) => d['title'])).subscribe(
+    this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
         this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + title + ' orden de trabajo');
 
         if (title == 'Crear') {
           this.esModoCreacion = true;
           this.orden.numeroOrden = this.CONST.ORDEN_NUMBER_DEFAULT;
+          this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
           this.orden.atendidoPor = this.usuarioLocal.nombre;
           this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME);
-          this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
         }
         else if (title == 'Migrar') {
           this.esModoMigracion = true;
+          this.orden.numeroOrden = this.CONST.ORDEN_NUMBER_DEFAULT;
           this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
           this.obtenerAdministradores();
         }
@@ -92,19 +93,36 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   obtenerAdministradores() {
-    this.adminService.obtenerAdmins().subscribe(admins => this.administradores = admins);
+    this.CONST.mostrarCargando();
+
+    this.adminService.obtenerAdmins().subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.administradores = respuesta.objeto;
+        this.CONST.ocultarCargando();
+      });
   }
 
-  obtenerOrden(numeroOrden: string, funcion?: Function) {
+  obtenerOrden(numeroOrden: string) {
+    this.CONST.mostrarCargando();
+
     this.ordenDeTrabajoService.obtenerOrden(numeroOrden).subscribe(
-      ordenEncontrada => {
-        if (ordenEncontrada) {
-          this.orden = ordenEncontrada;
-          this.whatsAppNumber = ordenEncontrada.cliente.celular;
-          if (funcion) funcion();
-        }
-        else
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
           this.router.navigate(['ordenesdetrabajo/buscar/'], { queryParams: { ordenNoEncontrada: numeroOrden } });
+          return;
+        }
+
+        this.orden = respuesta.objeto;
+        this.whatsAppNumber = respuesta.objeto.cliente.celular;
+        this.CONST.ocultarCargando();
       }
     );
   }
@@ -117,6 +135,9 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   crearOrden() {
+    this.CONST.mostrarCargando();
+
+    this.orden.atendidoPor = this.administradores.find(a => a.identificacion == this.orden.atendidoPorId)?.nombre || '';
     this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME);
     this.orden.fechaEntrega = this.CONST.fechaATexto(this.orden.fechaEntrega, this.CONST.FORMATS_API.DATE);
     this.orden.estadoPago = this.orden.saldo != 0 ?
@@ -130,12 +151,22 @@ export class FormularioOrdenComponent implements OnInit {
 
     this.ordenDeTrabajoService.crearOrden(this.orden).subscribe(
       respuesta => {
-        this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.CONST.ocultarCargando();
+        this.navegarAVerOrden();
       }
     );
   }
 
   migrarOrden() {
+    this.CONST.mostrarCargando();
+
+    this.orden.atendidoPor = this.administradores.find(a => a.identificacion == this.orden.atendidoPorId)?.nombre || '';
     this.orden.fechaCreacion = this.CONST.fechaATexto(this.fechaCreacion + ' ' + this.horaCreacion + ' ' + this.amOpm, this.CONST.FORMATS_API.DATETIME);
     this.orden.fechaEntrega = this.CONST.fechaATexto(this.orden.fechaEntrega, this.CONST.FORMATS_API.DATE);
     this.orden.estadoPago = this.orden.saldo != 0 ?
@@ -149,17 +180,20 @@ export class FormularioOrdenComponent implements OnInit {
 
     this.ordenDeTrabajoService.migrarOrden(this.orden).subscribe(
       respuesta => {
-        this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.CONST.ocultarCargando();
+        this.navegarAVerOrden();
       }
     );
   }
 
-  editarOrden() {
-    this.ordenDeTrabajoService.editarOrden(this.orden).subscribe(
-      respuesta => {
-        this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
-      }
-    );
+  navegarAVerOrden() {
+    this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
   }
 
   validarFechaDeCreacion(fecha: any) {
@@ -203,6 +237,7 @@ export class FormularioOrdenComponent implements OnInit {
 
   agregarComentarioAOrden(comentario: string) {
     var commentarioObject: ComentarioModel = {
+      id: 0,
       descripcion: comentario,
       nombreAdmin: this.usuarioLocal.nombre,
       fecha: this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME)
@@ -210,29 +245,11 @@ export class FormularioOrdenComponent implements OnInit {
     this.orden.comentarios.push(commentarioObject);
   }
 
-  private calcularEstados() {
-    this.orden.estadoPago = this.orden.saldo != 0 ?
-      this.CONST.ESTADO_PAGO.PENDIENTE :
-      this.orden.servicios.every(s => s.precioEstablecido) ?
-        this.CONST.ESTADO_PAGO.PAGADO : this.CONST.ESTADO_PAGO.PENDIENTE;
-
-    this.orden.estadoOrden =
-      this.orden.estadoPago == this.CONST.ESTADO_PAGO.PAGADO
-        && this.orden.servicios.every(s => s.estado == this.CONST.ESTADO_SERVICIO.DESPACHADO)
-        ? this.CONST.ESTADO_ORDEN.FINALIZADA
-        : this.CONST.ESTADO_ORDEN.VIGENTE;
-  }
-
   servicioEditado(comentario: string) {
-    this.obtenerOrden(this.orden.numeroOrden, () => {
-      this.agregarComentarioAOrden(comentario);
-      this.calcularTotal();
-      this.calcularEstados();
-      this.editarOrden();
-    });
+    this.obtenerOrden(this.orden.numeroOrden);
   }
 
-  // Funciones de modales
+  // Funciones de Modals
 
   cambiarCliente(cliente: ClienteModel) {
     this.orden.cliente.identificacion = cliente.identificacion;
@@ -264,41 +281,57 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   abonar(abonarModal: ModalComponent) {
-    this.orden.abono += this.abonoNuevo;
-    this.orden.saldo = this.saldoNuevo;
-    if (this.orden.saldo == 0)
-      this.orden.estadoPago = this.CONST.ESTADO_PAGO.PAGADO;
+    this.CONST.mostrarCargando();
 
-    this.agregarComentarioAOrden('El cliente realizó un abono de ' +
-      this.CONST.monedaATexto(this.abonoNuevo) +
-      ', quedando un saldo de ' +
-      this.CONST.monedaATexto(this.orden.saldo)
+    this.ordenDeTrabajoService.abonarAOrden(this.orden.numeroOrden, this.abonoNuevo).subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.CONST.ocultarCargando();
+        abonarModal.visible = false;
+        this.abonoNuevo = 0;
+        this.saldoNuevo = 0;
+      }
     );
-
-    this.abonoNuevo = 0;
-    this.saldoNuevo = 0;
-
-    abonarModal.visible = false;
-    this.calcularEstados();
-    this.editarOrden();
   }
 
   agregarNuevoComentario(comentarioModal: ModalComponent) {
-    this.agregarComentarioAOrden(this.comentarioNuevo);
+    this.CONST.mostrarCargando();
 
-    this.comentarioNuevo = '';
+    this.ordenDeTrabajoService.comentarOrden(this.orden.numeroOrden, this.comentarioNuevo).subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
 
-    comentarioModal.visible = false;
-    this.editarOrden();
+        this.CONST.ocultarCargando();
+        comentarioModal.visible = false;
+        this.comentarioNuevo = '';
+      }
+    );
   }
 
   anular(anularModal: ModalComponent) {
-    this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.ANULADA;
-    this.agregarComentarioAOrden('Se anuló la orden de trabajo, ' + this.comentarioAnulacion);
+    this.CONST.mostrarCargando();
 
-    this.comentarioAnulacion = '';
+    this.ordenDeTrabajoService.anularOrden(this.orden.numeroOrden, this.comentarioNuevo).subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
 
-    anularModal.visible = false;
-    this.editarOrden();
+        this.CONST.ocultarCargando();
+        anularModal.visible = false;
+        this.comentarioAnulacion = '';
+      }
+    );
   }
 }

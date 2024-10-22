@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ErrorModel } from './error.model';
-import { HttpClient } from '@angular/common/http';
+import { ErrorModel, RespuestaModel } from './respuesta.model';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ConstantsService } from './constants.service';
 
 @Injectable({
@@ -9,14 +9,41 @@ import { ConstantsService } from './constants.service';
 })
 export class BaseService {
 
-  public http = inject(HttpClient);
-  public router = inject(Router);
-  public CONST = inject(ConstantsService);
+  protected http = inject(HttpClient);
+  protected router = inject(Router);
+  protected CONST = inject(ConstantsService);
 
-  public validarRespuesta(respuesta: any): ErrorModel | any {
-    var respuestaMapeada = this.mapearRespuesta(respuesta);
-    
+  private readonly localStorageKeyToken: string = 'T';
+
+  public cambiarToken(token: string) {
+    localStorage.setItem(this.localStorageKeyToken, this.CONST.encriptarTexto(token) ?? "")
+  }
+
+  public obtenerToken(): string | null {
+    var token = this.CONST.desencriptarTexto(localStorage.getItem(this.localStorageKeyToken));
+    return token;
+  }
+
+  public borrarToken() {
+    localStorage.removeItem(this.localStorageKeyToken);
+  }
+
+  public obtenerHeaders(): HttpHeaders {
+    var token = this.obtenerToken();
+    const headers = new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`);
+    return headers;
+  }
+
+  protected validarRespuesta<T>(respuesta: any): RespuestaModel<T> {
+    var respuestaMapeada = this.mapearRespuesta<T>(respuesta);
+
     if (respuesta && respuesta.status == 401) {
+      this.router.navigate(['login']);
+      return respuestaMapeada;
+    }
+
+    if (respuesta && respuesta.status == 403) {
       this.router.navigate(['login']);
       return respuestaMapeada;
     }
@@ -29,17 +56,28 @@ export class BaseService {
     return respuestaMapeada;
   }
 
-  private mapearRespuesta(respuesta: any): ErrorModel | any {
+  private mapearRespuesta<T>(respuesta: any): RespuestaModel<T> {
+    var respuestaMapeada = new RespuestaModel<T>();
+
     if (respuesta.error) {
       var error = new ErrorModel();
-      error.esError = true;
       error.tipo = respuesta.error;
       error.estado = respuesta.status;
       error.mensaje = respuesta.message;
-      return error;
+
+      respuestaMapeada.esError = true;
+      respuestaMapeada.error = error;
+      return respuestaMapeada;
     }
 
-    return respuesta;
+    respuestaMapeada.esError = false;
+    respuestaMapeada.objeto = respuesta;
+    return respuestaMapeada;
   }
 
+  gestionarError(error: HttpErrorResponse ) {
+    this.CONST.ocultarCargando();
+    console.error(error);
+    this.router.navigate(['500']);
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { BadgeComponent, ButtonGroupComponent, ButtonModule, CardModule, FormCheckLabelDirective, FormModule, GridModule, ModalComponent, ModalModule, TooltipModule } from '@coreui/angular';
+import { BadgeComponent, ButtonGroupComponent, ButtonModule, CardModule, FormCheckLabelDirective, FormModule, GridModule, ModalModule, TooltipModule } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { OperarioService } from '../operario.service';
 import { OperarioModel } from '../operario.model';
@@ -64,21 +64,26 @@ export class FormularioOperarioComponent {
 
   }
 
-  private obtenerOperario() {
+  obtenerOperario() {
+    this.CONST.mostrarCargando();
+
     this.route.params.pipe(map((p) => p['id-operario'])).subscribe(
       idOperario => {
         this.operarioService.obtenerOperario(idOperario).subscribe(
-          operarioEncontrado => {
-            if (operarioEncontrado) {
-              this.operario = operarioEncontrado;
-
-              this.btnRadioGroup.setValue({ radioEstado: this.operario.estado });
-              if (this.esModoLectura) {
-                this.btnRadioGroup.disable();
-              }
+          respuesta => {
+            if (respuesta.esError) {
+              this.CONST.ocultarCargando();
+              this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+              this.navegarAListado();
+              return;
             }
-            else
-              this.router.navigate(['operarios/listado']);
+
+            this.operario = respuesta.objeto;
+            this.cambiarEstado(this.operario.estado);
+            if (this.esModoLectura) {
+              this.btnRadioGroup.disable();
+            }
+            this.CONST.ocultarCargando();
           }
         );
       }
@@ -89,16 +94,38 @@ export class FormularioOperarioComponent {
     if (this.esModoEdicion) {
       this.operarioService.editarOperario(this.operario).subscribe(
         respuesta => {
-          this.router.navigate(['operarios/ver/' + this.operario.identificacion]);
+          if (respuesta.esError) {
+            this.CONST.ocultarCargando();
+            this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+            return;
+          }
+
+          this.navegarAVerOperador();
+          this.CONST.ocultarCargando();
         }
       );
     } else {
       this.operarioService.crearOperario(this.operario).subscribe(
         respuesta => {
-          this.router.navigate(['operarios/ver/' + this.operario.identificacion]);
+          if (respuesta.esError) {
+            this.CONST.ocultarCargando();
+            this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+            return;
+          }
+
+          this.navegarAVerOperador();
+          this.CONST.ocultarCargando();
         }
       );
     }
+  }
+
+  navegarAListado() {
+    this.router.navigate(['operarios/listado']);
+  }
+
+  navegarAVerOperador() {
+    this.router.navigate(['operarios/ver/' + this.operario.identificacion]);
   }
 
   habilitarModoCreacion() {
@@ -123,5 +150,4 @@ export class FormularioOperarioComponent {
     this.btnRadioGroup.setValue({ radioEstado: value });
     this.operario.estado = value;
   }
-
 }

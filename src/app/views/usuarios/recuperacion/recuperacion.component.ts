@@ -34,13 +34,23 @@ export class RecuperacionComponent implements OnInit {
   }
 
   recuperarClave() {
-    // this.usuarioService.recuperarClave(this.recuperacion);
+    this.CONST.mostrarCargando();
 
-    this.router.navigate(['login']);
+    this.usuarioService.recuperarClave(this.recuperacion).subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.CONST.ocultarCargando();
+        this.router.navigate(['login']);
+      }
+    );
   }
 
   confirmarClave() {
     this.lasClavesCoinciden = this.recuperacion.claveNueva == this.recuperacion.claveConfirmacion;
   }
-
 }

@@ -72,10 +72,10 @@
                     @if (esModoMigracion) {
                     <c-col sm="6" lg="4" class="mb-3">
                         <label cLabel="col" sizing="sm">Atendido por:</label><span class="text-danger"> *</span>
-                        <select cSelect [(ngModel)]="orden.atendidoPor" name="attendedBy" #attendedBy="ngModel" required
+                        <select cSelect [(ngModel)]="orden.atendidoPorId" name="attendedBy" #attendedBy="ngModel" required
                             [valid]="attendedBy.touched && attendedBy.invalid ? false : undefined">
                             @for (admin of administradores; track $index) {
-                            <option [value]="admin.nombre">
+                            <option [value]="admin.identificacion">
                                 {{admin.nombre}}
                             </option>
                             }

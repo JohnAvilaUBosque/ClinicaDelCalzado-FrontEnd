@@ -4,6 +4,7 @@ import { ClienteModel } from '../clientes/cliente.model';
 export class OrdenDeTrabajoModel {
     numeroOrden: string = '';
     atendidoPor: string = '';
+    atendidoPorId: string = '';
     fechaCreacion: string = '';
     estadoOrden: string = '';
     cliente: ClienteModel = new ClienteModel();

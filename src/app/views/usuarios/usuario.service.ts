@@ -3,7 +3,7 @@ import { AdministradorModel } from '../admins/administrador.model';
 import { DatosSeguridadModel, RecuperacionModel, UsuarioModel } from './usuario.model';
 import { map, Observable } from 'rxjs';
 import { BaseService } from 'src/app/base.service';
-import { ErrorModel } from 'src/app/error.model';
+import { RespuestaModel } from 'src/app/respuesta.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,39 +11,40 @@ import { ErrorModel } from 'src/app/error.model';
 export class UsuarioService extends BaseService {
 
   private readonly localStorageKeyUser: string = 'U';
-  private readonly localStorageKeyToken: string = 'T';
 
   private readonly URL: string = this.CONST.API_URL + '/api/v1/auth';
 
-  public iniciarSesion(usuario: UsuarioModel): Observable<ErrorModel | any> {
+  public iniciarSesion(usuario: UsuarioModel): Observable<RespuestaModel<any>> {
     var usuarioMapeado = this.mapearUsuario(usuario);
 
     return this.http.post<any>(this.URL + '/login', usuarioMapeado).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return {
+        respuestaMapeada.objeto = {
           mensaje: respuesta.message,
           token: respuesta.access_token,
           tipoToken: respuesta.token_type,
           esClaveTemporal: respuesta.has_temporary_password
         };
+        return respuestaMapeada;
       }
     ));
   }
 
-  public recuperarClave(recuperacion: RecuperacionModel): Observable<ErrorModel | any> {
+  public recuperarClave(recuperacion: RecuperacionModel): Observable<RespuestaModel<any>> {
     var recuperacionMapeada = this.mapearRecuperacion(recuperacion);
 
     return this.http.post<any>(this.URL + '/password-recovery', recuperacionMapeada).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return {
+        respuestaMapeada.objeto = {
           mensaje: respuesta.message
         };
+        return respuestaMapeada;
       }
     ));
   }
@@ -69,7 +70,7 @@ export class UsuarioService extends BaseService {
     };
   }
 
-  private mapearDatosSeguridad(datosSeguridad: DatosSeguridadModel): any {
+  public mapearDatosSeguridad(datosSeguridad: DatosSeguridadModel): any {
     return [
       {
         id_question: datosSeguridad.pregunta1,
@@ -98,18 +99,5 @@ export class UsuarioService extends BaseService {
 
   public borrarAdminLocal() {
     localStorage.removeItem(this.localStorageKeyUser);
-  }
-
-  public cambiarToken(token: string) {
-    localStorage.setItem(this.localStorageKeyToken, this.CONST.encriptarTexto(token) ?? "")
-  }
-
-  public obtenerToken(): string | null {
-    var token = this.CONST.desencriptarTexto(localStorage.getItem(this.localStorageKeyToken));
-    return token;
-  }
-
-  public borrarToken() {
-    localStorage.removeItem(this.localStorageKeyToken);
   }
 }

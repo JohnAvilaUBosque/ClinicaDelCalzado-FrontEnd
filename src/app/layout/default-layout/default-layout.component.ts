@@ -13,19 +13,12 @@ import {
   SidebarHeaderComponent,
   SidebarNavComponent,
   SidebarToggleDirective,
-  SidebarTogglerDirective
+  SidebarTogglerDirective,
 } from '@coreui/angular';
 
 import { DefaultFooterComponent, DefaultHeaderComponent } from './';
 import { UsuarioService } from '../../views/usuarios/usuario.service';
 import { navItems } from './_nav';
-
-function isOverflown(element: HTMLElement) {
-  return (
-    element.scrollHeight > element.clientHeight ||
-    element.scrollWidth > element.clientWidth
-  );
-}
 
 @Component({
   selector: 'app-dashboard',
@@ -51,12 +44,14 @@ function isOverflown(element: HTMLElement) {
   ]
 })
 export class DefaultLayoutComponent implements OnInit {
+
   private usuarioService = inject(UsuarioService);
 
   public navItems: INavData[] = [];
 
   ngOnInit(): void {
     var adminLocal = this.usuarioService.obtenerAdminLocal();
+
     this.navItems = navItems.filter(n => {
       if (n.attributes && n.attributes['rolesAutorizados']) {
         var rolesAutorizados: string[] = n.attributes['rolesAutorizados'];
@@ -65,11 +60,5 @@ export class DefaultLayoutComponent implements OnInit {
 
       return true;
     });
-  }
-
-  onScrollbarUpdate($event: any) {
-    // if ($event.verticalUsed) {
-    // console.log('verticalUsed', $event.verticalUsed);
-    // }
   }
 }

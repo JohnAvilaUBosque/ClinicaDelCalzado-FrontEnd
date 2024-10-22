@@ -1,0 +1,22 @@
+.modalTransparent {
+  .modal-content {
+    background-color: transparent;
+    border-color: transparent;
+
+    div {
+      display: flex !important;
+      justify-content: center;
+
+      span {
+        display: block;
+        text-align: center;
+        font-size: x-large;
+      }
+    }
+  }
+}
+
+.spinnerBig {
+  width: 100px;
+  height: 100px;
+}

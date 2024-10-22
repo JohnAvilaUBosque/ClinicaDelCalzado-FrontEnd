@@ -42,55 +42,81 @@ export class LoginComponent implements OnInit {
   }
 
   iniciarSesion() {
-    this.toastError.visible = false;
+    this.CONST.mostrarCargando();
 
     this.usuarioService.iniciarSesion(this.usuario).subscribe(
+      // {
+      //   next:
       respuesta => {
-        if (respuesta.error) {
-          this.mensajeError = respuesta.message || 'Credenciales inválidas';
-          this.toastError.visible = true;
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
           return;
         }
 
-        if (respuesta.access_token) {
-          this.usuarioService.cambiarToken(respuesta.access_token);
+        this.CONST.ocultarCargando();
+
+        if (respuesta.objeto) {
+          this.usuarioService.cambiarToken(respuesta.objeto.token);
           this.obtenerAdmin();
         }
-      });
+      },
+      // error: error => this.usuarioService.gestionarError(error)
+      // }
+    );
   }
 
-  private obtenerAdmin() {
-    this.toastError.visible = false;
+  obtenerAdmin() {
+    this.CONST.mostrarCargando();
 
     this.adminService.obtenerAdmin(this.usuario.identificacion).subscribe(
-      admin => {
-        if (admin) this.usuarioService.cambiarAdminLocal(admin);
-        
-        if (admin && admin.tieneClaveTemporal) {
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.CONST.ocultarCargando();
+        this.usuarioService.cambiarAdminLocal(respuesta.objeto);
+
+        if (respuesta.objeto.tieneClaveTemporal) {
           this.cambiarClaveModal.visible = true;
           return;
         }
 
-        this.router.navigate(['ordenesdetrabajo/listado']);
+        this.navegarAListadoOrdenes();
       });
   }
 
   cambiarClave(): void {
+    this.CONST.mostrarCargando();
     this.cambioDeClave.identificacion = this.usuario.identificacion;
 
     this.adminService.cambiarClave(this.cambioDeClave).subscribe(
       respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.CONST.ocultarCargando();
         this.cambiarClaveModal.visible = false;
+
         this.cambioDeClave = new CambioDeClaveModel();
         this.lasClavesCoinciden = false;
 
-        this.router.navigate(['ordenesdetrabajo/listado']);
+        this.navegarAListadoOrdenes();
       }
     );
+  }
+
+  navegarAListadoOrdenes() {
+    this.router.navigate(['ordenesdetrabajo/listado']);
   }
 
   confirmarClave() {
     this.lasClavesCoinciden = this.cambioDeClave.claveNueva == this.cambioDeClave.claveConfirmacion;
   }
-
 }

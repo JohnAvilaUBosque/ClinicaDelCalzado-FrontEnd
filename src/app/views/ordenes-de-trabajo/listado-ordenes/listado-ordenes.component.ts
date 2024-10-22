@@ -38,40 +38,50 @@ export class ListadoOrdenesComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Órdenes de trabajo');
 
-    this.ordenDeTrabajoService.obtenerOrdenes().subscribe(data => {
-      this.ordenes = data.sort(orden => new Date(orden.fechaCreacion).getTime())
-        .reverse();
-
-      this.route.queryParams.subscribe(
-        params => {
-          if (!params['estadoOrden']) {
-            this.filtro.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
-            this.ordenesFiltradas = [];
-            this.filtrar();
-            return;
-          }
-
-          var filtroEstadoOrden = (params['estadoOrden'] as string).toUpperCase();
-          if (this.CONST.validarValorEnumerador(filtroEstadoOrden, this.CONST.ESTADO_ORDEN)) {
-            this.filtro.estadoOrden = filtroEstadoOrden;
-          } else {
-            this.estadoOrdenInvalido.visible = true;
-            this.filtro.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
-          }
-
-          this.filtrar();
+    this.route.queryParams.subscribe(
+      params => {
+        if (!params['estadoOrden']) {
+          this.filtro.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
+          this.ordenesFiltradas = [];
+          this.obtenerOrdenes();
+          return;
         }
-      );
-    })
+
+        var filtroEstadoOrden = (params['estadoOrden'] as string).toUpperCase();
+        if (this.CONST.validarValorEnumerador(filtroEstadoOrden, this.CONST.ESTADO_ORDEN)) {
+          this.filtro.estadoOrden = filtroEstadoOrden;
+        } else {
+          this.estadoOrdenInvalido.visible = true;
+          this.filtro.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
+        }
+
+        this.obtenerOrdenes();
+      }
+    );
   }
 
-  irAListadoOrdenesConFiltros() {
+  obtenerOrdenes() {
+    this.CONST.mostrarCargando();
+
+    this.ordenDeTrabajoService.obtenerOrdenes(this.filtro.estadoOrden).subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.filtrar();
+        this.CONST.ocultarCargando();
+      });
+  }
+
+  navegarAListado() {
     this.router.navigate(['ordenesdetrabajo/listado'], { queryParams: { estadoOrden: this.filtro.estadoOrden } });
   }
 
   filtrar() {
     this.ordenesFiltradas = this.ordenes.filter(x =>
-      (!this.filtro.estadoOrden || x.estadoOrden.toLowerCase() == this.filtro.estadoOrden.toLowerCase()) &&
       x.numeroOrden.toLowerCase().includes(this.filtro.numeroOrden.toLowerCase()) &&
       x.atendidoPor.toLowerCase().includes(this.filtro.atendidoPor.toLowerCase()) &&
       x.cliente.identificacion.toLowerCase().includes(this.filtro.cliente.identificacion.toLowerCase()) &&
@@ -91,7 +101,7 @@ export class ListadoOrdenesComponent implements OnInit {
     };
   }
 
-  verOrden(orden: OrdenDeTrabajoModel) {
+  navegarAVerOrden(orden: OrdenDeTrabajoModel) {
     this.router.navigate(['ordenesdetrabajo/ver/' + orden.numeroOrden]);
   }
 }

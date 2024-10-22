@@ -1,68 +1,119 @@
-import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { AdministradorModel } from './administrador.model';
 import { CambioDeClaveModel, DatosSeguridadModel } from '../usuarios/usuario.model';
-import { ErrorModel } from 'src/app/error.model';
 import { BaseService } from 'src/app/base.service';
+import { UsuarioService } from '../usuarios/usuario.service';
+import { RespuestaModel } from 'src/app/respuesta.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdministradorService extends BaseService {
 
-  private readonly URL: string = this.CONST.API_URL + '/api/v1/work-orders';
+  public usuarioService = inject(UsuarioService);
 
-  public obtenerAdmins(): Observable<ErrorModel | AdministradorModel[]> {
-    return this.http.get<any>(this.URL + '/list').pipe(map(
+  private readonly URL: string = this.CONST.API_URL + '/api/v1/admins';
+
+  public obtenerAdmins(): Observable<RespuestaModel<AdministradorModel[]>> {
+    const headers = this.obtenerHeaders();
+    
+    return this.http.get<any>(this.URL + '/list', { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<AdministradorModel[]>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return this.mapearAAdmins(respuesta.admins);
+        respuestaMapeada.objeto = this.mapearAAdmins(respuesta.admins);
+        return respuestaMapeada;
       }
     ));
   }
 
-  public obtenerAdmin(idAdmin: string): Observable<ErrorModel | AdministradorModel[]> {
-    return this.http.get<any>(this.URL + '/' + idAdmin).pipe(map(
+  public obtenerAdmin(idAdmin: string): Observable<RespuestaModel<AdministradorModel>> {
+    const headers = this.obtenerHeaders();
+    
+    return this.http.get<any>(this.URL + '/' + idAdmin, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<AdministradorModel>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return this.mapearAAdmin(respuesta.admin);
+        respuestaMapeada.objeto = this.mapearAAdmin(respuesta.admin);
+        return respuestaMapeada;
       }
     ));
   }
 
-  public crearAdmin(administrador: AdministradorModel): Observable<ErrorModel | any> {
-    var administradorMapeado = this.mapearAdmin(administrador);
+  public crearAdmin(admin: AdministradorModel): Observable<RespuestaModel<any>> {
+    const headers = this.obtenerHeaders();
+    
+    var adminMapeado = this.mapearAdmin(admin);
 
-    return this.http.post<any>(this.URL + '/created', administradorMapeado).pipe(map(
+    return this.http.post<any>(this.URL + '/created', adminMapeado, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return {
+        respuestaMapeada.objeto = {
           mensaje: respuesta.message,
           admin: this.mapearAAdmin(respuesta.admin)
         };
+        return respuestaMapeada;
       }
     ));
   }
 
-  public editarAdministrador(administrador: AdministradorModel): Observable<ErrorModel | any> {
-    var administradorMapeado = this.mapearAdmin(administrador);
+  public editarAdmin(admin: AdministradorModel): Observable<RespuestaModel<any>> {
+    const headers = this.obtenerHeaders();
+    
+    var adminMapeado = this.mapearAdmin(admin);
 
-    return this.http.put<any>(this.URL + '/' + administrador.identificacion, administradorMapeado).pipe(map(
+    return this.http.put<any>(this.URL + '/' + admin.identificacion, adminMapeado, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return {
+        respuestaMapeada.objeto = {
           mensaje: respuesta.message,
           admin: this.mapearAAdmin(respuesta.admin)
         };
+        return respuestaMapeada;
+      }
+    ));
+  }
+
+  public editarInfoPersonal(admin: AdministradorModel): Observable<RespuestaModel<any>> {
+    const headers = this.obtenerHeaders();
+    
+    var adminMapeado = this.mapearAdmin(admin);
+
+    return this.http.put<any>(this.URL + '/edit-personal-information/' + admin.identificacion, adminMapeado, { headers }).pipe(map(
+      respuesta => {
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
+        if (respuestaMapeada.esError) return respuestaMapeada;
+
+        respuestaMapeada.objeto = {
+          mensaje: respuesta.message,
+          admin: this.mapearAAdmin(respuesta.admin)
+        };
+        return respuestaMapeada;
+      }
+    ));
+  }
+
+  public cambiarClave(cambioDeClave: CambioDeClaveModel): Observable<RespuestaModel<any>> {
+    const headers = this.obtenerHeaders();
+    
+    var cambioDeClaveMapeado = this.mapearCambioDeClave(cambioDeClave);
+
+    return this.http.put<any>(this.URL + '/password/' + cambioDeClave.identificacion, cambioDeClaveMapeado, { headers }).pipe(map(
+      respuesta => {
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
+        if (respuestaMapeada.esError) return respuestaMapeada;
+
+        respuestaMapeada.objeto = {
+          mensaje: respuesta.message
+        };
+        return respuestaMapeada;
       }
     ));
   }
@@ -77,7 +128,17 @@ export class AdministradorService extends BaseService {
       password: admin.clave,
       admin_status: admin.estado, // TO DO: Pendiente definir si quitar
       status: admin.estado,
-      has_temporary_password: admin.tieneClaveTemporal
+      has_temporary_password: admin.tieneClaveTemporal,
+      security_questions: admin.datosSeguridad ? this.usuarioService.mapearDatosSeguridad(admin.datosSeguridad) : null,
+    };
+  }
+
+  private mapearCambioDeClave(cambioDeClave: CambioDeClaveModel): any {
+    return {
+      identification: cambioDeClave.identificacion,
+      old_password: cambioDeClave.claveActual,
+      new_password: cambioDeClave.claveNueva,
+      confirm_new_password: cambioDeClave.claveConfirmacion
     };
   }
 
@@ -102,18 +163,4 @@ export class AdministradorService extends BaseService {
       datosSeguridad: new DatosSeguridadModel()
     };
   }
-
-  public cambiarClave(cambioDeClave: CambioDeClaveModel): Observable<any> {
-    // return this.http.post<any>(this.url, orden);
-    return this.obtenerAdmins().pipe(map(
-      administradores => {
-        var index = administradores.findIndex(admin => admin.identificacion == cambioDeClave.identificacion);
-        administradores[index].clave = cambioDeClave.claveNueva;
-        administradores[index].tieneClaveTemporal = false;
-        localStorage.setItem('ADMINS', JSON.stringify(administradores));
-        return administradores[index];
-      }
-    ));
-  }
-
 }

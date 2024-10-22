@@ -29,11 +29,11 @@
                             <label cLabel="col" sizing="sm">Estado:</label>
                         </th>
                         }
-                        @if (puedeCambiarEstado) {
+                        <!-- @if (puedeCambiarEstado) {
                         <th scope="col" class="col-auto" style="min-width: 145px;">
                             <label cLabel="col" sizing="sm">Estado:</label><span class="text-danger"> *</span>
                         </th>
-                        }
+                        } -->
                     </tr>
                 </thead>
                 <tbody>
@@ -110,7 +110,7 @@
                             </c-badge>
                         </td>
                         }
-                        @else if (puedeCambiarEstado) {
+                        <!-- @else if (puedeCambiarEstado) {
                         <td>
                             <select cSelect [(ngModel)]="servicio.estado" name="state" #state="ngModel" required
                                 [valid]="state.touched && state.invalid ? false : undefined" sizing="sm">
@@ -122,7 +122,7 @@
                                 </option>
                             </select>
                         </td>
-                        }
+                        } -->
                     </tr>
                     }
                 </tbody>

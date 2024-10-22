@@ -5,7 +5,7 @@ import { map, Observable } from 'rxjs';
 import { OperarioModel } from '../operarios/operario.model';
 import { BaseService } from 'src/app/base.service';
 import { OperarioService } from '../operarios/operario.service';
-import { ErrorModel } from 'src/app/error.model';
+import { RespuestaModel } from 'src/app/respuesta.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,39 +17,49 @@ export class ServicioService extends BaseService {
   private readonly URL_ORDERS: string = this.CONST.API_URL + '/api/v1/work-orders';
   private readonly URL_SERVICE: string = this.CONST.API_URL + '/api/v1/services';
 
-  public obtenerServicios(): Observable<ErrorModel | ServicioModel[]> {
-    return this.http.get<any>(this.URL_SERVICE + '/list').pipe(map(
+  public obtenerServicios(): Observable<RespuestaModel<ServicioModel[]>> {
+    const headers = this.obtenerHeaders();
+
+    return this.http.get<any>(this.URL_SERVICE + '/list', { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<ServicioModel[]>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return this.mapearAServicios(respuesta.services);
+        respuestaMapeada.objeto = this.mapearAServicios(respuesta.services);
+        return respuestaMapeada;
       }
     ));
   }
 
-  public obtenerServicio(idServicio: number): Observable<ErrorModel | ServicioModel> {
-    return this.http.get<any>(this.URL_SERVICE + '/' + idServicio).pipe(map(
+  public obtenerServicio(idServicio: number): Observable<RespuestaModel<ServicioModel>> {
+    const headers = this.obtenerHeaders();
+    
+    return this.http.get<any>(this.URL_SERVICE + '/' + idServicio, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<ServicioModel>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return this.mapearAServicio(respuesta.service);
+        respuestaMapeada.objeto = this.mapearAServicio(respuesta.service);
+        return respuestaMapeada;
       }
     ));
   }
 
-  public editarServicio(servicio: ServicioModel): Observable<ErrorModel | any> {
+  public editarServicio(servicio: ServicioModel): Observable<RespuestaModel<any>> {
+    const headers = this.obtenerHeaders();
+    
     var servicioMapeado = this.mapearServicio(servicio);
 
-    return this.http.put<any>(this.URL_ORDERS + '/updated/service/' + servicio.id, servicioMapeado).pipe(map(
+    return this.http.put<any>(this.URL_ORDERS + '/updated/service/' + servicio.id, servicioMapeado, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta(respuesta);
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
-        return {
-          mensaje: respuesta.message
+        respuestaMapeada.objeto = {
+          mensaje: respuesta.message,
+          servicio: this.mapearAServicio(respuesta.service)
         };
+        return respuestaMapeada;
       }
     ));
   }

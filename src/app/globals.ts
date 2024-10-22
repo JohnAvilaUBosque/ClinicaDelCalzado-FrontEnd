@@ -1,5 +1,5 @@
 // URL de la API del backend
-export const API_URL = 'https://api.example.com';
+export const API_URL = 'https://clinicadelcalzado-backend-latest.onrender.com';
 
 // CONSTANTES DE LA EMPRESA
 

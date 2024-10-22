@@ -17,7 +17,7 @@
     </c-card-header>
     <c-card-body>
         <p>Filtre las órdenes de trabajo en un rango de fechas.</p>
-        <form cForm #informeDetalladoForm="ngForm" (ngSubmit)="irAInformeDetalladoConFiltros()">
+        <form cForm #informeDetalladoForm="ngForm" (ngSubmit)="navegarAInformeDetallado()">
             <c-row>
                 <c-col md="5" class="mb-3">
                     <label cLabel="col" sizing="sm">Fecha inicial:</label><span class="text-danger"> *</span>
@@ -66,7 +66,7 @@
                     <tr>
                         <td>
                             <button cButton color="primary" variant="ghost" size="sm" shape="rounded-pill"
-                                cTooltip="Ver orden" (click)="irAVerOrden(orden)">
+                                cTooltip="Ver orden" (click)="navegarAVerOrden(orden.numeroOrden)">
                                 <svg cIcon name="cil-external-link"></svg>
                             </button>
                         </td>

@@ -29,9 +29,23 @@ export class ListadoClientesComponent implements OnInit {
   @Output() seleccionClienteEvent = new EventEmitter<ClienteModel>();
 
   ngOnInit(): void {
-    this.clienteService.obtenerClientes().subscribe(data => {
-      this.clientes = data;
-    })
+    this.obtenerClientes();
+  }
+
+  obtenerClientes() {
+    this.CONST.mostrarCargando();
+
+    this.clienteService.obtenerClientes().subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.clientes = respuesta.objeto;
+        this.CONST.ocultarCargando();
+      });
   }
 
   filtrar() {
@@ -39,11 +53,11 @@ export class ListadoClientesComponent implements OnInit {
     //   this.clientesFiltrados = [];
     // }
     // else {
-      this.clientesFiltrados = this.clientes.filter(cliente =>
-        cliente.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
-        cliente.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&
-        cliente.celular.toLowerCase().includes(this.filtro.celular.toLowerCase())
-      )
+    this.clientesFiltrados = this.clientes.filter(cliente =>
+      cliente.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
+      cliente.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&
+      cliente.celular.toLowerCase().includes(this.filtro.celular.toLowerCase())
+    )
     // }
     this.paginar();
   }

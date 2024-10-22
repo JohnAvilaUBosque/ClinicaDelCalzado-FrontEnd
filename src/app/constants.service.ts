@@ -4,6 +4,7 @@ import { formatCurrency, formatDate } from '@angular/common';
 import * as CryptoJS from 'crypto-js';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,15 @@ export class ConstantsService {
   public readonly FORMATS_VIEW = FORMATS_VIEW;
   public readonly FORMATS_API = FORMATS_API;
   public readonly REGULAR_EXP = new REGULAR_EXP();
+
+  private mensajeErrorEvento = new Subject<string>();
+  public mensajeErrorEvento$ = this.mensajeErrorEvento.asObservable();
+
+  private mensajeExitosoEvento = new Subject<string>();
+  public mensajeExitosoEvento$ = this.mensajeExitosoEvento.asObservable();
+
+  private cargandoEvento = new Subject<boolean>();
+  public cargandoEvento$ = this.cargandoEvento.asObservable();
 
   public fechaATexto(fecha: string | number | Date, formato: string): string {
     return formatDate(fecha, formato, 'en-US');
@@ -76,5 +86,45 @@ export class ConstantsService {
       pdf.addImage(contentDataURL, 'PNG', marginLeft, marginTop, imgWidth, imgHeight);
       pdf.save(nombrePDF);
     });
+  }
+
+  public mostrarMensajeError(error: string) {
+    this.mensajeErrorEvento.next(error);
+  }
+
+  public mostrarMensajeExitoso(error: string) {
+    this.mensajeExitosoEvento.next(error);
+  }
+
+  public mostrarCargando() {
+    this.cargandoEvento.next(true);
+  }
+
+  public ocultarCargando() {
+    this.cargandoEvento.next(false);
+  }
+
+  public generarClaveAleatoria(): string {
+    const letrasMayusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const letrasMinusculas = "abcdefghijklmnopqrstuvwxyz";
+    const numeros = "0123456789";
+    const caracteresEspeciales = "!@#$%^&*()-_=+[]{}|;:,.<>?";
+
+    const letraMayuscula = letrasMayusculas.charAt(Math.floor(Math.random() * letrasMayusculas.length));
+
+    let letrasMin = "";
+    for (let i = 0; i < 3; i++) {
+      letrasMin += letrasMinusculas.charAt(Math.floor(Math.random() * letrasMinusculas.length));
+    }
+
+    let nums = "";
+    for (let i = 0; i < 3; i++) {
+      nums += numeros.charAt(Math.floor(Math.random() * numeros.length));
+    }
+
+    const caracterEspecial = caracteresEspeciales.charAt(Math.floor(Math.random() * caracteresEspeciales.length));
+
+    const contraseña = letraMayuscula + letrasMin + nums + caracterEspecial;
+    return contraseña;
   }
 }

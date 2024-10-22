@@ -1,34 +1,42 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { ClienteModel } from './cliente.model';
 import { map, Observable } from 'rxjs';
-import { OrdenDeTrabajoModel } from '../ordenes-de-trabajo/orden-de-trabajo.model';
+import { BaseService } from 'src/app/base.service';
+import { RespuestaModel } from 'src/app/respuesta.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ClienteService {
+export class ClienteService extends BaseService {
 
-  private http = inject(HttpClient);
+  private readonly URL: string = this.CONST.API_URL + '/api/v1/client';
 
-  url: string = '/assets/dummy-data/ordenes-de-trabajo.json';
+  public obtenerClientes(): Observable<RespuestaModel<ClienteModel[]>> {
+    const headers = this.obtenerHeaders();
+    
+    return this.http.get<any>(this.URL + '/list', { headers }).pipe(map(
+      respuesta => {
+        var respuestaMapeada = this.validarRespuesta<ClienteModel[]>(respuesta);
+        if (respuestaMapeada.esError) return respuestaMapeada;
 
-  obtenerClientes(): Observable<ClienteModel[]> {
-    return this.http.get<any>(this.url).pipe(map(x => {
-      var ordenes: OrdenDeTrabajoModel[] = [];
-      var clientes: ClienteModel[] = [];
-      var ordenesLocalStorage = localStorage.getItem('ORDENES');
-      if (ordenesLocalStorage) {
-        ordenes = JSON.parse(ordenesLocalStorage);
+        respuestaMapeada.objeto = this.mapearAClientes(respuesta.clients);
+        return respuestaMapeada;
       }
-      else {
-        ordenes = x['ordenes'];
-        localStorage.setItem('ORDENES', JSON.stringify(ordenes));
-      }
-      clientes = ordenes.map(orden => orden.cliente);
-
-      return clientes;
-    }));
+    ));
   }
 
+  private mapearAClientes(clientes: any[]): ClienteModel[] {
+    return clientes.map(
+      cliente => {
+        return this.mapearACliente(cliente);
+      });
+  }
+
+  private mapearACliente(cliente: any): ClienteModel {
+    return {
+      identificacion: cliente.identification,
+      nombre: cliente.client_name,
+      celular: cliente.client_phone,
+    };
+  }
 }

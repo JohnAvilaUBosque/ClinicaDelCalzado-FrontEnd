@@ -37,13 +37,27 @@ export class ListadoOperariosComponent {
   ngOnInit(): void {
     this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Operarios');
 
-    this.operarioService.obtenerOperarios().subscribe(data => {
-      this.operarios = data;
-      if (!this.esEmbebido) {
-        this.operariosFiltrados = data;
-        this.filtrar();
-      }
-    })
+    this.obtenerOperarios();
+  }
+
+  obtenerOperarios() {
+    this.CONST.mostrarCargando();
+
+    this.operarioService.obtenerOperarios().subscribe(
+      respuesta => {
+        if (respuesta.esError) {
+          this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
+          return;
+        }
+
+        this.operarios = respuesta.objeto;
+        if (!this.esEmbebido) {
+          this.filtrar();
+        }
+        
+        this.CONST.ocultarCargando();
+      });
   }
 
   filtrar() {
@@ -51,12 +65,12 @@ export class ListadoOperariosComponent {
     //   this.operariosFiltrados = [];
     // }
     // else {
-      this.operariosFiltrados = this.operarios.filter(operario =>
-        operario.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
-        operario.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&
-        operario.celular.toLowerCase().includes(this.filtro.celular.toLowerCase()) &&
-        (!this.filtro.estado || operario.estado.toLowerCase() == this.filtro.estado.toLowerCase())
-      );
+    this.operariosFiltrados = this.operarios.filter(operario =>
+      operario.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
+      operario.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&
+      operario.celular.toLowerCase().includes(this.filtro.celular.toLowerCase()) &&
+      (!this.filtro.estado || operario.estado.toLowerCase() == this.filtro.estado.toLowerCase())
+    );
     // }
     this.paginar();
   }

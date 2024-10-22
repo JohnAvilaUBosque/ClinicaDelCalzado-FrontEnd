@@ -1,5 +1,6 @@
 export class InformeDetalladoModel {
     numeroOrden: string = '';
+    estadoOrden: string = '';
     fechaCreacion: string = '';
     precioTotal: number = 0;
     abono: number = 0;
