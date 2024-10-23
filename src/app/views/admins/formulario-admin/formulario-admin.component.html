@@ -29,10 +29,10 @@
         <form cForm #adminForm="ngForm" (ngSubmit)="onSubmit()">
             <c-row>
                 <c-col sm="6" class="mb-3">
-                    <label cLabel="col" sizing="sm">Identificación:</label><span class="text-danger"
-                        *ngIf="esModoCreacion"> *</span>
+                    <label cLabel="col" sizing="sm">Identificación:</label>
+                    <span class="text-danger" *ngIf="esModoCreacion"> *</span>
                     <input cFormControl type="text" [(ngModel)]="admin.identificacion" name="identification"
-                        #identification="ngModel" maxlength="20" required [pattern]="CONST.REGULAR_EXP.NUMBER"
+                        #identification="ngModel" maxlength="15" required [pattern]="CONST.REGULAR_EXP.NUMBER"
                         [valid]="identification.touched && identification.invalid ? false : undefined"
                         [readonly]="esModoLectura || esModoEdicion" [plaintext]="esModoLectura || esModoEdicion">
                     <c-form-feedback *ngIf="identification.touched && identification.invalid" [valid]="false">
@@ -42,8 +42,8 @@
             </c-row>
             <c-row>
                 <c-col sm="6" class="mb-3">
-                    <label cLabel="col" sizing="sm">Nombre:</label><span class="text-danger"
-                        *ngIf="esModoCreacion || esModoEdicion"> *</span>
+                    <label cLabel="col" sizing="sm">Nombre:</label>
+                    <span class="text-danger" *ngIf="esModoCreacion || esModoEdicion"> *</span>
                     <input cFormControl type="text" [(ngModel)]="admin.nombre" name="adminName" #adminName="ngModel"
                         maxlength="100" required [valid]="adminName.touched && adminName.invalid ? false : undefined"
                         [readonly]="esModoLectura" [plaintext]="esModoLectura">
@@ -52,10 +52,10 @@
                     </c-form-feedback>
                 </c-col>
                 <c-col sm="6" class="mb-3">
-                    <label cLabel="col" sizing="sm">Celular:</label><span class="text-danger"
-                        *ngIf="esModoCreacion || esModoEdicion"> *</span>
+                    <label cLabel="col" sizing="sm">Celular:</label>
+                    <span class="text-danger" *ngIf="esModoCreacion || esModoEdicion"> *</span>
                     <input cFormControl type="text" [(ngModel)]="admin.celular" name="cellphone" #cellphone="ngModel"
-                        maxlength="10" [pattern]="CONST.REGULAR_EXP.NUMBER" required
+                        maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER" required
                         [valid]="cellphone.touched && cellphone.invalid ? false : undefined" [readonly]="esModoLectura"
                         [plaintext]="esModoLectura">
                     <c-form-feedback *ngIf="cellphone.touched && cellphone.invalid" [valid]="false">
@@ -66,9 +66,10 @@
             @if (esModoCreacion) {
             <c-row>
                 <c-col sm="6" class="mb-3">
-                    <label cLabel="col" sizing="sm">Contraseña:</label><span class="text-danger"> *</span>
+                    <label cLabel="col" sizing="sm">Contraseña:</label>
+                    <span class="text-danger"> *</span>
                     <input cFormControl type="password" [(ngModel)]="admin.clave" name="password" #password="ngModel"
-                        (ngModelChange)="confirmarClave()" maxlength="20" [pattern]="CONST.REGULAR_EXP.PASSWORD"
+                        (ngModelChange)="confirmarClave()" maxlength="30" [pattern]="CONST.REGULAR_EXP.PASSWORD"
                         required [valid]="password.touched && password.invalid ? false : undefined">
                     <c-form-feedback *ngIf="password.touched && password.invalid" [valid]="false">
                         La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1
@@ -79,7 +80,7 @@
                     <label cLabel="col" sizing="sm">Confimación de contraseña:</label><span class="text-danger">
                         *</span>
                     <input cFormControl type="password" [(ngModel)]="admin.claveConfirmacion" name="passwordConfirm"
-                        #passwordConfirm="ngModel" (ngModelChange)="confirmarClave()" maxlength="20" required
+                        #passwordConfirm="ngModel" (ngModelChange)="confirmarClave()" maxlength="30" required
                         [valid]="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden) ? false : undefined">
                     <c-form-feedback *ngIf="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden)"
                         [valid]="false">
@@ -183,7 +184,7 @@
                 <c-col xs="12" class="mb-3">
                     <label cLabel="col" sizing="sm">Contraseña actual:</label><span class="text-danger"> *</span>
                     <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveActual" name="password"
-                        #password="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
+                        #password="ngModel" maxlength="30" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
                         [valid]="password.touched && password.invalid ? false : undefined">
                     <c-form-feedback *ngIf="password.touched && password.invalid" [valid]="false">
                         La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1
@@ -193,7 +194,7 @@
                 <c-col xs="12" class="mb-3">
                     <label cLabel="col" sizing="sm">Contraseña nueva:</label><span class="text-danger"> *</span>
                     <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveNueva" name="passwordNew"
-                        #passwordNew="ngModel" (ngModelChange)="confirmarClaveEnCambioDeClave()" maxlength="20"
+                        #passwordNew="ngModel" (ngModelChange)="confirmarClaveEnCambioDeClave()" maxlength="30"
                         [pattern]="CONST.REGULAR_EXP.PASSWORD" required
                         [valid]="passwordNew.touched && passwordNew.invalid ? false : undefined">
                     <c-form-feedback *ngIf="passwordNew.touched && passwordNew.invalid" [valid]="false">
@@ -206,7 +207,7 @@
                         *</span>
                     <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveConfirmacion"
                         name="passwordConfirm" #passwordConfirm="ngModel"
-                        (ngModelChange)="confirmarClaveEnCambioDeClave()" maxlength="20" required
+                        (ngModelChange)="confirmarClaveEnCambioDeClave()" maxlength="30" required
                         [valid]="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden) ? false : undefined">
                     <c-form-feedback *ngIf="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden)"
                         [valid]="false">

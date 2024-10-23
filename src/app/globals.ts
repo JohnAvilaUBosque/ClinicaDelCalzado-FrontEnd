@@ -46,6 +46,12 @@ export const WHATSAPP_URL = 'https://wa.me/+57';
 export const ORDEN_NUMBER_DEFAULT = 'ORD-YYYYMMDD-#####';
 
 export enum FORMATS_API {
+    DATETIME = 'dd-MM-yyyy HH:mm',
+    DATE = 'dd-MM-yyyy',
+    TIME = 'HH:mm'
+};
+
+export enum FORMATS_ANGULAR {
     DATETIME = 'yyyy-MM-dd HH:mm',
     DATE = 'yyyy-MM-dd',
     TIME = 'HH:mm'

@@ -24,7 +24,7 @@
                 <c-col sm="6" class="mb-3">
                     <label cLabel="col" sizing="sm">Identificación:</label><span class="text-danger" *ngIf="esModoCreacion"> *</span>
                     <input cFormControl type="text" [(ngModel)]="operario.identificacion" name="identification"
-                        #identification="ngModel" maxlength="20" required [pattern]="CONST.REGULAR_EXP.NUMBER"
+                        #identification="ngModel" maxlength="15" required [pattern]="CONST.REGULAR_EXP.NUMBER"
                         [valid]="identification.touched && identification.invalid ? false : undefined"
                         [readonly]="esModoLectura || esModoEdicion" [plaintext]="esModoLectura || esModoEdicion">
                     <c-form-feedback *ngIf="identification.touched && identification.invalid" [valid]="false">
@@ -46,7 +46,7 @@
                 <c-col sm="6" class="mb-3">
                     <label cLabel="col" sizing="sm">Celular:</label><span class="text-danger" *ngIf="esModoCreacion || esModoEdicion"> *</span>
                     <input cFormControl type="text" [(ngModel)]="operario.celular" name="cellphone" #cellphone="ngModel"
-                        maxlength="10" [pattern]="CONST.REGULAR_EXP.NUMBER" required
+                        maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER" required
                         [valid]="cellphone.touched && cellphone.invalid ? false : undefined" [readonly]="esModoLectura"
                         [plaintext]="esModoLectura">
                     <c-form-feedback *ngIf="cellphone.touched && cellphone.invalid" [valid]="false">

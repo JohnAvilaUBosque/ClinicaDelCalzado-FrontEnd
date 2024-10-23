@@ -45,11 +45,7 @@ export class ListadoOperariosComponent {
 
     this.operarioService.obtenerOperarios().subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.operarios = respuesta.objeto;
         if (!this.esEmbebido) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ClienteModel } from './cliente.model';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { BaseService } from 'src/app/base.service';
 import { RespuestaModel } from 'src/app/respuesta.model';
 
@@ -22,7 +22,7 @@ export class ClienteService extends BaseService {
         respuestaMapeada.objeto = this.mapearAClientes(respuesta.clients);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   private mapearAClientes(clientes: any[]): ClienteModel[] {
@@ -34,7 +34,7 @@ export class ClienteService extends BaseService {
 
   private mapearACliente(cliente: any): ClienteModel {
     return {
-      identificacion: cliente.identification,
+      identificacion: cliente.identification.toString(),
       nombre: cliente.client_name,
       celular: cliente.client_phone,
     };

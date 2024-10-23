@@ -17,7 +17,7 @@
             <table cTable hover striped>
                 <thead>
                     <tr>
-                        <th scope="col" style="min-width: 85px;">Acciones</th>
+                        <th scope="col" style="min-width: 90px;">Acciones</th>
                         <th scope="col">Identificación</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Celular</th>
@@ -36,7 +36,7 @@
                             </a>
                             <a cButton color="success" variant="ghost" size="sm" shape="rounded-pill"
                                 [cTooltip]="adminLocal.identificacion == admin.identificacion ? 'Editar perfil' : 'Editar administrador'"
-                                [routerLink]="['/admins/editar/' + admin.identificacion]">
+                                (click)="navegarAEditarAdmin(admin.identificacion)">
                                 <svg cIcon name="cil-pencil"></svg>
                             </a>
                         </td>

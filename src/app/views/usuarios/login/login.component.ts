@@ -45,24 +45,14 @@ export class LoginComponent implements OnInit {
     this.CONST.mostrarCargando();
 
     this.usuarioService.iniciarSesion(this.usuario).subscribe(
-      // {
-      //   next:
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.CONST.ocultarCargando();
 
-        if (respuesta.objeto) {
-          this.usuarioService.cambiarToken(respuesta.objeto.token);
+        if (respuesta.objeto)
           this.obtenerAdmin();
-        }
       },
-      // error: error => this.usuarioService.gestionarError(error)
-      // }
     );
   }
 
@@ -71,14 +61,10 @@ export class LoginComponent implements OnInit {
 
     this.adminService.obtenerAdmin(this.usuario.identificacion).subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
-        this.CONST.ocultarCargando();
-        this.usuarioService.cambiarAdminLocal(respuesta.objeto);
+          this.usuarioService.cambiarAdminLocal(respuesta.objeto);
+          this.CONST.ocultarCargando();
 
         if (respuesta.objeto.tieneClaveTemporal) {
           this.cambiarClaveModal.visible = true;
@@ -95,15 +81,11 @@ export class LoginComponent implements OnInit {
 
     this.adminService.cambiarClave(this.cambioDeClave).subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.CONST.ocultarCargando();
+        this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
         this.cambiarClaveModal.visible = false;
-
         this.cambioDeClave = new CambioDeClaveModel();
         this.lasClavesCoinciden = false;
 

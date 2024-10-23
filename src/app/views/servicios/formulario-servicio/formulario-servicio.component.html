@@ -8,7 +8,7 @@
         <c-col class="mb-3">
             <label cLabel="col" sizing="sm">Descripción:</label>
             <textarea #textareaElement cFormControl rows="1" [(ngModel)]="servicio.descripcion" name="nameService"
-                #nameService="ngModel" (input)="adjustTextareasHeight()" maxlength="100" required
+                #nameService="ngModel" (input)="adjustTextareasHeight()" maxlength="255" required
                 [valid]="nameService.touched && nameService.invalid ? false : undefined" disabled>
             </textarea>
             <c-form-feedback *ngIf="nameService.touched && nameService.invalid" [valid]="false">

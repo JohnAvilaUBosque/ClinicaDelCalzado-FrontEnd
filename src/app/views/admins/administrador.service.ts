@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { AdministradorModel } from './administrador.model';
 import { CambioDeClaveModel, DatosSeguridadModel } from '../usuarios/usuario.model';
 import { BaseService } from 'src/app/base.service';
@@ -17,7 +17,7 @@ export class AdministradorService extends BaseService {
 
   public obtenerAdmins(): Observable<RespuestaModel<AdministradorModel[]>> {
     const headers = this.obtenerHeaders();
-    
+
     return this.http.get<any>(this.URL + '/list', { headers }).pipe(map(
       respuesta => {
         var respuestaMapeada = this.validarRespuesta<AdministradorModel[]>(respuesta);
@@ -26,26 +26,29 @@ export class AdministradorService extends BaseService {
         respuestaMapeada.objeto = this.mapearAAdmins(respuesta.admins);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public obtenerAdmin(idAdmin: string): Observable<RespuestaModel<AdministradorModel>> {
     const headers = this.obtenerHeaders();
-    
+
     return this.http.get<any>(this.URL + '/' + idAdmin, { headers }).pipe(map(
       respuesta => {
         var respuestaMapeada = this.validarRespuesta<AdministradorModel>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
+        if (respuestaMapeada.objeto.identificacion == this.obtenerAdminLocal()?.identificacion)
+          this.cambiarAdminLocal(respuestaMapeada.objeto);
+
         respuestaMapeada.objeto = this.mapearAAdmin(respuesta.admin);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public crearAdmin(admin: AdministradorModel): Observable<RespuestaModel<any>> {
     const headers = this.obtenerHeaders();
-    
+
     var adminMapeado = this.mapearAdmin(admin);
 
     return this.http.post<any>(this.URL + '/created', adminMapeado, { headers }).pipe(map(
@@ -59,15 +62,15 @@ export class AdministradorService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public editarAdmin(admin: AdministradorModel): Observable<RespuestaModel<any>> {
     const headers = this.obtenerHeaders();
-    
+
     var adminMapeado = this.mapearAdmin(admin);
 
-    return this.http.put<any>(this.URL + '/' + admin.identificacion, adminMapeado, { headers }).pipe(map(
+    return this.http.put<any>(this.URL + '/updated/' + admin.identificacion, adminMapeado, { headers }).pipe(map(
       respuesta => {
         var respuestaMapeada = this.validarRespuesta<any>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
@@ -78,12 +81,12 @@ export class AdministradorService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public editarInfoPersonal(admin: AdministradorModel): Observable<RespuestaModel<any>> {
     const headers = this.obtenerHeaders();
-    
+
     var adminMapeado = this.mapearAdmin(admin);
 
     return this.http.put<any>(this.URL + '/edit-personal-information/' + admin.identificacion, adminMapeado, { headers }).pipe(map(
@@ -97,17 +100,17 @@ export class AdministradorService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public cambiarClave(cambioDeClave: CambioDeClaveModel): Observable<RespuestaModel<any>> {
     const headers = this.obtenerHeaders();
-    
+
     var cambioDeClaveMapeado = this.mapearCambioDeClave(cambioDeClave);
 
     return this.http.put<any>(this.URL + '/password/' + cambioDeClave.identificacion, cambioDeClaveMapeado, { headers }).pipe(map(
       respuesta => {
-        var respuestaMapeada = this.validarRespuesta<any>(respuesta);
+        var respuestaMapeada = this.validarRespuesta<any>(respuesta, false);
         if (respuestaMapeada.esError) return respuestaMapeada;
 
         respuestaMapeada.objeto = {
@@ -115,7 +118,7 @@ export class AdministradorService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   private mapearAdmin(admin: AdministradorModel): any {
@@ -153,8 +156,7 @@ export class AdministradorService extends BaseService {
     return {
       identificacion: admin.identification,
       nombre: admin.name,
-      celular: admin.phone, // TO DO: Pendiente definir si quitar
-      // celular: admin.cellphone, // TO DO: Pendiente definir si activar
+      celular: admin.cellphone,
       rol: admin.admin_type,
       estado: admin.status,
       tieneClaveTemporal: admin.has_temporary_password,

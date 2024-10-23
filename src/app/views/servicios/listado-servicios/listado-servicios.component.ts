@@ -92,8 +92,9 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
   }
 
   servicioEditado(comentario: string) {
-    this.servicioEditadoEvent.emit(comentario);
+    this.editarServicioModal.visible = false;
     this.idServicioSeleccionado = 0;
+    this.servicioEditadoEvent.emit(comentario);
   }
 
   seleccionarOperario() {

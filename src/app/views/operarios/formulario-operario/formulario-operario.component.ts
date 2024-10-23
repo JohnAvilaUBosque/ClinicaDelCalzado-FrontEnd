@@ -69,52 +69,45 @@ export class FormularioOperarioComponent {
 
     this.route.params.pipe(map((p) => p['id-operario'])).subscribe(
       idOperario => {
-        this.operarioService.obtenerOperario(idOperario).subscribe(
-          respuesta => {
-            if (respuesta.esError) {
-              this.CONST.ocultarCargando();
-              this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-              this.navegarAListado();
-              return;
-            }
+        this.operarioService.obtenerOperario(idOperario).subscribe({
+          next:
+            respuesta => {
+              if (respuesta.esError) {
+                this.navegarAListado();
+                return;
+              }
 
-            this.operario = respuesta.objeto;
-            this.cambiarEstado(this.operario.estado);
-            if (this.esModoLectura) {
-              this.btnRadioGroup.disable();
-            }
-            this.CONST.ocultarCargando();
-          }
-        );
-      }
-    );
+              this.operario = respuesta.objeto;
+              this.cambiarEstado(this.operario.estado);
+              if (this.esModoLectura)
+                this.btnRadioGroup.disable();
+
+              this.CONST.ocultarCargando();
+            },
+          error: () => this.navegarAListado()
+        });
+      });
   }
 
   onSubmit() {
     if (this.esModoEdicion) {
       this.operarioService.editarOperario(this.operario).subscribe(
         respuesta => {
-          if (respuesta.esError) {
-            this.CONST.ocultarCargando();
-            this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-            return;
-          }
+          if (respuesta.esError) return;
 
-          this.navegarAVerOperador();
           this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
+          this.navegarAVerOperador();
         }
       );
     } else {
       this.operarioService.crearOperario(this.operario).subscribe(
         respuesta => {
-          if (respuesta.esError) {
-            this.CONST.ocultarCargando();
-            this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-            return;
-          }
+          if (respuesta.esError) return;
 
-          this.navegarAVerOperador();
           this.CONST.ocultarCargando();
+          this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
+          this.navegarAVerOperador();
         }
       );
     }

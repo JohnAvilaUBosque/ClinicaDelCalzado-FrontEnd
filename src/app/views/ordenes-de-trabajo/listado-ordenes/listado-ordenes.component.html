@@ -65,18 +65,18 @@
                         </td>
                         <td>
                             <input cFormControl type="text" [(ngModel)]="filtro.atendidoPor" (ngModelChange)="filtrar()"
-                                name="attendedBy" #attendedBy="ngModel" maxlength="20" sizing="sm">
+                                name="attendedBy" #attendedBy="ngModel" maxlength="100" sizing="sm">
                         </td>
                         <td>
                         </td>
                         <td>
                             <input cFormControl type="text" [(ngModel)]="filtro.cliente.identificacion"
                                 (ngModelChange)="filtrar()" name="identification" #identification="ngModel"
-                                maxlength="20" sizing="sm">
+                                maxlength="15" sizing="sm">
                         </td>
                         <td>
                             <input cFormControl type="text" [(ngModel)]="filtro.cliente.nombre"
-                                (ngModelChange)="filtrar()" name="nameClient" #nameClient="ngModel" maxlength="20"
+                                (ngModelChange)="filtrar()" name="nameClient" #nameClient="ngModel" maxlength="100"
                                 sizing="sm">
                         </td>
                         <td>

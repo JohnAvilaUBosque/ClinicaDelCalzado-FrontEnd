@@ -27,7 +27,7 @@ import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/r
 import { IconDirective } from '@coreui/icons-angular';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { delay, filter, map, tap } from 'rxjs/operators';
-import { UsuarioService } from 'src/app/views/usuarios/usuario.service';
+import { BaseService } from 'src/app/base.service';
 
 @Component({
   selector: 'app-default-header',
@@ -38,7 +38,7 @@ import { UsuarioService } from 'src/app/views/usuarios/usuario.service';
 export class DefaultHeaderComponent extends HeaderComponent {
 
   private router = inject(Router);
-  private usuarioService = inject(UsuarioService);
+  private baseService = inject(BaseService);
 
   readonly #activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   readonly #colorModeService = inject(ColorModeService);
@@ -77,11 +77,11 @@ export class DefaultHeaderComponent extends HeaderComponent {
   @Input() sidebarId: string = 'sidebar1';
 
   cerrarSesion() {
-    this.usuarioService.cerrarSesion();
+    this.baseService.cerrarSesion();
     this.router.navigate(['login']);
   }
 
-  irAPerfil() {
+  navegarAPerfil() {
     this.router.navigate(['admins/perfil']);
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FORMATS_VIEW, FORMATS_API, API_URL, ORDEN_NUMBER_DEFAULT, REGULAR_EXP, ESTADO_PAGO, ESTADO_SERVICIO, ESTADO_ORDEN, ESTADO_ADMIN, ROL_ADMIN, NOMBRE_EMPRESA, WHATSAPP_URL, ESTADO_OPERARIO, CANT_FILAS_POR_PAGINA } from './globals'
+import { FORMATS_VIEW, FORMATS_API, API_URL, ORDEN_NUMBER_DEFAULT, REGULAR_EXP, ESTADO_PAGO, ESTADO_SERVICIO, ESTADO_ORDEN, ESTADO_ADMIN, ROL_ADMIN, NOMBRE_EMPRESA, WHATSAPP_URL, ESTADO_OPERARIO, CANT_FILAS_POR_PAGINA, FORMATS_ANGULAR } from './globals'
 import { formatCurrency, formatDate } from '@angular/common';
 import * as CryptoJS from 'crypto-js';
 import html2canvas from 'html2canvas';
@@ -25,8 +25,9 @@ export class ConstantsService {
   public readonly WHATSAPP_URL = WHATSAPP_URL;
   public readonly ORDEN_NUMBER_DEFAULT = ORDEN_NUMBER_DEFAULT;
 
-  public readonly FORMATS_VIEW = FORMATS_VIEW;
   public readonly FORMATS_API = FORMATS_API;
+  public readonly FORMATS_ANGULAR = FORMATS_ANGULAR;
+  public readonly FORMATS_VIEW = FORMATS_VIEW;
   public readonly REGULAR_EXP = new REGULAR_EXP();
 
   private mensajeErrorEvento = new Subject<string>();
@@ -39,16 +40,32 @@ export class ConstantsService {
   public cargandoEvento$ = this.cargandoEvento.asObservable();
 
   public fechaATexto(fecha: string | number | Date, formato: string): string {
+    if (typeof fecha == 'string' && fecha.indexOf('-') == 2)
+      fecha = this.convertirAFechaValida(fecha);
     return formatDate(fecha, formato, 'en-US');
   }
 
   public textoAFecha(texto: string | number): Date | null {
-    var fecha = this.fechaATexto(texto, this.FORMATS_API.DATE);
+    var fecha = this.fechaATexto(texto, this.FORMATS_ANGULAR.DATE);
 
     if (!fecha)
       return null;
 
     return new Date(fecha);
+  }
+
+  // dd-MM-yyyy HH:mm   =>    Date
+  private convertirAFechaValida(fecha: string): Date {
+    const partes = fecha.split(' ');
+    const fechaPartes = partes[0].split('-');
+    const nuevaFecha = new Date(
+      +fechaPartes[2],     // Año
+      +fechaPartes[1] - 1, // Mes (0-indexado)
+      +fechaPartes[0],     // Día
+      ...(partes[1] ? partes[1].split(':').map(Number) : []) // Horas y minutos
+    );
+
+    return nuevaFecha;
   }
 
   public monedaATexto(valor: number): string {

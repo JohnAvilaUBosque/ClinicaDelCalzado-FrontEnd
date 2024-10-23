@@ -17,11 +17,12 @@
                                             <svg cIcon name="cilUser"></svg>
                                         </span>
                                         <input cFormControl type="text" [(ngModel)]="recuperacion.identificacion"
-                                            name="identification" #identification="ngModel" maxlength="20" required
+                                            name="identification" #identification="ngModel" maxlength="15" required
+                                            [pattern]="CONST.REGULAR_EXP.NUMBER"
                                             [valid]="identification.touched && identification.invalid ? false : undefined" />
                                         <c-form-feedback *ngIf="identification.touched && identification.invalid"
                                             [valid]="false">
-                                            Este campo es requerido!
+                                            Este campo debe ser numérico!
                                         </c-form-feedback>
                                     </c-input-group>
                                 </c-col>
@@ -42,7 +43,7 @@
                                         *</span>
                                     <input cFormControl type="password" [(ngModel)]="recuperacion.claveNueva"
                                         name="password" #password="ngModel" (ngModelChange)="confirmarClave()"
-                                        maxlength="20" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
+                                        maxlength="30" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
                                         [valid]="password.touched && password.invalid ? false : undefined">
                                     <c-form-feedback *ngIf="password.touched && password.invalid" [valid]="false">
                                         La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra
@@ -55,7 +56,7 @@
                                         class="text-danger"> *</span>
                                     <input cFormControl type="password" [(ngModel)]="recuperacion.claveConfirmacion"
                                         name="passwordConfirm" #passwordConfirm="ngModel"
-                                        (ngModelChange)="confirmarClave()" maxlength="20" required
+                                        (ngModelChange)="confirmarClave()" maxlength="30" required
                                         [valid]="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden) ? false : undefined">
                                     <c-form-feedback
                                         *ngIf="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden)"

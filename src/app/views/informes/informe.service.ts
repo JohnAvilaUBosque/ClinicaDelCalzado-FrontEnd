@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { BaseService } from 'src/app/base.service';
 import { InformeDetalladoModel, InformeGeneralModel } from './informe.model';
 import { RespuestaModel } from 'src/app/respuesta.model';
@@ -17,10 +17,10 @@ export class InformesService extends BaseService {
     const headers = this.obtenerHeaders();
 
     const params = new HttpParams()
-      .set('start_date', fechaInicial)
-      .set('end_date', fechaFinal);
+    .set('start_date', this.CONST.fechaATexto(fechaInicial, this.CONST.FORMATS_ANGULAR.DATETIME))
+    .set('end_date', this.CONST.fechaATexto(fechaFinal, this.CONST.FORMATS_ANGULAR.DATETIME));
 
-    return this.http.post<any>(this.URL + '/detailed', null, { params, headers }).pipe(map(
+    return this.http.post<any>(this.URL + '/detailed', undefined, { params, headers }).pipe(map(
       respuesta => {
         var respuestaMapeada = this.validarRespuesta<InformeDetalladoModel[]>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
@@ -28,7 +28,7 @@ export class InformesService extends BaseService {
         respuestaMapeada.objeto = this.mapearAInformeDetallado(respuesta.orders);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public obtenerInformeGeneral(fechaInicial: string, fechaFinal: string, estadoOrden?: string)
@@ -36,10 +36,10 @@ export class InformesService extends BaseService {
     const headers = this.obtenerHeaders();
 
     const params = new HttpParams()
-      .set('start_date', fechaInicial)
-      .set('end_date', fechaFinal);
+      .set('start_date', this.CONST.fechaATexto(fechaInicial, this.CONST.FORMATS_ANGULAR.DATETIME))
+      .set('end_date', this.CONST.fechaATexto(fechaFinal, this.CONST.FORMATS_ANGULAR.DATETIME));
 
-    return this.http.post<any>(this.URL + '/general', null, { params, headers }).pipe(map(
+    return this.http.post<any>(this.URL + '/general', undefined, { params, headers }).pipe(map(
       respuesta => {
         var respuestaMapeada = this.validarRespuesta<InformeGeneralModel[]>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
@@ -47,7 +47,7 @@ export class InformesService extends BaseService {
         respuestaMapeada.objeto = this.mapearAInformeGeneral(respuesta.orders);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   private mapearAInformeDetallado(ordenes: any[]): InformeDetalladoModel[] {

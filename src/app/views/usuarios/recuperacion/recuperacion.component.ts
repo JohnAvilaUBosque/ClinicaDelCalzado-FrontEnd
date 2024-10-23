@@ -38,13 +38,10 @@ export class RecuperacionComponent implements OnInit {
 
     this.usuarioService.recuperarClave(this.recuperacion).subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.CONST.ocultarCargando();
+        this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
         this.router.navigate(['login']);
       }
     );

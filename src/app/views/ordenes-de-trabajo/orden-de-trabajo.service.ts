@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ComentarioModel, OrdenDeTrabajoModel } from './orden-de-trabajo.model';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { formatDate } from '@angular/common';
 import { BaseService } from 'src/app/base.service';
 import { ClienteModel } from '../clientes/cliente.model';
@@ -31,12 +31,12 @@ export class OrdenDeTrabajoService extends BaseService {
         respuestaMapeada.objeto = this.mapearAOrdenes(respuesta.orders);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public obtenerOrden(idOrden: string): Observable<RespuestaModel<OrdenDeTrabajoModel>> {
     const headers = this.obtenerHeaders();
-    
+
     return this.http.get<any>(this.URL + '/' + idOrden, { headers }).pipe(map(
       respuesta => {
         var respuestaMapeada = this.validarRespuesta<OrdenDeTrabajoModel>(respuesta);
@@ -45,12 +45,12 @@ export class OrdenDeTrabajoService extends BaseService {
         respuestaMapeada.objeto = this.mapearAOrden(respuesta);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public crearOrden(orden: OrdenDeTrabajoModel): Observable<RespuestaModel<any>> {
     const headers = this.obtenerHeaders();
-    
+
     var ordenMapeada = this.mapearOrden(orden);
 
     return this.http.post<any>(this.URL + '/created', ordenMapeada, { headers }).pipe(map(
@@ -60,16 +60,16 @@ export class OrdenDeTrabajoService extends BaseService {
 
         respuestaMapeada.objeto = {
           mensaje: respuesta.message,
-          numeroOrden: respuesta.order_Number
+          numeroOrden: respuesta.order_number
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public migrarOrden(orden: OrdenDeTrabajoModel): Observable<RespuestaModel<any>> {
     const headers = this.obtenerHeaders();
-    
+
     var ordenMapeada = this.mapearOrden(orden);
 
     return this.http.post<any>(this.URL + '/created', ordenMapeada, { headers }).pipe(map(
@@ -79,16 +79,16 @@ export class OrdenDeTrabajoService extends BaseService {
 
         respuestaMapeada.objeto = {
           mensaje: respuesta.message,
-          numeroOrden: respuesta.order_Number
+          numeroOrden: respuesta.order_number
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public abonarAOrden(numeroOrden: string, abono: number): Observable<RespuestaModel<any>> {
     const headers = this.obtenerHeaders();
-    
+
     var objeto = { "payment_amount": abono };
 
     return this.http.put<any>(this.URL + '/payment/' + numeroOrden, objeto, { headers }).pipe(map(
@@ -101,12 +101,12 @@ export class OrdenDeTrabajoService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public comentarOrden(numeroOrden: string, comentario: string): Observable<RespuestaModel<any>> {
     const headers = this.obtenerHeaders();
-    
+
     var objeto = { "comment": comentario };
 
     return this.http.put<any>(this.URL + '/comment/' + numeroOrden, objeto, { headers }).pipe(map(
@@ -119,12 +119,12 @@ export class OrdenDeTrabajoService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public anularOrden(numeroOrden: string, comentario: string): Observable<RespuestaModel<any>> {
     const headers = this.obtenerHeaders();
-    
+
     var objeto = { "comment": comentario };
 
     return this.http.put<any>(this.URL + '/cancel/' + numeroOrden, objeto, { headers }).pipe(map(
@@ -137,23 +137,27 @@ export class OrdenDeTrabajoService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   private mapearOrden(orden: OrdenDeTrabajoModel): any {
+    if (!orden) return null;
+
     return {
       attended_by: orden.atendidoPor,
       attended_by_id: orden.atendidoPorId,
-      create_date: orden.fechaCreacion,
+      create_date: this.CONST.fechaATexto(orden.fechaCreacion, this.CONST.FORMATS_API.DATETIME),
       client: this.mapearCliente(orden.cliente),
       down_payment: orden.abono,
-      delivery_date: orden.fechaEntrega,
+      delivery_date: this.CONST.fechaATexto(orden.fechaEntrega, this.CONST.FORMATS_API.DATE),
       services: this.servicioService.mapearServicios(orden.servicios),
       general_comment: orden.comentarios.length > 0 ? orden.comentarios[0].descripcion : '',
     };
   }
 
   private mapearCliente(cliente: ClienteModel): any {
+    if (!cliente) return null;
+
     return {
       identification: cliente.identificacion,
       name: cliente.nombre,
@@ -162,6 +166,8 @@ export class OrdenDeTrabajoService extends BaseService {
   }
 
   private mapearAOrdenes(ordenes: any[]): OrdenDeTrabajoModel[] {
+    if (!ordenes) return [];
+
     return ordenes.map(
       orden => {
         return this.mapearAOrden(orden);
@@ -169,18 +175,20 @@ export class OrdenDeTrabajoService extends BaseService {
   }
 
   private mapearAOrden(orden: any): OrdenDeTrabajoModel {
+    if (!orden) return new OrdenDeTrabajoModel();
+
     return {
       numeroOrden: orden.order_number,
       atendidoPorId: orden.attended_by_id,
-      atendidoPor: orden.attended_by,
-      fechaCreacion: orden.create_date,
+      atendidoPor: orden.attended_by || '',
+      fechaCreacion: this.CONST.fechaATexto(orden.create_date, this.CONST.FORMATS_ANGULAR.DATETIME),
       estadoOrden: orden.order_status,
       cliente: this.mapearACliente(orden.client),
       precioTotal: orden.total_value,
       abono: orden.down_payment,
       saldo: orden.balance,
       estadoPago: orden.payment_status,
-      fechaEntrega: orden.delivery_date,
+      fechaEntrega: this.CONST.fechaATexto(orden.delivery_date, this.CONST.FORMATS_ANGULAR.DATE),
       servicios: this.servicioService.mapearAServicios(orden.services),
       cantidadServicios: orden.services_count,
       comentarios: this.mapearAComentarios(orden.comments)
@@ -188,21 +196,25 @@ export class OrdenDeTrabajoService extends BaseService {
   }
 
   private mapearACliente(cliente: any): ClienteModel {
+    if (!cliente) return new ClienteModel();
+
     return {
-      identificacion: cliente.identification,
+      identificacion: cliente.identification.toString(),
       nombre: cliente.name,
       celular: cliente.cellphone
     };
   }
 
   private mapearAComentarios(comentarios: any[]): ComentarioModel[] {
+    if (!comentarios) return [];
+
     return comentarios.map(
       comentario => {
         return {
-          id: comentario.id_operator,
-          descripcion: comentario.operator_name,
+          id: comentario.id_comment,
+          descripcion: comentario.comment,
           nombreAdmin: comentario.comment_by,
-          fecha: comentario.creation_date,
+          fecha: this.CONST.fechaATexto(comentario.creation_date, this.CONST.FORMATS_ANGULAR.DATE),
         };
       });
   }

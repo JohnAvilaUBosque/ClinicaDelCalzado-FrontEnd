@@ -8,7 +8,6 @@ import { Router, RouterModule } from '@angular/router';
 import { AdministradorModel } from '../administrador.model';
 import { AdministradorService } from '../administrador.service';
 import { Title } from '@angular/platform-browser';
-import { UsuarioService } from '../../usuarios/usuario.service';
 
 @Component({
   selector: 'listado-admins',
@@ -20,7 +19,6 @@ import { UsuarioService } from '../../usuarios/usuario.service';
 export class ListadoAdminsComponent implements OnInit {
 
   private administradorService = inject(AdministradorService);
-  private usuarioService = inject(UsuarioService);
   private titleService = inject(Title);
   private router = inject(Router);
 
@@ -33,21 +31,17 @@ export class ListadoAdminsComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle(this.CONST.NOMBRE_EMPRESA + ' - ' + 'Administradores');
 
-    this.adminLocal = this.usuarioService.obtenerAdminLocal();
+    this.adminLocal = this.administradorService.obtenerAdminLocal();
 
     this.obtenerAdmins();
   }
 
   obtenerAdmins() {
     this.CONST.mostrarCargando();
-    
+
     this.administradorService.obtenerAdmins().subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.administradores = respuesta.objeto;
         this.CONST.ocultarCargando();
@@ -59,5 +53,9 @@ export class ListadoAdminsComponent implements OnInit {
       this.router.navigate(['admins/perfil']);
     else
       this.router.navigate(['admins/ver/' + idAdmin]);
+  }
+
+  navegarAEditarAdmin(idAdmin: string) {
+    this.router.navigate(['admins/editar/' + idAdmin]);
   }
 }

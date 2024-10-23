@@ -25,7 +25,7 @@
                 <c-col lg="6" class="mb-3">
                     <label cLabel="col" sizing="sm">Respuesta 1:</label><span class="text-danger"> *</span>
                     <input cFormControl type="text" [(ngModel)]="datosSeguridad.respuesta1" name="respuesta1"
-                        #respuesta1="ngModel" maxlength="20" required
+                        #respuesta1="ngModel" maxlength="50" required
                         [valid]="respuesta1.touched && respuesta1.invalid ? false : undefined">
                     <c-form-feedback *ngIf="respuesta1.touched && respuesta1.invalid" [valid]="false">
                         Este campo es requerido!
@@ -49,7 +49,7 @@
                 <c-col lg="6" class="mb-3">
                     <label cLabel="col" sizing="sm">Respuesta 2:</label><span class="text-danger"> *</span>
                     <input cFormControl type="text" [(ngModel)]="datosSeguridad.respuesta2" name="respuesta2"
-                        #respuesta2="ngModel" maxlength="20" required
+                        #respuesta2="ngModel" maxlength="50" required
                         [valid]="respuesta2.touched && respuesta2.invalid ? false : undefined">
                     <c-form-feedback *ngIf="respuesta2.touched && respuesta2.invalid" [valid]="false">
                         Este campo es requerido!
@@ -73,7 +73,7 @@
                 <c-col lg="6" class="mb-3">
                     <label cLabel="col" sizing="sm">Respuesta 3:</label><span class="text-danger"> *</span>
                     <input cFormControl type="text" [(ngModel)]="datosSeguridad.respuesta3" name="respuesta3"
-                        #respuesta3="ngModel" maxlength="20" required
+                        #respuesta3="ngModel" maxlength="50" required
                         [valid]="respuesta3.touched && respuesta3.invalid ? false : undefined">
                     <c-form-feedback *ngIf="respuesta3.touched && respuesta3.invalid" [valid]="false">
                         Este campo es requerido!

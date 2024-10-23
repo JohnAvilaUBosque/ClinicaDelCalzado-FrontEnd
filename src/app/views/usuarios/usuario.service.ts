@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AdministradorModel } from '../admins/administrador.model';
 import { DatosSeguridadModel, RecuperacionModel, UsuarioModel } from './usuario.model';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { BaseService } from 'src/app/base.service';
 import { RespuestaModel } from 'src/app/respuesta.model';
 
@@ -9,8 +9,6 @@ import { RespuestaModel } from 'src/app/respuesta.model';
   providedIn: 'root'
 })
 export class UsuarioService extends BaseService {
-
-  private readonly localStorageKeyUser: string = 'U';
 
   private readonly URL: string = this.CONST.API_URL + '/api/v1/auth';
 
@@ -28,9 +26,12 @@ export class UsuarioService extends BaseService {
           tipoToken: respuesta.token_type,
           esClaveTemporal: respuesta.has_temporary_password
         };
+
+        this.cambiarToken(respuestaMapeada.objeto.token);
+
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public recuperarClave(recuperacion: RecuperacionModel): Observable<RespuestaModel<any>> {
@@ -46,12 +47,7 @@ export class UsuarioService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
-  }
-
-  public cerrarSesion() {
-    this.borrarAdminLocal();
-    this.borrarToken();
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   private mapearUsuario(usuario: UsuarioModel): any {
@@ -87,17 +83,4 @@ export class UsuarioService extends BaseService {
     ];
   }
 
-  public cambiarAdminLocal(admin: AdministradorModel) {
-    var adminJson = admin ? JSON.stringify(admin) : '';
-    localStorage.setItem(this.localStorageKeyUser, this.CONST.encriptarTexto(adminJson) ?? '')
-  }
-
-  public obtenerAdminLocal(): AdministradorModel {
-    var adminJson = this.CONST.desencriptarTexto(localStorage.getItem(this.localStorageKeyUser));
-    return adminJson ? JSON.parse(adminJson ?? '') : null;
-  }
-
-  public borrarAdminLocal() {
-    localStorage.removeItem(this.localStorageKeyUser);
-  }
 }

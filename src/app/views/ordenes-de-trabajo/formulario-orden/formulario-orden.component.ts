@@ -29,7 +29,6 @@ export class FormularioOrdenComponent implements OnInit {
 
   private ordenDeTrabajoService = inject(OrdenDeTrabajoService);
   private adminService = inject(AdministradorService);
-  private usuarioService = inject(UsuarioService);
   private titleService = inject(Title);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -61,7 +60,7 @@ export class FormularioOrdenComponent implements OnInit {
   @ViewChild('elementoADescargar') elementoADescargar!: ElementRef;
 
   ngOnInit(): void {
-    this.usuarioLocal = this.usuarioService.obtenerAdminLocal();
+    this.usuarioLocal = this.adminService.obtenerAdminLocal();
 
     this.route.data.pipe(map((d) => d['title'])).subscribe(
       title => {
@@ -72,7 +71,7 @@ export class FormularioOrdenComponent implements OnInit {
           this.orden.numeroOrden = this.CONST.ORDEN_NUMBER_DEFAULT;
           this.orden.estadoOrden = this.CONST.ESTADO_ORDEN.VIGENTE;
           this.orden.atendidoPor = this.usuarioLocal.nombre;
-          this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME);
+          this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_ANGULAR.DATETIME);
         }
         else if (title == 'Migrar') {
           this.esModoMigracion = true;
@@ -97,11 +96,7 @@ export class FormularioOrdenComponent implements OnInit {
 
     this.adminService.obtenerAdmins().subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.administradores = respuesta.objeto;
         this.CONST.ocultarCargando();
@@ -111,20 +106,20 @@ export class FormularioOrdenComponent implements OnInit {
   obtenerOrden(numeroOrden: string) {
     this.CONST.mostrarCargando();
 
-    this.ordenDeTrabajoService.obtenerOrden(numeroOrden).subscribe(
-      respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          this.router.navigate(['ordenesdetrabajo/buscar/'], { queryParams: { ordenNoEncontrada: numeroOrden } });
-          return;
-        }
+    this.ordenDeTrabajoService.obtenerOrden(numeroOrden).subscribe({
+      next:
+        respuesta => {
+          if (respuesta.esError) {
+            this.navegarABuscarOrden(numeroOrden);
+            return;
+          }
 
-        this.orden = respuesta.objeto;
-        this.whatsAppNumber = respuesta.objeto.cliente.celular;
-        this.CONST.ocultarCargando();
-      }
-    );
+          this.orden = respuesta.objeto;
+          this.whatsAppNumber = respuesta.objeto.cliente.celular;
+          this.CONST.ocultarCargando();
+        },
+      error: () => this.navegarABuscarOrden(numeroOrden)
+    });
   }
 
   ngSubmit() {
@@ -138,8 +133,6 @@ export class FormularioOrdenComponent implements OnInit {
     this.CONST.mostrarCargando();
 
     this.orden.atendidoPor = this.administradores.find(a => a.identificacion == this.orden.atendidoPorId)?.nombre || '';
-    this.orden.fechaCreacion = this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME);
-    this.orden.fechaEntrega = this.CONST.fechaATexto(this.orden.fechaEntrega, this.CONST.FORMATS_API.DATE);
     this.orden.estadoPago = this.orden.saldo != 0 ?
       this.CONST.ESTADO_PAGO.PENDIENTE :
       this.orden.servicios.some(s => s.precio == 0) ?
@@ -151,14 +144,11 @@ export class FormularioOrdenComponent implements OnInit {
 
     this.ordenDeTrabajoService.crearOrden(this.orden).subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.CONST.ocultarCargando();
-        this.navegarAVerOrden();
+        this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
+        this.navegarAVerOrden(respuesta.objeto.numeroOrden);
       }
     );
   }
@@ -167,8 +157,6 @@ export class FormularioOrdenComponent implements OnInit {
     this.CONST.mostrarCargando();
 
     this.orden.atendidoPor = this.administradores.find(a => a.identificacion == this.orden.atendidoPorId)?.nombre || '';
-    this.orden.fechaCreacion = this.CONST.fechaATexto(this.fechaCreacion + ' ' + this.horaCreacion + ' ' + this.amOpm, this.CONST.FORMATS_API.DATETIME);
-    this.orden.fechaEntrega = this.CONST.fechaATexto(this.orden.fechaEntrega, this.CONST.FORMATS_API.DATE);
     this.orden.estadoPago = this.orden.saldo != 0 ?
       this.CONST.ESTADO_PAGO.PENDIENTE :
       this.orden.servicios.some(s => s.precio == 0) ?
@@ -180,20 +168,21 @@ export class FormularioOrdenComponent implements OnInit {
 
     this.ordenDeTrabajoService.migrarOrden(this.orden).subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.CONST.ocultarCargando();
-        this.navegarAVerOrden();
+        this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
+        this.navegarAVerOrden(respuesta.objeto.numeroOrden);
       }
     );
   }
 
-  navegarAVerOrden() {
-    this.router.navigate(['ordenesdetrabajo/ver/' + this.orden.numeroOrden]);
+  navegarABuscarOrden(numeroOrden: string) {
+    this.router.navigate(['ordenesdetrabajo/buscar/'], { queryParams: { ordenNoEncontrada: numeroOrden } });
+  }
+
+  navegarAVerOrden(numeroOrden: string) {
+    this.router.navigate(['ordenesdetrabajo/ver/' + numeroOrden]);
   }
 
   validarFechaDeCreacion(fecha: any) {
@@ -240,7 +229,7 @@ export class FormularioOrdenComponent implements OnInit {
       id: 0,
       descripcion: comentario,
       nombreAdmin: this.usuarioLocal.nombre,
-      fecha: this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_API.DATETIME)
+      fecha: this.CONST.fechaATexto(new Date(), this.CONST.FORMATS_ANGULAR.DATETIME)
     }
     this.orden.comentarios.push(commentarioObject);
   }
@@ -285,16 +274,14 @@ export class FormularioOrdenComponent implements OnInit {
 
     this.ordenDeTrabajoService.abonarAOrden(this.orden.numeroOrden, this.abonoNuevo).subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
-        this.CONST.ocultarCargando();
         abonarModal.visible = false;
         this.abonoNuevo = 0;
         this.saldoNuevo = 0;
+        this.CONST.ocultarCargando();
+        this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
+        this.obtenerOrden(this.orden.numeroOrden);
       }
     );
   }
@@ -304,15 +291,13 @@ export class FormularioOrdenComponent implements OnInit {
 
     this.ordenDeTrabajoService.comentarOrden(this.orden.numeroOrden, this.comentarioNuevo).subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
-        this.CONST.ocultarCargando();
         comentarioModal.visible = false;
         this.comentarioNuevo = '';
+        this.CONST.ocultarCargando();
+        this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
+        this.obtenerOrden(this.orden.numeroOrden);
       }
     );
   }
@@ -320,17 +305,15 @@ export class FormularioOrdenComponent implements OnInit {
   anular(anularModal: ModalComponent) {
     this.CONST.mostrarCargando();
 
-    this.ordenDeTrabajoService.anularOrden(this.orden.numeroOrden, this.comentarioNuevo).subscribe(
+    this.ordenDeTrabajoService.anularOrden(this.orden.numeroOrden, this.comentarioAnulacion).subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
-        this.CONST.ocultarCargando();
         anularModal.visible = false;
         this.comentarioAnulacion = '';
+        this.CONST.ocultarCargando();
+        this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
+        this.obtenerOrden(this.orden.numeroOrden);
       }
     );
   }

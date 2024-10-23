@@ -19,11 +19,11 @@
                 </td>
                 <td>
                     <input cFormControl type="text" [(ngModel)]="filtro.identificacion" (ngModelChange)="filtrar()"
-                        name="identification" #identification="ngModel" maxlength="20" sizing="sm">
+                        name="identification" #identification="ngModel" maxlength="15" sizing="sm">
                 </td>
                 <td>
                     <input cFormControl type="text" [(ngModel)]="filtro.nombre" (ngModelChange)="filtrar()"
-                        name="nameClient" #nameClient="ngModel" maxlength="20" sizing="sm">
+                        name="nameClient" #nameClient="ngModel" maxlength="100" sizing="sm">
                 </td>
                 <td>
                     <input cFormControl type="text" [(ngModel)]="filtro.celular" (ngModelChange)="filtrar()"

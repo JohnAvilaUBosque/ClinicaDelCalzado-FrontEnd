@@ -17,8 +17,8 @@ import {
 } from '@coreui/angular';
 
 import { DefaultFooterComponent, DefaultHeaderComponent } from './';
-import { UsuarioService } from '../../views/usuarios/usuario.service';
 import { navItems } from './_nav';
+import { BaseService } from 'src/app/base.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -45,17 +45,17 @@ import { navItems } from './_nav';
 })
 export class DefaultLayoutComponent implements OnInit {
 
-  private usuarioService = inject(UsuarioService);
+  private baseService = inject(BaseService);
 
   public navItems: INavData[] = [];
 
   ngOnInit(): void {
-    var adminLocal = this.usuarioService.obtenerAdminLocal();
+    var adminLocal = this.baseService.obtenerAdminLocal();
 
     this.navItems = navItems.filter(n => {
       if (n.attributes && n.attributes['rolesAutorizados']) {
         var rolesAutorizados: string[] = n.attributes['rolesAutorizados'];
-        return rolesAutorizados.some(r => adminLocal.rol == r);
+        return rolesAutorizados.some(r => adminLocal?.rol == r);
       }
 
       return true;

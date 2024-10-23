@@ -63,22 +63,37 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
 
     this.servicioService.obtenerServicio(this.idServicio).subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.servicio = respuesta.objeto;
+        this.establecerPrecio = false;
+        this.adjustTextareasHeight();
         this.cambiarEstado(this.servicio.estado);
         if (this.servicio.estado == this.CONST.ESTADO_SERVICIO.DESPACHADO)
           this.btnRadioGroup.disable();
         else
           this.btnRadioGroup.enable();
 
-        this.establecerPrecio = false;
-        this.adjustTextareasHeight();
         this.CONST.ocultarCargando();
+      }
+    );
+  }
+
+  editarServicio() {
+    this.CONST.mostrarCargando();
+
+    var servicioEditado: ServicioModel = this.servicio;
+    servicioEditado.estado = this.btnRadioGroup.get('radioEstado')?.value ?? this.servicio.estado;
+    if (!servicioEditado.precioEstablecido) servicioEditado.precioEstablecido = this.establecerPrecio;
+
+    this.servicioService.editarServicio(servicioEditado).subscribe(
+      respuesta => {
+        if (respuesta.esError) return;
+
+        this.CONST.ocultarCargando();
+        this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
+        this.servicioEditadoEvent.emit(respuesta.objeto.mensaje);
+        this.servicio = new ServicioModel();
       }
     );
   }
@@ -96,26 +111,6 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
     this.servicio.operario.identificacion = operario.identificacion;
     this.servicio.operario.nombre = operario.nombre;
     this.servicio.operario.celular = operario.celular;
-  }
-
-  editarServicio() {
-    this.CONST.mostrarCargando();
-
-    this.servicio.estado = this.btnRadioGroup.get('radioEstado')?.value ?? this.servicio.estado;
-    if (!this.servicio.precioEstablecido) this.servicio.precioEstablecido = this.establecerPrecio;
-
-    this.servicioService.editarServicio(this.servicio).subscribe(
-      respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
-
-        this.servicioEditadoEvent.emit(respuesta.objeto.mensaje);
-        this.CONST.ocultarCargando();
-      }
-    );
   }
 
   seleccionarOperario() {

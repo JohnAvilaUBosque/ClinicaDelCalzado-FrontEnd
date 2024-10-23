@@ -37,11 +37,7 @@ export class DatosSeguridadComponent implements OnInit, AfterViewInit {
 
     this.preguntaService.obtenerPreguntas().subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.preguntas = respuesta.objeto;
         this.CONST.ocultarCargando();

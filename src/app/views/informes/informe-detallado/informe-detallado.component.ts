@@ -75,14 +75,9 @@ export class InformeDetalladoComponent implements OnInit {
 
     this.informesService.obtenerInformeDetallado(this.fechaInicial + ' 00:00', this.fechaFinal + ' 23:59').subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.ordenesFiltradas = respuesta.objeto;
-
         this.CONST.ocultarCargando();
 
         if (this.ordenesFiltradas.length == 0)

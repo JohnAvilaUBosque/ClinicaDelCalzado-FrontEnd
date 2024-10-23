@@ -121,7 +121,7 @@
                         <label cLabel="col" sizing="sm">Identificación cliente:</label><span class="text-danger"
                             *ngIf="esModoCreacion || esModoMigracion"> *</span>
                         <input cFormControl type="text" [(ngModel)]="orden.cliente.identificacion" name="identification"
-                            #identification="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER" required
+                            #identification="ngModel" maxlength="15" [pattern]="CONST.REGULAR_EXP.NUMBER" required
                             [valid]="identification.touched && identification.invalid ? false : undefined"
                             [readonly]="esModoLectura" [plaintext]="esModoLectura">
                         <c-form-feedback *ngIf="identification.touched && identification.invalid" [valid]="false">
@@ -157,7 +157,7 @@
                                 </c-badge>
                                 }
                                 <input cFormControl type="text" [(ngModel)]="orden.cliente.celular" name="cellphone"
-                                    #cellphone="ngModel" maxlength="10" [pattern]="CONST.REGULAR_EXP.NUMBER" required
+                                    #cellphone="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER" required
                                     [valid]="cellphone.touched && cellphone.invalid ? false : undefined"
                                     [readonly]="esModoLectura" [plaintext]="esModoLectura">
                                 <c-form-feedback *ngIf="cellphone.touched && cellphone.invalid" [valid]="false">
@@ -257,22 +257,22 @@
                 <c-row> <!-- Comentario -->
                     @if (esModoLectura) {
                     <c-col xs="12" class="mb-3">
-                        @for (comment of orden.comentarios; track $index) {
+                        @for (comentario of orden.comentarios; track $index) {
                         <hr>
                         <div>
                             <label cLabel="col" sizing="sm" class="d-inline text-secondary fw-semibold">
                                 Comentario por
                             </label>
                             <label cLabel="col" sizing="sm" class="d-inline text-secondary fw-bold">
-                                {{comment.nombreAdmin}}
+                                {{comentario.nombreAdmin}}
                             </label>
                             <label cLabel="col" sizing="sm" class="d-inline text-secondary fw-semibold">
                                 el día
                             </label>
                             <label cLabel="col" sizing="sm" class="d-inline text-secondary fw-bold">
-                                {{comment.fecha | date:CONST.FORMATS_VIEW.DATETIME }}:
+                                {{comentario.fecha | date:CONST.FORMATS_VIEW.DATETIME }}:
                             </label>
-                            <p>{{comment.descripcion}}</p>
+                            <p>{{comentario.descripcion}}</p>
                         </div>
                         }
                     </c-col>
@@ -281,7 +281,7 @@
                     <c-col xs="12" class="mb-3">
                         <label cLabel="col" sizing="sm">Comentario:</label>
                         <textarea cFormControl rows="5" [(ngModel)]="comentarioNuevo" name="comment" #comment="ngModel"
-                            maxlength="500"></textarea>
+                            maxlength="255"></textarea>
                     </c-col>
                     }
                 </c-row>
@@ -324,7 +324,7 @@
             @if (whatsAppModal.visible) {
             <label cLabel="col" sizing="sm">Confirma el número de WhatsApp:</label><span class="text-danger"> *</span>
             <input cFormControl type="text" [(ngModel)]="whatsAppNumber" name="wpNumber" #wpNumber="ngModel"
-                maxlength="10" [pattern]="CONST.REGULAR_EXP.NUMBER" maxlength="10" minlength="10" required
+                maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER" maxlength="10" minlength="10" required
                 [valid]="wpNumber.touched && wpNumber.invalid ? false : undefined">
             <c-form-feedback *ngIf="wpNumber.touched && wpNumber.invalid" [valid]="false">
                 Este campo debe ser un número de celular válido!
@@ -415,7 +415,7 @@
             @if (comentarioModal.visible) {
             <label cLabel="col" sizing="sm">Comentario:</label><span class="text-danger"> *</span>
             <textarea cFormControl rows="5" [(ngModel)]="comentarioNuevo" name="commentNew" #commentNew="ngModel"
-                maxlength="500" required
+                maxlength="255" required
                 [valid]="commentNew.touched && commentNew.invalid ? false : undefined"></textarea>
             <c-form-feedback *ngIf="commentNew.touched && commentNew.invalid" [valid]="false">
                 Este campo es requerido!
@@ -449,7 +449,7 @@
             }
             <label cLabel="col" sizing="sm">Comentario:</label><span class="text-danger"> *</span>
             <textarea cFormControl rows="5" [(ngModel)]="comentarioAnulacion" name="commentNew" #commentNew="ngModel"
-                maxlength="500" required
+                maxlength="200" required
                 [valid]="commentNew.touched && commentNew.invalid ? false : undefined"></textarea>
             <c-form-feedback *ngIf="commentNew.touched && commentNew.invalid" [valid]="false">
                 Este campo es requerido!

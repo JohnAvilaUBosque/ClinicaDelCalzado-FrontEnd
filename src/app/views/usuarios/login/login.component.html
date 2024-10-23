@@ -14,10 +14,11 @@
                       <svg cIcon name="cilUser"></svg>
                     </span>
                     <input cFormControl type="text" [(ngModel)]="usuario.identificacion" name="identification"
-                      #identification="ngModel" placeholder="Identificación" maxlength="20" required
+                      #identification="ngModel" placeholder="Identificación" maxlength="15" required
+                      [pattern]="CONST.REGULAR_EXP.NUMBER"
                       [valid]="identification.touched && identification.invalid ? false : undefined" />
                     <c-form-feedback *ngIf="identification.touched && identification.invalid" [valid]="false">
-                      Este campo es requerido!
+                      Este campo debe ser numérico!
                     </c-form-feedback>
                   </c-input-group>
                 </c-col>
@@ -27,7 +28,7 @@
                       <svg cIcon name="cilLockLocked"></svg>
                     </span>
                     <input cFormControl type="password" [(ngModel)]="usuario.clave" name="password" #password="ngModel"
-                      placeholder="Contraseña" maxlength="20" required
+                      placeholder="Contraseña" maxlength="30" required
                       [valid]="password.touched && password.invalid ? false : undefined" />
                     <c-form-feedback *ngIf="password.touched && password.invalid" [valid]="false">
                       Este campo es requerido!
@@ -81,7 +82,7 @@
         <c-col xs="12" class="mb-3">
           <label cLabel="col" sizing="sm">Contraseña actual:</label><span class="text-danger"> *</span>
           <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveActual" name="password"
-            #password="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
+            #password="ngModel" maxlength="30" [pattern]="CONST.REGULAR_EXP.PASSWORD" required
             [valid]="password.touched && password.invalid ? false : undefined">
           <c-form-feedback *ngIf="password.touched && password.invalid" [valid]="false">
             La contraseña debe tener mínimo 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1
@@ -91,7 +92,7 @@
         <c-col xs="12" class="mb-3">
           <label cLabel="col" sizing="sm">Contraseña nueva:</label><span class="text-danger"> *</span>
           <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveNueva" name="passwordNew"
-            #passwordNew="ngModel" (ngModelChange)="confirmarClave()" maxlength="20"
+            #passwordNew="ngModel" (ngModelChange)="confirmarClave()" maxlength="30"
             [pattern]="CONST.REGULAR_EXP.PASSWORD" required
             [valid]="passwordNew.touched && passwordNew.invalid ? false : undefined">
           <c-form-feedback *ngIf="passwordNew.touched && passwordNew.invalid" [valid]="false">
@@ -102,7 +103,7 @@
         <c-col xs="12" class="mb-3">
           <label cLabel="col" sizing="sm">Confimación de contraseña:</label><span class="text-danger"> *</span>
           <input cFormControl type="password" [(ngModel)]="cambioDeClave.claveConfirmacion" name="passwordConfirm"
-            #passwordConfirm="ngModel" (ngModelChange)="confirmarClave()" maxlength="20" required
+            #passwordConfirm="ngModel" (ngModelChange)="confirmarClave()" maxlength="30" required
             [valid]="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden) ? false : undefined">
           <c-form-feedback *ngIf="passwordConfirm.touched && (passwordConfirm.invalid || !lasClavesCoinciden)"
             [valid]="false">

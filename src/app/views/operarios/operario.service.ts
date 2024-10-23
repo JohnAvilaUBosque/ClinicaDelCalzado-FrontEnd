@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OperarioModel } from './operario.model';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { BaseService } from 'src/app/base.service';
 import { RespuestaModel } from 'src/app/respuesta.model';
 
@@ -22,7 +22,7 @@ export class OperarioService extends BaseService {
         respuestaMapeada.objeto = this.mapearAOperarios(respuesta.operators);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public obtenerOperario(idOperario: string): Observable<RespuestaModel<OperarioModel>> {
@@ -36,7 +36,7 @@ export class OperarioService extends BaseService {
         respuestaMapeada.objeto = this.mapearAOperario(respuesta.operator);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public crearOperario(operario: OperarioModel): Observable<RespuestaModel<any>> {
@@ -55,7 +55,7 @@ export class OperarioService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public editarOperario(operario: OperarioModel): Observable<RespuestaModel<any>> {
@@ -74,7 +74,7 @@ export class OperarioService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public mapearOperario(operario: OperarioModel): any {
@@ -95,7 +95,7 @@ export class OperarioService extends BaseService {
 
   public mapearAOperario(operario: any): OperarioModel {
     return {
-      identificacion: operario.id_operator,
+      identificacion: operario.id_operator.toString(),
       nombre: operario.operator_name,
       celular: operario.ope_phone_number,
       estado: operario.status_operator

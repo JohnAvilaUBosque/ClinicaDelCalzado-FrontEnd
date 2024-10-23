@@ -75,14 +75,9 @@ export class InformeGeneralComponent implements OnInit {
 
     this.informesService.obtenerInformeGeneral(this.fechaInicial + ' 00:00', this.fechaFinal + ' 23:59').subscribe(
       respuesta => {
-        if (respuesta.esError) {
-          this.CONST.ocultarCargando();
-          this.CONST.mostrarMensajeError(respuesta.error.mensaje);
-          return;
-        }
+        if (respuesta.esError) return;
 
         this.diasFiltrados = respuesta.objeto;
-
         this.CONST.ocultarCargando();
 
         if (this.diasFiltrados.length == 0)

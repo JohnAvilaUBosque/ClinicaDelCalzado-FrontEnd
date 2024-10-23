@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ServicioModel } from './servicio.model';
 import { OrdenDeTrabajoModel } from '../ordenes-de-trabajo/orden-de-trabajo.model';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { OperarioModel } from '../operarios/operario.model';
 import { BaseService } from 'src/app/base.service';
 import { OperarioService } from '../operarios/operario.service';
@@ -28,7 +28,7 @@ export class ServicioService extends BaseService {
         respuestaMapeada.objeto = this.mapearAServicios(respuesta.services);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public obtenerServicio(idServicio: number): Observable<RespuestaModel<ServicioModel>> {
@@ -42,7 +42,7 @@ export class ServicioService extends BaseService {
         respuestaMapeada.objeto = this.mapearAServicio(respuesta.service);
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public editarServicio(servicio: ServicioModel): Observable<RespuestaModel<any>> {
@@ -61,10 +61,12 @@ export class ServicioService extends BaseService {
         };
         return respuestaMapeada;
       }
-    ));
+    )).pipe(catchError((error) => this.controlarError(error)));
   }
 
   public mapearServicios(servicios: ServicioModel[]): any[] {
+    if (!servicios) return [];
+
     return servicios.map(
       servicio => {
         return this.mapearServicio(servicio);
@@ -72,19 +74,23 @@ export class ServicioService extends BaseService {
   }
 
   public mapearServicio(servicio: ServicioModel): any {
+    if (!servicio) return null;
+
     return {
       id: servicio.id,
       name: servicio.descripcion,
       service_name: servicio.descripcion, // TO DO: Pendiente definir si quitar
       service_status: servicio.estado,
-      price: servicio.precio,
-      has_pending_price: servicio.precioEstablecido,
+      price: servicio.precioEstablecido ? servicio.precio : null, // Se envía null para que el back no establezca el precio
+      has_pending_price: !servicio.precioEstablecido,
       operator_id: servicio.operario.identificacion || null, // TO DO: Pendiente definir si quitar
       operator: servicio.operario.identificacion ? this.operarioService.mapearOperario(servicio.operario) : null
     };
   }
 
   public mapearAServicios(servicios: any[]): ServicioModel[] {
+    if (!servicios) return [];
+
     return servicios.map(
       servicio => {
         return this.mapearAServicio(servicio);;
@@ -92,12 +98,14 @@ export class ServicioService extends BaseService {
   }
 
   public mapearAServicio(servicio: any): ServicioModel {
+    if (!servicio) return new ServicioModel();
+
     return {
       id: servicio.id,
       descripcion: servicio.name,
       estado: servicio.service_status,
       precio: servicio.price,
-      precioEstablecido: servicio.has_pending_price,
+      precioEstablecido: !servicio.has_pending_price,
       operario: servicio.operator?.id_operator ? this.operarioService.mapearAOperario(servicio.operator) : new OperarioModel()
     };
   }
