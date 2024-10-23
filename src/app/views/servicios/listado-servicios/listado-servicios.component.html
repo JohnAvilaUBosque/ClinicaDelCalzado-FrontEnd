@@ -60,7 +60,7 @@
                         <td>
                             <textarea #textareaElement cFormControl rows="1" [(ngModel)]="servicio.descripcion"
                                 name="nameService{{$index}}" #nameService="ngModel" (input)="adjustTextareasHeight()"
-                                maxlength="255" required
+                                maxlength="255" [pattern]="CONST.REGULAR_EXP.STRING_VALID" required
                                 [valid]="nameService.touched && nameService.invalid ? false : undefined"
                                 [readonly]="esModoLectura" [plaintext]="esModoLectura" sizing="sm">
                             </textarea>

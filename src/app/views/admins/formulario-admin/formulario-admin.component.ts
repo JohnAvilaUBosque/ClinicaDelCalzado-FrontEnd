@@ -36,16 +36,16 @@ export class FormularioAdminComponent implements OnInit {
   public esModoLectura: boolean = false;
 
   public admin: AdministradorModel = new AdministradorModel();
-  public lasClavesCoinciden: boolean = false;
-
+  
   public asignarClaveTemporal: boolean = false;
   public claveTemporal: string = '';
-
+  
   public esInformacionPersonal: boolean = false;
   public editarDatosSeguridad: boolean = false;
   public sonValidosDatosSeguridad: boolean = false;
-
+  
   public cambioDeClave: CambioDeClaveModel = new CambioDeClaveModel();
+  public lasClavesCoinciden: boolean = false;
 
   private formBuilder = inject(FormBuilder);
   public btnRadioGroup = this.formBuilder.group({
@@ -101,7 +101,7 @@ export class FormularioAdminComponent implements OnInit {
             this.navegarAListado();
             return;
           }
-          
+
           this.admin = respuesta.objeto;
           this.admin.datosSeguridad = new DatosSeguridadModel;
           this.esInformacionPersonal = this.adminLocal.identificacion == this.admin.identificacion;
@@ -142,6 +142,7 @@ export class FormularioAdminComponent implements OnInit {
 
         this.CONST.ocultarCargando();
         this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
+        
         this.navegarAVerAdmin();
       }
     );
@@ -149,13 +150,18 @@ export class FormularioAdminComponent implements OnInit {
 
   crearAdmin() {
     this.admin.tieneClaveTemporal = true;
+    this.admin.clave = this.CONST.generarClaveAleatoria();
+    this.admin.claveConfirmacion = this.admin.clave;
+
     this.administradorService.crearAdmin(this.admin).subscribe(
       respuesta => {
         if (respuesta.esError) return;
 
         this.CONST.ocultarCargando();
         this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
-        this.navegarAVerAdmin();
+
+        this.claveTemporal = this.admin.clave;
+        this.claveTemporalModal.visible = true;
       }
     );
   }
@@ -195,6 +201,7 @@ export class FormularioAdminComponent implements OnInit {
 
         this.CONST.ocultarCargando();
         this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
+
         cambiarClaveModal.visible = false;
         this.cambioDeClave = new CambioDeClaveModel();
         this.lasClavesCoinciden = false;
@@ -215,12 +222,7 @@ export class FormularioAdminComponent implements OnInit {
     this.admin.estado = value;
   }
 
-  confirmarClave() {
-    this.lasClavesCoinciden = this.admin.clave == this.admin.claveConfirmacion;
-  }
-
   confirmarClaveEnCambioDeClave() {
     this.lasClavesCoinciden = this.cambioDeClave.claveNueva == this.cambioDeClave.claveConfirmacion;
   }
-
 }

@@ -70,15 +70,15 @@ export class UsuarioService extends BaseService {
     return [
       {
         id_question: datosSeguridad.pregunta1,
-        answer: datosSeguridad.respuesta1
+        answer: datosSeguridad.respuesta1.trim()
       },
       {
         id_question: datosSeguridad.pregunta2,
-        answer: datosSeguridad.respuesta2
+        answer: datosSeguridad.respuesta2.trim()
       },
       {
         id_question: datosSeguridad.pregunta3,
-        answer: datosSeguridad.respuesta3
+        answer: datosSeguridad.respuesta3.trim()
       }
     ];
   }

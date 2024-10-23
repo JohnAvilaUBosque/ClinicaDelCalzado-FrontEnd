@@ -124,7 +124,7 @@ export class AdministradorService extends BaseService {
   private mapearAdmin(admin: AdministradorModel): any {
     return {
       identification: admin.identificacion,
-      name: admin.nombre,
+      name: admin.nombre.trim(),
       cellphone: admin.celular,
       phone: admin.celular, // TO DO: Pendiente definir si quitar
       admin_type: admin.rol,
@@ -154,7 +154,7 @@ export class AdministradorService extends BaseService {
 
   private mapearAAdmin(admin: any): AdministradorModel {
     return {
-      identificacion: admin.identification,
+      identificacion: admin.identification.toString(),
       nombre: admin.name,
       celular: admin.cellphone,
       rol: admin.admin_type,

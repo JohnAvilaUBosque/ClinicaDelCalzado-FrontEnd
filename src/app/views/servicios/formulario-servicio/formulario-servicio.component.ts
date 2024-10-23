@@ -99,7 +99,7 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
   }
 
   cambiarPrecioIndividual(value: string) {
-    var valorIndividual = Number.parseInt(value.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
+    var valorIndividual = Number.parseInt(value.replaceAll(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
     this.servicio.precio = Number.isNaN(valorIndividual) ? 0 : valorIndividual;
   }
 

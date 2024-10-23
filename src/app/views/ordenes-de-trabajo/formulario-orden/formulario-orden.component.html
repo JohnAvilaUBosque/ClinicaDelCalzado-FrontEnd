@@ -72,8 +72,8 @@
                     @if (esModoMigracion) {
                     <c-col sm="6" lg="4" class="mb-3">
                         <label cLabel="col" sizing="sm">Atendido por:</label><span class="text-danger"> *</span>
-                        <select cSelect [(ngModel)]="orden.atendidoPorId" name="attendedBy" #attendedBy="ngModel" required
-                            [valid]="attendedBy.touched && attendedBy.invalid ? false : undefined">
+                        <select cSelect [(ngModel)]="orden.atendidoPorId" name="attendedBy" #attendedBy="ngModel"
+                            required [valid]="attendedBy.touched && attendedBy.invalid ? false : undefined">
                             @for (admin of administradores; track $index) {
                             <option [value]="admin.identificacion">
                                 {{admin.nombre}}
@@ -121,7 +121,7 @@
                         <label cLabel="col" sizing="sm">Identificación cliente:</label><span class="text-danger"
                             *ngIf="esModoCreacion || esModoMigracion"> *</span>
                         <input cFormControl type="text" [(ngModel)]="orden.cliente.identificacion" name="identification"
-                            #identification="ngModel" maxlength="15" [pattern]="CONST.REGULAR_EXP.NUMBER" required
+                            #identification="ngModel" maxlength="15" [pattern]="CONST.REGULAR_EXP.NUMBER_VALID" required
                             [valid]="identification.touched && identification.invalid ? false : undefined"
                             [readonly]="esModoLectura" [plaintext]="esModoLectura">
                         <c-form-feedback *ngIf="identification.touched && identification.invalid" [valid]="false">
@@ -131,14 +131,14 @@
                     <c-col sm="6" lg="4" class="mb-3">
                         <label cLabel="col" sizing="sm">Nombre cliente:</label><span class="text-danger"
                             *ngIf="esModoCreacion || esModoMigracion"> *</span>
-                        @if (!esModoLectura) {
+                        @if (esModoCreacion || esModoMigracion) {
                         <c-badge size="sm" class="text-info"
                             cTooltip="Si la identificación del cliente ya existe, se le actualiza el nombre si se modifica">
                             <svg cIcon name="cil-warning"></svg>
                         </c-badge>
                         }
                         <input cFormControl type="text" [(ngModel)]="orden.cliente.nombre" name="nameClient"
-                            #nameClient="ngModel" maxlength="100" required
+                            #nameClient="ngModel" maxlength="100" [pattern]="CONST.REGULAR_EXP.STRING_VALID" required
                             [valid]="nameClient.touched && nameClient.invalid ? false : undefined"
                             [readonly]="esModoLectura" [plaintext]="esModoLectura">
                         <c-form-feedback *ngIf="nameClient.touched && nameClient.invalid" [valid]="false">
@@ -150,15 +150,15 @@
                             <c-col>
                                 <label cLabel="col" sizing="sm">Celular cliente:</label><span class="text-danger"
                                     *ngIf="esModoCreacion || esModoMigracion"> *</span>
-                                @if (!esModoLectura) {
+                                @if (esModoCreacion || esModoMigracion) {
                                 <c-badge size="sm" class="text-info"
                                     cTooltip="Si la identificación del cliente ya existe, se le actualiza el celular si se modifica">
                                     <svg cIcon name="cil-warning"></svg>
                                 </c-badge>
                                 }
                                 <input cFormControl type="text" [(ngModel)]="orden.cliente.celular" name="cellphone"
-                                    #cellphone="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER" required
-                                    [valid]="cellphone.touched && cellphone.invalid ? false : undefined"
+                                    #cellphone="ngModel" maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER_VALID"
+                                    required [valid]="cellphone.touched && cellphone.invalid ? false : undefined"
                                     [readonly]="esModoLectura" [plaintext]="esModoLectura">
                                 <c-form-feedback *ngIf="cellphone.touched && cellphone.invalid" [valid]="false">
                                     Este campo debe ser numérico!
@@ -324,7 +324,7 @@
             @if (whatsAppModal.visible) {
             <label cLabel="col" sizing="sm">Confirma el número de WhatsApp:</label><span class="text-danger"> *</span>
             <input cFormControl type="text" [(ngModel)]="whatsAppNumber" name="wpNumber" #wpNumber="ngModel"
-                maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER" maxlength="10" minlength="10" required
+                maxlength="20" [pattern]="CONST.REGULAR_EXP.NUMBER_VALID" maxlength="10" minlength="10" required
                 [valid]="wpNumber.touched && wpNumber.invalid ? false : undefined">
             <c-form-feedback *ngIf="wpNumber.touched && wpNumber.invalid" [valid]="false">
                 Este campo debe ser un número de celular válido!
@@ -415,7 +415,7 @@
             @if (comentarioModal.visible) {
             <label cLabel="col" sizing="sm">Comentario:</label><span class="text-danger"> *</span>
             <textarea cFormControl rows="5" [(ngModel)]="comentarioNuevo" name="commentNew" #commentNew="ngModel"
-                maxlength="255" required
+                maxlength="255" [pattern]="CONST.REGULAR_EXP.STRING_VALID" required
                 [valid]="commentNew.touched && commentNew.invalid ? false : undefined"></textarea>
             <c-form-feedback *ngIf="commentNew.touched && commentNew.invalid" [valid]="false">
                 Este campo es requerido!
@@ -449,7 +449,7 @@
             }
             <label cLabel="col" sizing="sm">Comentario:</label><span class="text-danger"> *</span>
             <textarea cFormControl rows="5" [(ngModel)]="comentarioAnulacion" name="commentNew" #commentNew="ngModel"
-                maxlength="200" required
+                maxlength="200" [pattern]="CONST.REGULAR_EXP.STRING_VALID" required
                 [valid]="commentNew.touched && commentNew.invalid ? false : undefined"></textarea>
             <c-form-feedback *ngIf="commentNew.touched && commentNew.invalid" [valid]="false">
                 Este campo es requerido!

@@ -15,7 +15,7 @@
                     </span>
                     <input cFormControl type="text" [(ngModel)]="usuario.identificacion" name="identification"
                       #identification="ngModel" placeholder="Identificación" maxlength="15" required
-                      [pattern]="CONST.REGULAR_EXP.NUMBER"
+                      [pattern]="CONST.REGULAR_EXP.NUMBER_VALID"
                       [valid]="identification.touched && identification.invalid ? false : undefined" />
                     <c-form-feedback *ngIf="identification.touched && identification.invalid" [valid]="false">
                       Este campo debe ser numérico!

@@ -59,11 +59,9 @@ export class InformesService extends BaseService {
 
   private mapearAOrden(orden: any): InformeDetalladoModel {
     return {
-      // estadoOrden: orden.order_status, // TO DO: Pendiente definir si activar
-      estadoOrden: orden.services_received == 0 && orden.services_completed == 0 && orden.balance == 0
-        ? this.CONST.ESTADO_ORDEN.FINALIZADA : this.CONST.ESTADO_ORDEN.VIGENTE, // TO DO: Pendiente definir si quitar
+      estadoOrden: orden.order_status,
       numeroOrden: orden.order_number,
-      fechaCreacion: orden.create_date,
+      fechaCreacion: this.CONST.fechaATexto(orden.create_date, this.CONST.FORMATS_ANGULAR.DATE),
       precioTotal: orden.total_value,
       abono: orden.down_payment,
       saldo: orden.balance,
@@ -82,10 +80,11 @@ export class InformesService extends BaseService {
 
   private mapearADia(dia: any): InformeGeneralModel {
     return {
-      fecha: dia.creation_date,
+      fecha: this.CONST.fechaATexto(dia.create_date, this.CONST.FORMATS_ANGULAR.DATE),
       precioTotal: dia.total_value,
       abono: dia.down_payment,
       saldo: dia.balance,
+      // cantOrdenes: dia.cant_ordenes, // TO DO: Pendiente definir si activar
       serviciosRecibidos: dia.services_received,
       serviciosTerminados: dia.services_completed,
       serviciosDespachados: dia.services_dispatched,

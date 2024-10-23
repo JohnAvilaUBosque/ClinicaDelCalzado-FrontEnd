@@ -4,7 +4,7 @@ import { NgScrollbar } from 'ngx-scrollbar';
 
 import { IconDirective } from '@coreui/icons-angular';
 import {
-  ContainerComponent,
+  GridModule,
   INavData,
   ShadowOnScrollDirective,
   SidebarBrandComponent,
@@ -38,7 +38,7 @@ import { BaseService } from 'src/app/base.service';
     SidebarTogglerDirective,
     DefaultHeaderComponent,
     ShadowOnScrollDirective,
-    ContainerComponent,
+    GridModule,
     RouterOutlet,
     DefaultFooterComponent
   ]

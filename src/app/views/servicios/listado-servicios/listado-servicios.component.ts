@@ -64,7 +64,7 @@ export class ListadoServiciosComponent implements OnInit, OnChanges, AfterViewIn
   }
 
   cambiarPrecioIndividual(value: string, index: number) {
-    var valorIndividual = Number.parseInt(value.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
+    var valorIndividual = Number.parseInt(value.replaceAll(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
     this.servicios[index].precio = Number.isNaN(valorIndividual) ? 0 : valorIndividual;
     this.servicios[index].precioEstablecido = this.servicios[index].precio != 0;
     this.cambiaronPreciosEvent.emit();

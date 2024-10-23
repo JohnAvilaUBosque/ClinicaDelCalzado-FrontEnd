@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { ServicioModel } from './servicio.model';
-import { OrdenDeTrabajoModel } from '../ordenes-de-trabajo/orden-de-trabajo.model';
 import { catchError, map, Observable } from 'rxjs';
 import { OperarioModel } from '../operarios/operario.model';
 import { BaseService } from 'src/app/base.service';
@@ -78,8 +77,8 @@ export class ServicioService extends BaseService {
 
     return {
       id: servicio.id,
-      name: servicio.descripcion,
-      service_name: servicio.descripcion, // TO DO: Pendiente definir si quitar
+      name: servicio.descripcion.trim(),
+      service_name: servicio.descripcion.trim(), // TO DO: Pendiente definir si quitar
       service_status: servicio.estado,
       price: servicio.precioEstablecido ? servicio.precio : null, // Se envía null para que el back no establezca el precio
       has_pending_price: !servicio.precioEstablecido,
@@ -108,16 +107,5 @@ export class ServicioService extends BaseService {
       precioEstablecido: !servicio.has_pending_price,
       operario: servicio.operator?.id_operator ? this.operarioService.mapearAOperario(servicio.operator) : new OperarioModel()
     };
-  }
-
-  private generarComentario(comentario: string, servicio: ServicioModel, o: OrdenDeTrabajoModel, index: number) {
-    comentario = 'Se edito el servicio "' + servicio.descripcion + '"';
-    if (servicio.operario.nombre != o.servicios[index].operario.nombre)
-      comentario += ', se cambió el operador a ' + servicio.operario.nombre;
-    if (servicio.precio != o.servicios[index].precio)
-      comentario += ', se cambió el precio a ' + servicio.precio;
-    if (servicio.estado != o.servicios[index].estado)
-      comentario += ', se cambió el estado a "' + servicio.estado;
-    return comentario;
   }
 }

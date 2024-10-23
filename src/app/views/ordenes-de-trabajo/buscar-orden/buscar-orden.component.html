@@ -16,7 +16,8 @@
                     <div class="mb-3">
                         <label cLabel="col" sizing="sm">Número de orden:</label><span class="text-danger"> *</span>
                         <input cFormControl type="text" [(ngModel)]="numeroOrden" name="ordenNumber"
-                            #ordenNumber="ngModel" [placeholder]="CONST.ORDEN_NUMBER_DEFAULT" maxlength="20" required
+                            #ordenNumber="ngModel" [placeholder]="CONST.ORDEN_NUMBER_DEFAULT" maxlength="20"
+                            [pattern]="CONST.REGULAR_EXP.STRING_VALID" required
                             [valid]="ordenNumber.touched && ordenNumber.invalid ? false : undefined">
                         <c-form-feedback *ngIf="ordenNumber.touched && ordenNumber.invalid" [valid]="false">
                             Este campo es requerido!

@@ -68,6 +68,8 @@ export class REGULAR_EXP {
     readonly CURRENCY = /^\$\d{1,3}(\,\d{3})*$/;
     readonly NOT_NUMBER = /[^0-9]/g;
     readonly NUMBER = /^\d+$/;
-    readonly PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    readonly NUMBER_VALID = /^(?!0+$)\d+$/;
+    readonly STRING_VALID = /^(?!\s*$).+/;
+    readonly PASSWORD = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])(?!.*\s).{8,}$/;
     readonly TIME = '^(0?[1-9]|1[0-2]):[0-5][0-9]$';
 };

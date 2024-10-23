@@ -1,29 +1,14 @@
 import { Component, computed, DestroyRef, inject, Input } from '@angular/core';
 import {
-  AvatarComponent,
-  BadgeComponent,
-  BreadcrumbRouterComponent,
   ColorModeService,
   ContainerComponent,
-  DropdownComponent,
-  DropdownDividerDirective,
-  DropdownHeaderDirective,
-  DropdownItemDirective,
-  DropdownMenuDirective,
-  DropdownToggleDirective,
+  DropdownModule,
   HeaderComponent,
-  HeaderNavComponent,
-  HeaderTogglerDirective,
-  NavItemComponent,
-  NavLinkDirective,
-  ProgressBarDirective,
-  ProgressComponent,
-  SidebarToggleDirective,
-  TextColorDirective,
-  ThemeDirective
+  HeaderModule,
+  SidebarToggleDirective
 } from '@coreui/angular';
-import { NgStyle, NgTemplateOutlet } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { NgTemplateOutlet } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IconDirective } from '@coreui/icons-angular';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { delay, filter, map, tap } from 'rxjs/operators';
@@ -33,7 +18,7 @@ import { BaseService } from 'src/app/base.service';
   selector: 'app-default-header',
   templateUrl: './default-header.component.html',
   standalone: true,
-  imports: [ContainerComponent, HeaderTogglerDirective, SidebarToggleDirective, IconDirective, HeaderNavComponent, NavItemComponent, NavLinkDirective, RouterLink, RouterLinkActive, NgTemplateOutlet, BreadcrumbRouterComponent, ThemeDirective, DropdownComponent, DropdownToggleDirective, TextColorDirective, AvatarComponent, DropdownMenuDirective, DropdownHeaderDirective, DropdownItemDirective, BadgeComponent, DropdownDividerDirective, ProgressBarDirective, ProgressComponent, NgStyle]
+  imports: [DropdownModule, ContainerComponent, HeaderModule, SidebarToggleDirective, IconDirective, NgTemplateOutlet,]
 })
 export class DefaultHeaderComponent extends HeaderComponent {
 
@@ -83,6 +68,10 @@ export class DefaultHeaderComponent extends HeaderComponent {
 
   navegarAPerfil() {
     this.router.navigate(['admins/perfil']);
+  }
+
+  navegarAManual() {
+    this.router.navigate(['manual']);
   }
 
 }

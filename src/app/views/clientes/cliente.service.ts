@@ -13,7 +13,7 @@ export class ClienteService extends BaseService {
 
   public obtenerClientes(): Observable<RespuestaModel<ClienteModel[]>> {
     const headers = this.obtenerHeaders();
-    
+
     return this.http.get<any>(this.URL + '/list', { headers }).pipe(map(
       respuesta => {
         var respuestaMapeada = this.validarRespuesta<ClienteModel[]>(respuesta);
@@ -25,6 +25,16 @@ export class ClienteService extends BaseService {
     )).pipe(catchError((error) => this.controlarError(error)));
   }
 
+  public mapearCliente(cliente: ClienteModel): any {
+    if (!cliente) return null;
+
+    return {
+      identification: cliente.identificacion,
+      name: cliente.nombre.trim(),
+      cellphone: cliente.celular
+    };
+  }
+
   private mapearAClientes(clientes: any[]): ClienteModel[] {
     return clientes.map(
       cliente => {
@@ -32,11 +42,13 @@ export class ClienteService extends BaseService {
       });
   }
 
-  private mapearACliente(cliente: any): ClienteModel {
+  public mapearACliente(cliente: any): ClienteModel {
+    if (!cliente) return new ClienteModel();
+
     return {
       identificacion: cliente.identification.toString(),
-      nombre: cliente.client_name,
-      celular: cliente.client_phone,
+      nombre: cliente.client_name || cliente.name, // TO DO: Pendiente definir cual queda
+      celular: cliente.client_phone || cliente.cellphone // TO DO: Pendiente definir cual queda
     };
   }
 }

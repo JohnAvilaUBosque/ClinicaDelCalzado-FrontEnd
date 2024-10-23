@@ -42,6 +42,7 @@ export class ConstantsService {
   public fechaATexto(fecha: string | number | Date, formato: string): string {
     if (typeof fecha == 'string' && fecha.indexOf('-') == 2)
       fecha = this.convertirAFechaValida(fecha);
+    
     return formatDate(fecha, formato, 'en-US');
   }
 

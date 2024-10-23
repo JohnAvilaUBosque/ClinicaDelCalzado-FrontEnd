@@ -42,6 +42,6 @@ export class BuscarOrdenComponent {
   }
 
   buscarOrden() {
-    this.router.navigate(['ordenesdetrabajo/ver/' + this.numeroOrden]);
+    this.router.navigate(['ordenesdetrabajo/ver/' + this.numeroOrden.trim()]);
   }
 }

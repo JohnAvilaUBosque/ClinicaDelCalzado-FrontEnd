@@ -156,6 +156,7 @@ export class FormularioOrdenComponent implements OnInit {
   migrarOrden() {
     this.CONST.mostrarCargando();
 
+    this.orden.fechaCreacion = this.fechaCreacion + ' ' + this.horaCreacion;
     this.orden.atendidoPor = this.administradores.find(a => a.identificacion == this.orden.atendidoPorId)?.nombre || '';
     this.orden.estadoPago = this.orden.saldo != 0 ?
       this.CONST.ESTADO_PAGO.PENDIENTE :
@@ -198,7 +199,7 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   cambiarAbono(valor: string) {
-    var abono = Number.parseInt(valor.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
+    var abono = Number.parseInt(valor.replaceAll(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
     this.orden.abono = Number.isNaN(abono) ? 0 : abono;
     this.calcularSaldo();
   }
@@ -208,7 +209,7 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   cambiarAbonoNuevo(valor: string) {
-    var abonoNuevo = Number.parseInt(valor.replace(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
+    var abonoNuevo = Number.parseInt(valor.replaceAll(this.CONST.REGULAR_EXP.NOT_NUMBER, ''));
     this.abonoNuevo = Number.isNaN(abonoNuevo) ? 0 : abonoNuevo;
     this.calcularSaldoNuevo();
   }

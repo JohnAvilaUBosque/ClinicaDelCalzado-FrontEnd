@@ -18,7 +18,7 @@
                                         </span>
                                         <input cFormControl type="text" [(ngModel)]="recuperacion.identificacion"
                                             name="identification" #identification="ngModel" maxlength="15" required
-                                            [pattern]="CONST.REGULAR_EXP.NUMBER"
+                                            [pattern]="CONST.REGULAR_EXP.NUMBER_VALID"
                                             [valid]="identification.touched && identification.invalid ? false : undefined" />
                                         <c-form-feedback *ngIf="identification.touched && identification.invalid"
                                             [valid]="false">

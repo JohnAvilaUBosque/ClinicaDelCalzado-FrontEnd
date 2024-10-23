@@ -3,7 +3,7 @@
         <h5>Listado órdenes de trabajo</h5>
     </c-card-header>
     <c-card-body>
-        <p>Órdenes de trabajo de la más reciente a la más antigua.</p>
+        <p>Órdenes de trabajo ordenadas por fecha de entrega.</p>
         <c-row>
             <c-col md="4" xl="3" class="mb-3">
                 <label cLabel="col" sizing="sm">Filtrar por estado de orden:</label>
@@ -130,7 +130,7 @@
                         <td>{{orden.cliente.nombre}}</td>
                         <td>{{orden.cliente.celular}}</td>
                         <td>{{orden.cantidadServicios}}</td>
-                        <td>{{orden.fechaEntrega | date:CONST.FORMATS_VIEW.DATE}}</td>
+                        <th>{{orden.fechaEntrega | date:CONST.FORMATS_VIEW.DATE}}</th>
                         <td>{{orden.precioTotal | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
                         <td>{{orden.abono | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>
                         <td>{{orden.saldo | currency: 'COP' : 'symbol-narrow' : '1.0'}}</td>

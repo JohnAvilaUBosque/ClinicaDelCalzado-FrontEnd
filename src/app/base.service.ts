@@ -71,7 +71,6 @@ export class BaseService {
   }
 
   protected controlarError(error: HttpErrorResponse, validar401y403: boolean = true) {
-    console.error(error);
     this.gestionarError(error.error, validar401y403);
     return throwError(() => error);
   }

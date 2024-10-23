@@ -80,7 +80,7 @@ export class OperarioService extends BaseService {
   public mapearOperario(operario: OperarioModel): any {
     return {
       id_operator: operario.identificacion,
-      operator_name: operario.nombre,
+      operator_name: operario.nombre.trim(),
       ope_phone_number: operario.celular,
       status_operator: operario.estado
     };

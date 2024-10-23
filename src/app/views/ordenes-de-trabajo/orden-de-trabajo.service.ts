@@ -7,6 +7,7 @@ import { ClienteModel } from '../clientes/cliente.model';
 import { ServicioService } from '../servicios/servicio.service';
 import { RespuestaModel } from 'src/app/respuesta.model';
 import { HttpParams } from '@angular/common/http';
+import { ClienteService } from '../clientes/cliente.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ import { HttpParams } from '@angular/common/http';
 export class OrdenDeTrabajoService extends BaseService {
 
   public servicioService = inject(ServicioService);
+  public clienteService = inject(ClienteService);
 
   private readonly URL: string = this.CONST.API_URL + '/api/v1/work-orders';
 
@@ -147,21 +149,11 @@ export class OrdenDeTrabajoService extends BaseService {
       attended_by: orden.atendidoPor,
       attended_by_id: orden.atendidoPorId,
       create_date: this.CONST.fechaATexto(orden.fechaCreacion, this.CONST.FORMATS_API.DATETIME),
-      client: this.mapearCliente(orden.cliente),
+      client: this.clienteService.mapearCliente(orden.cliente),
       down_payment: orden.abono,
       delivery_date: this.CONST.fechaATexto(orden.fechaEntrega, this.CONST.FORMATS_API.DATE),
       services: this.servicioService.mapearServicios(orden.servicios),
-      general_comment: orden.comentarios.length > 0 ? orden.comentarios[0].descripcion : '',
-    };
-  }
-
-  private mapearCliente(cliente: ClienteModel): any {
-    if (!cliente) return null;
-
-    return {
-      identification: cliente.identificacion,
-      name: cliente.nombre,
-      cellphone: cliente.celular
+      general_comment: orden.comentarios.length > 0 ? orden.comentarios[0].descripcion.trim() : '',
     };
   }
 
@@ -179,11 +171,11 @@ export class OrdenDeTrabajoService extends BaseService {
 
     return {
       numeroOrden: orden.order_number,
-      atendidoPorId: orden.attended_by_id,
+      atendidoPorId: orden.attended_by_id || '',
       atendidoPor: orden.attended_by || '',
       fechaCreacion: this.CONST.fechaATexto(orden.create_date, this.CONST.FORMATS_ANGULAR.DATETIME),
       estadoOrden: orden.order_status,
-      cliente: this.mapearACliente(orden.client),
+      cliente: this.clienteService.mapearACliente(orden.client),
       precioTotal: orden.total_value,
       abono: orden.down_payment,
       saldo: orden.balance,
@@ -192,16 +184,6 @@ export class OrdenDeTrabajoService extends BaseService {
       servicios: this.servicioService.mapearAServicios(orden.services),
       cantidadServicios: orden.services_count,
       comentarios: this.mapearAComentarios(orden.comments)
-    };
-  }
-
-  private mapearACliente(cliente: any): ClienteModel {
-    if (!cliente) return new ClienteModel();
-
-    return {
-      identificacion: cliente.identification.toString(),
-      nombre: cliente.name,
-      celular: cliente.cellphone
     };
   }
 
