@@ -8,6 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { InformesService } from '../informe.service';
 import { InformeGeneralModel } from '../informe.model';
+import { sum } from 'lodash-es';
 
 @Component({
   selector: 'informe-general',
@@ -65,6 +66,7 @@ export class InformeGeneralComponent implements OnInit {
           return;
         }
 
+        this.validarFechas();
         this.obtenerInformeGeneral();
       }
     );
@@ -78,11 +80,22 @@ export class InformeGeneralComponent implements OnInit {
         if (respuesta.esError) return;
 
         this.diasFiltrados = respuesta.objeto;
+        this.calcularTotales();
+
         this.CONST.ocultarCargando();
 
         if (this.diasFiltrados.length == 0)
           this.toastSinResultados.visible = true;
       });
+  }
+
+  calcularTotales() {
+    this.totales.precioTotal = sum(this.diasFiltrados.map(orden => orden.precioTotal));
+    this.totales.abono = sum(this.diasFiltrados.map(orden => orden.abono));
+    this.totales.saldo = sum(this.diasFiltrados.map(orden => orden.saldo));
+    this.totales.serviciosRecibidos = sum(this.diasFiltrados.map(orden => orden.serviciosRecibidos));
+    this.totales.serviciosTerminados = sum(this.diasFiltrados.map(orden => orden.serviciosTerminados));
+    this.totales.serviciosDespachados = sum(this.diasFiltrados.map(orden => orden.serviciosDespachados));
   }
 
   navegarAInformeGeneral() {

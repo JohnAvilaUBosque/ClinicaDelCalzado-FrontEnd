@@ -236,7 +236,17 @@ export class FormularioOrdenComponent implements OnInit {
   }
 
   servicioEditado(comentario: string) {
-    this.obtenerOrden(this.orden.numeroOrden);
+    this.CONST.mostrarCargando();
+
+    this.ordenDeTrabajoService.comentarOrden(this.orden.numeroOrden, comentario).subscribe(
+      respuesta => {
+        if (respuesta.esError) return;
+
+        this.CONST.ocultarCargando();
+
+        this.obtenerOrden(this.orden.numeroOrden);
+      }
+    );
   }
 
   // Funciones de Modals

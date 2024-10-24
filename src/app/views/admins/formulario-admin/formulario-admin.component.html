@@ -69,7 +69,11 @@
                     <label cLabel="col" sizing="sm">Rol:</label><span class="text-danger" *ngIf="role.enabled"> *</span>
                     <select cSelect [(ngModel)]="admin.rol" name="role" #role="ngModel" required
                         [valid]="role.touched && role.invalid ? false : undefined"
-                        [disabled]="esModoLectura || (esModoEdicion && (esInformacionPersonal || adminLocal.rol == CONST.ROL_ADMIN.SECUNDARIO))">
+                        [disabled]="esModoLectura || esInformacionPersonal || (esModoEdicion && adminLocal.rol == CONST.ROL_ADMIN.SECUNDARIO)">
+                        @if (esInformacionPersonal) {
+                        <option [value]="CONST.ROL_ADMIN.ADMINISTRADOR">{{CONST.ROL_ADMIN.ADMINISTRADOR}}
+                        </option>
+                        }
                         <option [value]="CONST.ROL_ADMIN.PRINCIPAL">{{CONST.ROL_ADMIN.PRINCIPAL}}
                         </option>
                         <option [value]="CONST.ROL_ADMIN.SECUNDARIO">{{CONST.ROL_ADMIN.SECUNDARIO}}

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AdministradorModel } from '../admins/administrador.model';
 import { DatosSeguridadModel, RecuperacionModel, UsuarioModel } from './usuario.model';
 import { catchError, map, Observable } from 'rxjs';
 import { BaseService } from 'src/app/base.service';

@@ -3,7 +3,6 @@ import { ComentarioModel, OrdenDeTrabajoModel } from './orden-de-trabajo.model';
 import { catchError, map, Observable } from 'rxjs';
 import { formatDate } from '@angular/common';
 import { BaseService } from 'src/app/base.service';
-import { ClienteModel } from '../clientes/cliente.model';
 import { ServicioService } from '../servicios/servicio.service';
 import { RespuestaModel } from 'src/app/respuesta.model';
 import { HttpParams } from '@angular/common/http';
@@ -157,46 +156,46 @@ export class OrdenDeTrabajoService extends BaseService {
     };
   }
 
-  private mapearAOrdenes(ordenes: any[]): OrdenDeTrabajoModel[] {
-    if (!ordenes) return [];
+  private mapearAOrdenes(orders: any[]): OrdenDeTrabajoModel[] {
+    if (!orders) return [];
 
-    return ordenes.map(
-      orden => {
-        return this.mapearAOrden(orden);
+    return orders.map(
+      order => {
+        return this.mapearAOrden(order);
       });
   }
 
-  private mapearAOrden(orden: any): OrdenDeTrabajoModel {
-    if (!orden) return new OrdenDeTrabajoModel();
+  private mapearAOrden(order: any): OrdenDeTrabajoModel {
+    if (!order) return new OrdenDeTrabajoModel();
 
     return {
-      numeroOrden: orden.order_number,
-      atendidoPorId: orden.attended_by_id || '',
-      atendidoPor: orden.attended_by || '',
-      fechaCreacion: this.CONST.fechaATexto(orden.create_date, this.CONST.FORMATS_ANGULAR.DATETIME),
-      estadoOrden: orden.order_status,
-      cliente: this.clienteService.mapearACliente(orden.client),
-      precioTotal: orden.total_value,
-      abono: orden.down_payment,
-      saldo: orden.balance,
-      estadoPago: orden.payment_status,
-      fechaEntrega: this.CONST.fechaATexto(orden.delivery_date, this.CONST.FORMATS_ANGULAR.DATE),
-      servicios: this.servicioService.mapearAServicios(orden.services),
-      cantidadServicios: orden.services_count,
-      comentarios: this.mapearAComentarios(orden.comments)
+      numeroOrden: order.order_number,
+      atendidoPorId: order.attended_by_id || '',
+      atendidoPor: order.attended_by || '',
+      fechaCreacion: this.CONST.fechaATexto(order.create_date, this.CONST.FORMATS_ANGULAR.DATETIME),
+      estadoOrden: order.order_status,
+      cliente: this.clienteService.mapearACliente(order.client),
+      precioTotal: order.total_value,
+      abono: order.down_payment,
+      saldo: order.balance,
+      estadoPago: order.payment_status,
+      fechaEntrega: this.CONST.fechaATexto(order.delivery_date, this.CONST.FORMATS_ANGULAR.DATE),
+      servicios: this.servicioService.mapearAServicios(order.services),
+      cantidadServicios: order.services_count,
+      comentarios: this.mapearAComentarios(order.comments)
     };
   }
 
-  private mapearAComentarios(comentarios: any[]): ComentarioModel[] {
-    if (!comentarios) return [];
+  private mapearAComentarios(comments: any[]): ComentarioModel[] {
+    if (!comments) return [];
 
-    return comentarios.map(
-      comentario => {
+    return comments.map(
+      comment => {
         return {
-          id: comentario.id_comment,
-          descripcion: comentario.comment,
-          nombreAdmin: comentario.comment_by,
-          fecha: this.CONST.fechaATexto(comentario.creation_date, this.CONST.FORMATS_ANGULAR.DATE),
+          id: comment.id_comment,
+          descripcion: comment.comment,
+          nombreAdmin: comment.comment_by,
+          fecha: this.CONST.fechaATexto(comment.creation_date, this.CONST.FORMATS_ANGULAR.DATE),
         };
       });
   }

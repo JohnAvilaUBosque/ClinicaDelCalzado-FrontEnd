@@ -19,7 +19,7 @@
         <p>Filtre las órdenes de trabajo en un rango de fechas.</p>
         <form cForm #informeDetalladoForm="ngForm" (ngSubmit)="navegarAInformeDetallado()">
             <c-row>
-                <c-col md="5" class="mb-3">
+                <c-col sm="5" class="mb-3">
                     <label cLabel="col" sizing="sm">Fecha inicial:</label><span class="text-danger"> *</span>
                     <input cFormControl type="date" [(ngModel)]="fechaInicial" (ngModelChange)="validarFechas()"
                         name="startDate" #startDate="ngModel" required
@@ -29,7 +29,7 @@
                         Esta fecha debe ser anterior o igual a la fecha final!
                     </c-form-feedback>
                 </c-col>
-                <c-col md="5" class="mb-3">
+                <c-col sm="5" class="mb-3">
                     <label cLabel="col" sizing="sm">Fecha final:</label><span class="text-danger"> *</span>
                     <input cFormControl type="date" [(ngModel)]="fechaFinal" (ngModelChange)="validarFechas()"
                         name="endDate" #endDate="ngModel" required
@@ -38,7 +38,7 @@
                         Esta fecha debe ser posterior o igual a la fecha inicial!
                     </c-form-feedback>
                 </c-col>
-                <c-col md="2" class="mb-3" style="margin-top: 31px;">
+                <c-col sm="2" class="mb-3" style="margin-top: 31px;">
                     <input cButton color="primary" type="submit" value="Filtrar" class="w-100"
                         [disabled]="informeDetalladoForm.invalid">
                 </c-col>
@@ -51,8 +51,8 @@
                     <tr>
                         <th scope="col"></th>
                         <th scope="col">Estado orden</th>
-                        <th scope="col">Número de orden</th>
                         <th scope="col">Fecha creación</th>
+                        <th scope="col">Número de orden</th>
                         <th scope="col">Servicios en proceso</th>
                         <th scope="col">Servicios terminados</th>
                         <th scope="col">Servicios despachados</th>
@@ -77,8 +77,8 @@
                                 {{orden.estadoOrden | uppercase}}
                             </c-badge>
                         </td>
-                        <th scope="row">{{orden.numeroOrden}}</th>
-                        <td>{{orden.fechaCreacion | date:CONST.FORMATS_VIEW.DATETIME }}</td>
+                        <th>{{orden.fechaCreacion | date:CONST.FORMATS_VIEW.DATETIME }}</th>
+                        <td scope="row">{{orden.numeroOrden}}</td>
                         <td>{{orden.serviciosRecibidos}}</td>
                         <td>{{orden.serviciosTerminados}}</td>
                         <td>{{orden.serviciosDespachados}}</td>
@@ -91,8 +91,8 @@
                 <tfoot cTableColor="secondary">
                     <tr>
                         <th></th>
-                        <th></th>
                         <th scope="row">Totales:</th>
+                        <th></th>
                         <th></th>
                         <th>{{totales.serviciosRecibidos}}</th>
                         <th>{{totales.serviciosTerminados}}</th>

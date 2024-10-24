@@ -27,15 +27,15 @@ export class ManualDeUsuarioComponent implements AfterViewInit {
     var adminLocal = this.baseService.obtenerAdminLocal();
 
     var pdfUrl: string;
-    if (adminLocal.rol == this.CONST.ROL_ADMIN.PRINCIPAL)
-      pdfUrl = '/assets/Manual de usuario - Admin Principal.pdf';
-    else
+    if (adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO)
       pdfUrl = '/assets/Manual de usuario - Admin Secundario.pdf';
+    else
+      pdfUrl = '/assets/Manual de usuario - Admin Principal.pdf';
 
     // pdfUrl += '#toolbar=0';
     const timestamp = new Date().getTime();
     pdfUrl += '?timestamp=' + timestamp;
-    
+
     this.manualUrl = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
   }
 

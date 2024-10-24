@@ -35,20 +35,20 @@ export class ClienteService extends BaseService {
     };
   }
 
-  private mapearAClientes(clientes: any[]): ClienteModel[] {
-    return clientes.map(
-      cliente => {
-        return this.mapearACliente(cliente);
+  private mapearAClientes(clients: any[]): ClienteModel[] {
+    return clients.map(
+      client => {
+        return this.mapearACliente(client);
       });
   }
 
-  public mapearACliente(cliente: any): ClienteModel {
-    if (!cliente) return new ClienteModel();
+  public mapearACliente(client: any): ClienteModel {
+    if (!client) return new ClienteModel();
 
     return {
-      identificacion: cliente.identification.toString(),
-      nombre: cliente.client_name || cliente.name, // TO DO: Pendiente definir cual queda
-      celular: cliente.client_phone || cliente.cellphone // TO DO: Pendiente definir cual queda
+      identificacion: client.identification.toString(),
+      nombre: client.name,
+      celular: client.cellphone
     };
   }
 }

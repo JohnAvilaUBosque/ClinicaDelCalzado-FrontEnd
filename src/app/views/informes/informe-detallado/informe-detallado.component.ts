@@ -8,6 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { InformesService } from '../informe.service';
 import { FormsModule } from '@angular/forms';
 import { InformeDetalladoModel } from '../informe.model';
+import { sum } from 'lodash-es';
 
 @Component({
   selector: 'informe-detallado',
@@ -78,11 +79,22 @@ export class InformeDetalladoComponent implements OnInit {
         if (respuesta.esError) return;
 
         this.ordenesFiltradas = respuesta.objeto;
+        this.calcularTotales();
+
         this.CONST.ocultarCargando();
 
         if (this.ordenesFiltradas.length == 0)
           this.toastSinResultados.visible = true;
       });
+  }
+
+  calcularTotales() {
+    this.totales.precioTotal = sum(this.ordenesFiltradas.map(orden => orden.precioTotal));
+    this.totales.abono = sum(this.ordenesFiltradas.map(orden => orden.abono));
+    this.totales.saldo = sum(this.ordenesFiltradas.map(orden => orden.saldo));
+    this.totales.serviciosRecibidos = sum(this.ordenesFiltradas.map(orden => orden.serviciosRecibidos));
+    this.totales.serviciosTerminados = sum(this.ordenesFiltradas.map(orden => orden.serviciosTerminados));
+    this.totales.serviciosDespachados = sum(this.ordenesFiltradas.map(orden => orden.serviciosDespachados));
   }
 
   navegarAInformeDetallado() {

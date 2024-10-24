@@ -36,14 +36,14 @@ export class FormularioAdminComponent implements OnInit {
   public esModoLectura: boolean = false;
 
   public admin: AdministradorModel = new AdministradorModel();
-  
+
   public asignarClaveTemporal: boolean = false;
   public claveTemporal: string = '';
-  
+
   public esInformacionPersonal: boolean = false;
   public editarDatosSeguridad: boolean = false;
   public sonValidosDatosSeguridad: boolean = false;
-  
+
   public cambioDeClave: CambioDeClaveModel = new CambioDeClaveModel();
   public lasClavesCoinciden: boolean = false;
 
@@ -102,14 +102,20 @@ export class FormularioAdminComponent implements OnInit {
             return;
           }
 
+          if (respuesta.objeto.rol == this.CONST.ROL_ADMIN.ADMINISTRADOR
+            && this.adminLocal.identificacion != respuesta.objeto.identificacion
+          ) {
+            this.navegarAListado();
+          }
+
           this.admin = respuesta.objeto;
           this.admin.datosSeguridad = new DatosSeguridadModel;
           this.esInformacionPersonal = this.adminLocal.identificacion == this.admin.identificacion;
 
           this.cambiarEstado(this.admin.estado);
-          if (this.esModoLectura
+          if (this.esModoLectura || this.esInformacionPersonal
             || (this.esModoEdicion && this.adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO)
-            || this.esInformacionPersonal) {
+          ) {
             this.btnRadioGroup.disable();
           }
 
@@ -142,7 +148,7 @@ export class FormularioAdminComponent implements OnInit {
 
         this.CONST.ocultarCargando();
         this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
-        
+
         this.navegarAVerAdmin();
       }
     );

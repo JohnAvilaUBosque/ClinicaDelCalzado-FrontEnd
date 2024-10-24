@@ -121,18 +121,16 @@ export class AdministradorService extends BaseService {
     )).pipe(catchError((error) => this.controlarError(error)));
   }
 
-  private mapearAdmin(admin: AdministradorModel): any {
+  private mapearAdmin(administrador: AdministradorModel): any {
     return {
-      identification: admin.identificacion,
-      name: admin.nombre.trim(),
-      cellphone: admin.celular,
-      phone: admin.celular, // TO DO: Pendiente definir si quitar
-      admin_type: admin.rol,
-      password: admin.clave,
-      admin_status: admin.estado, // TO DO: Pendiente definir si quitar
-      status: admin.estado,
-      has_temporary_password: admin.tieneClaveTemporal,
-      security_questions: admin.datosSeguridad ? this.usuarioService.mapearDatosSeguridad(admin.datosSeguridad) : null,
+      identification: administrador.identificacion,
+      name: administrador.nombre.trim(),
+      cellphone: administrador.celular,
+      admin_type: administrador.rol,
+      password: administrador.clave,
+      status: administrador.estado,
+      has_temporary_password: administrador.tieneClaveTemporal,
+      security_questions: administrador.datosSeguridad ? this.usuarioService.mapearDatosSeguridad(administrador.datosSeguridad) : null,
     };
   }
 
@@ -154,7 +152,7 @@ export class AdministradorService extends BaseService {
 
   private mapearAAdmin(admin: any): AdministradorModel {
     return {
-      identificacion: admin.identification.toString(),
+      identificacion: admin.identification?.toString() || '',
       nombre: admin.name,
       celular: admin.cellphone,
       rol: admin.admin_type,

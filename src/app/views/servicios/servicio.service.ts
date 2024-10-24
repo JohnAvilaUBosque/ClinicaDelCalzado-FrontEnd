@@ -87,25 +87,25 @@ export class ServicioService extends BaseService {
     };
   }
 
-  public mapearAServicios(servicios: any[]): ServicioModel[] {
-    if (!servicios) return [];
+  public mapearAServicios(services: any[]): ServicioModel[] {
+    if (!services) return [];
 
-    return servicios.map(
-      servicio => {
-        return this.mapearAServicio(servicio);;
+    return services.map(
+      service => {
+        return this.mapearAServicio(service);;
       });
   }
 
-  public mapearAServicio(servicio: any): ServicioModel {
-    if (!servicio) return new ServicioModel();
+  public mapearAServicio(service: any): ServicioModel {
+    if (!service) return new ServicioModel();
 
     return {
-      id: servicio.id,
-      descripcion: servicio.name,
-      estado: servicio.service_status,
-      precio: servicio.price,
-      precioEstablecido: !servicio.has_pending_price,
-      operario: servicio.operator?.id_operator ? this.operarioService.mapearAOperario(servicio.operator) : new OperarioModel()
+      id: service.id,
+      descripcion: service.name,
+      estado: service.service_status,
+      precio: service.price,
+      precioEstablecido: !service.has_pending_price,
+      operario: service.operator?.id_operator ? this.operarioService.mapearAOperario(service.operator) : new OperarioModel()
     };
   }
 }

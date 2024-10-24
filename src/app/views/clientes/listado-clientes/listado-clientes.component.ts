@@ -40,21 +40,18 @@ export class ListadoClientesComponent implements OnInit {
         if (respuesta.esError) return;
 
         this.clientes = respuesta.objeto;
+        this.filtrar();
+        
         this.CONST.ocultarCargando();
       });
   }
 
   filtrar() {
-    // if (!this.filtro.identificacion && !this.filtro.nombre && !this.filtro.celular) {
-    //   this.clientesFiltrados = [];
-    // }
-    // else {
     this.clientesFiltrados = this.clientes.filter(cliente =>
       cliente.identificacion.toLowerCase().includes(this.filtro.identificacion.toLowerCase()) &&
       cliente.nombre.toLowerCase().includes(this.filtro.nombre.toLowerCase()) &&
       cliente.celular.toLowerCase().includes(this.filtro.celular.toLowerCase())
     )
-    // }
     this.paginar();
   }
 

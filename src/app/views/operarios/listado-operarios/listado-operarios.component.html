@@ -1,6 +1,5 @@
 <div *ngIf="esEmbebido; then thenBlock else elseBlock"></div>
 <ng-template #thenBlock>
-    <p>Comience ingresando un filtro para mostrar los operarios encontrados.</p>
     <ng-container *ngTemplateOutlet="operariosTemplate">
     </ng-container>
 </ng-template>

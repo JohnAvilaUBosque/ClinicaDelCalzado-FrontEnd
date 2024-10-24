@@ -86,19 +86,19 @@ export class OperarioService extends BaseService {
     };
   }
 
-  private mapearAOperarios(operarios: any[]): OperarioModel[] {
-    return operarios.map(
-      operario => {
-        return this.mapearAOperario(operario);
+  private mapearAOperarios(operators: any[]): OperarioModel[] {
+    return operators.map(
+      operator => {
+        return this.mapearAOperario(operator);
       });
   }
 
-  public mapearAOperario(operario: any): OperarioModel {
+  public mapearAOperario(operator: any): OperarioModel {
     return {
-      identificacion: operario.id_operator.toString(),
-      nombre: operario.operator_name,
-      celular: operario.ope_phone_number,
-      estado: operario.status_operator
+      identificacion: operator.id_operator.toString(),
+      nombre: operator.operator_name,
+      celular: operator.ope_phone_number,
+      estado: operator.status_operator
     };
   }
 

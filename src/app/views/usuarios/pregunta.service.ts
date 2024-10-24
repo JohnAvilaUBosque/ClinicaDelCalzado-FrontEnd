@@ -23,17 +23,17 @@ export class PreguntaService extends BaseService {
     )).pipe(catchError((error) => this.controlarError(error)));
   }
 
-  private mapearAPreguntas(preguntas: any[]): PreguntaModel[] {
-    return preguntas.map(
+  private mapearAPreguntas(questions: any[]): PreguntaModel[] {
+    return questions.map(
       pregunta => {
         return this.mapearAPregunta(pregunta);
       });
   }
 
-  private mapearAPregunta(pregunta: any): PreguntaModel {
+  private mapearAPregunta(question: any): PreguntaModel {
     return {
-      id: pregunta.id_question,
-      descripcion: pregunta.question
+      id: question.id_question,
+      descripcion: question.question
     };
   }
 

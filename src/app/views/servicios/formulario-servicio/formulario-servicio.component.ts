@@ -92,10 +92,27 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
 
         this.CONST.ocultarCargando();
         this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
-        this.servicioEditadoEvent.emit(respuesta.objeto.mensaje);
+
+        var comentario = this.generarComentario(servicioEditado, this.servicio);
+        this.servicioEditadoEvent.emit(comentario);
         this.servicio = new ServicioModel();
       }
     );
+  }
+
+  generarComentario(servicioEditado: ServicioModel, servicioAntes: ServicioModel) {
+    var comentario = 'Se edito el servicio "' + servicioEditado.descripcion + '"';
+
+    if (servicioEditado.operario.nombre != servicioAntes.operario.nombre)
+      comentario += ', se cambió el operador a ' + servicioEditado.operario.nombre;
+
+    if (servicioEditado.precio != servicioAntes.precio)
+      comentario += ', se cambió el precio a ' + servicioEditado.precio;
+
+    if (servicioEditado.estado != servicioAntes.estado)
+      comentario += ', se cambió el estado a "' + servicioEditado.estado;
+
+    return comentario;
   }
 
   cambiarPrecioIndividual(value: string) {
@@ -124,4 +141,5 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
         textarea.nativeElement.style.height = textarea.nativeElement.scrollHeight + 'px';
       }), 50)
   }
+
 }

@@ -17,10 +17,10 @@ export class InformesService extends BaseService {
     const headers = this.obtenerHeaders();
 
     const params = new HttpParams()
-    .set('start_date', this.CONST.fechaATexto(fechaInicial, this.CONST.FORMATS_ANGULAR.DATETIME))
-    .set('end_date', this.CONST.fechaATexto(fechaFinal, this.CONST.FORMATS_ANGULAR.DATETIME));
+      .set('start_date', this.CONST.fechaATexto(fechaInicial, this.CONST.FORMATS_ANGULAR.DATETIME))
+      .set('end_date', this.CONST.fechaATexto(fechaFinal, this.CONST.FORMATS_ANGULAR.DATETIME));
 
-    return this.http.post<any>(this.URL + '/detailed', undefined, { params, headers }).pipe(map(
+    return this.http.get<any>(this.URL + '/detailed', { params, headers }).pipe(map(
       respuesta => {
         var respuestaMapeada = this.validarRespuesta<InformeDetalladoModel[]>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
@@ -39,7 +39,7 @@ export class InformesService extends BaseService {
       .set('start_date', this.CONST.fechaATexto(fechaInicial, this.CONST.FORMATS_ANGULAR.DATETIME))
       .set('end_date', this.CONST.fechaATexto(fechaFinal, this.CONST.FORMATS_ANGULAR.DATETIME));
 
-    return this.http.post<any>(this.URL + '/general', undefined, { params, headers }).pipe(map(
+    return this.http.get<any>(this.URL + '/general', { params, headers }).pipe(map(
       respuesta => {
         var respuestaMapeada = this.validarRespuesta<InformeGeneralModel[]>(respuesta);
         if (respuestaMapeada.esError) return respuestaMapeada;
@@ -50,44 +50,45 @@ export class InformesService extends BaseService {
     )).pipe(catchError((error) => this.controlarError(error)));
   }
 
-  private mapearAInformeDetallado(ordenes: any[]): InformeDetalladoModel[] {
-    return ordenes.map(
-      orden => {
-        return this.mapearAOrden(orden);
+  private mapearAInformeDetallado(orders: any[]): InformeDetalladoModel[] {
+    return orders.map(
+      order => {
+        return this.mapearAOrden(order);
       });
   }
 
-  private mapearAOrden(orden: any): InformeDetalladoModel {
+  private mapearAOrden(order: any): InformeDetalladoModel {
     return {
-      estadoOrden: orden.order_status,
-      numeroOrden: orden.order_number,
-      fechaCreacion: this.CONST.fechaATexto(orden.create_date, this.CONST.FORMATS_ANGULAR.DATE),
-      precioTotal: orden.total_value,
-      abono: orden.down_payment,
-      saldo: orden.balance,
-      serviciosRecibidos: orden.services_received,
-      serviciosTerminados: orden.services_completed,
-      serviciosDespachados: orden.services_dispatched,
+      estadoOrden: order.order_status,
+      numeroOrden: order.order_number,
+      fechaCreacion: this.CONST.fechaATexto(order.creation_date, this.CONST.FORMATS_ANGULAR.DATE),
+      precioTotal: order.total_services_value,
+      abono: order.total_deposits,
+      saldo: order.total_balance,
+      serviciosRecibidos: order.services_received,
+      serviciosTerminados: order.services_completed,
+      serviciosDespachados: order.services_dispatched,
     };
   }
 
-  private mapearAInformeGeneral(dias: any[]): InformeGeneralModel[] {
-    return dias.map(
-      dia => {
-        return this.mapearADia(dia);
+  private mapearAInformeGeneral(days: any[]): InformeGeneralModel[] {
+    return days.map(
+      day => {
+        return this.mapearADia(day);
       });
   }
 
-  private mapearADia(dia: any): InformeGeneralModel {
+  private mapearADia(day: any): InformeGeneralModel {
     return {
-      fecha: this.CONST.fechaATexto(dia.create_date, this.CONST.FORMATS_ANGULAR.DATE),
-      precioTotal: dia.total_value,
-      abono: dia.down_payment,
-      saldo: dia.balance,
+      fecha: this.CONST.fechaATexto(day.creation_date, this.CONST.FORMATS_ANGULAR.DATE),
+      precioTotal: day.total_services_value,
+      abono: day.total_deposits,
+      saldo: day.total_balance,
       // cantOrdenes: dia.cant_ordenes, // TO DO: Pendiente definir si activar
-      serviciosRecibidos: dia.services_received,
-      serviciosTerminados: dia.services_completed,
-      serviciosDespachados: dia.services_dispatched,
+      serviciosRecibidos: day.services_received,
+      serviciosTerminados: day.services_completed,
+      serviciosDespachados: day.services_dispatched,
+      
     };
   }
 

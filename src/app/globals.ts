@@ -35,6 +35,7 @@ export enum ESTADO_ADMIN {
 };
 
 export enum ROL_ADMIN {
+    ADMINISTRADOR = 'ADMINISTRADOR',
     PRINCIPAL = 'PRINCIPAL',
     SECUNDARIO = 'SECUNDARIO',
 };

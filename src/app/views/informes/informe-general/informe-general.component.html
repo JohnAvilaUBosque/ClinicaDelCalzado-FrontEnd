@@ -19,7 +19,7 @@
         <p>Filtre las órdenes de trabajo en un rango de fechas y se visualizarán los totales por día.</p>
         <form cForm #informeDetalladoForm="ngForm" (ngSubmit)="navegarAInformeGeneral()">
             <c-row>
-                <c-col md="5" class="mb-3">
+                <c-col sm="5" class="mb-3">
                     <label cLabel="col" sizing="sm">Fecha inicial:</label><span class="text-danger"> *</span>
                     <input cFormControl type="date" [(ngModel)]="fechaInicial" (ngModelChange)="validarFechas()"
                         name="startDate" #startDate="ngModel" required
@@ -29,7 +29,7 @@
                         Esta fecha debe ser anterior o igual a la fecha final!
                     </c-form-feedback>
                 </c-col>
-                <c-col md="5" class="mb-3">
+                <c-col sm="5" class="mb-3">
                     <label cLabel="col" sizing="sm">Fecha final:</label><span class="text-danger"> *</span>
                     <input cFormControl type="date" [(ngModel)]="fechaFinal" (ngModelChange)="validarFechas()"
                         name="endDate" #endDate="ngModel" required
@@ -38,7 +38,7 @@
                         Esta fecha debe ser posterior o igual a la fecha inicial!
                     </c-form-feedback>
                 </c-col>
-                <c-col md="2" class="mb-3" style="margin-top: 31px;">
+                <c-col sm="2" class="mb-3" style="margin-top: 31px;">
                     <input cButton color="primary" type="submit" value="Filtrar" class="w-100"
                         [disabled]="informeDetalladoForm.invalid">
                 </c-col>
