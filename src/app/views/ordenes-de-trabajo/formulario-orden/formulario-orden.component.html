@@ -27,7 +27,7 @@
                 </button>
                 <button cButton color="danger" variant="ghost" size="sm" shape="rounded-pill" cTooltip="Anular orden"
                     [cModalToggle]="anularModal.id"
-                    *ngIf="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE && usuarioLocal.rol != CONST.ROL_ADMIN.SECUNDARIO">
+                    *ngIf="orden.estadoOrden == CONST.ESTADO_ORDEN.VIGENTE">
                     <svg cIcon name="cil-x"></svg>
                 </button>
             </c-col>

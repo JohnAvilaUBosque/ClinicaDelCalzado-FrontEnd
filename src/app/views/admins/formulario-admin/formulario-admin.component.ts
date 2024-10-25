@@ -102,6 +102,12 @@ export class FormularioAdminComponent implements OnInit {
             return;
           }
 
+          if (this.adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO
+            && this.adminLocal.identificacion != respuesta.objeto.identificacion
+          ) {
+            this.router.navigate(['']);
+          }
+
           if (respuesta.objeto.rol == this.CONST.ROL_ADMIN.ADMINISTRADOR
             && this.adminLocal.identificacion != respuesta.objeto.identificacion
           ) {

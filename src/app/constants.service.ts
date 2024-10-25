@@ -39,20 +39,23 @@ export class ConstantsService {
   private cargandoEvento = new Subject<boolean>();
   public cargandoEvento$ = this.cargandoEvento.asObservable();
 
-  public fechaATexto(fecha: string | number | Date, formato: string): string {
-    if (typeof fecha == 'string' && fecha.indexOf('-') == 2)
-      fecha = this.convertirAFechaValida(fecha);
-    
-    return formatDate(fecha, formato, 'en-US');
+  public monedaATexto(valor: number): string {
+    return formatCurrency(valor, 'en-US', '$', 'COP', '1.0');
   }
 
   public textoAFecha(texto: string | number): Date | null {
     var fecha = this.fechaATexto(texto, this.FORMATS_ANGULAR.DATE);
 
-    if (!fecha)
-      return null;
+    if (!fecha) return null;
 
     return new Date(fecha);
+  }
+
+  public fechaATexto(fecha: string | number | Date, formato: string): string {
+    if (typeof fecha == 'string' && fecha.indexOf('-') == 2)
+      fecha = this.convertirAFechaValida(fecha);
+    
+    return formatDate(fecha, formato, 'en-US');
   }
 
   // dd-MM-yyyy HH:mm   =>    Date
@@ -69,10 +72,6 @@ export class ConstantsService {
     return nuevaFecha;
   }
 
-  public monedaATexto(valor: number): string {
-    return formatCurrency(valor, 'en-US', '$', 'COP', '1.0');
-  }
-
   private readonly secretKey = 'g35*SFG842356/G56Yhg-rfs541';
 
   public encriptarTexto(texto: string | null): string | null {
@@ -87,9 +86,13 @@ export class ConstantsService {
     const bytes = CryptoJS.AES.decrypt(textoEncriptado, this.secretKey);
     return bytes.toString(CryptoJS.enc.Utf8);
   }
-
+  
   public validarValorEnumerador(valor: string, enumerador: any): boolean {
     return Object.values(enumerador).includes(valor);
+  }
+
+  public duplicarObjeto(objeto: any): any {
+    return JSON.parse(JSON.stringify(objeto));
   }
 
   public descargarPDF(elemento: HTMLElement, nombrePDF: string): void {

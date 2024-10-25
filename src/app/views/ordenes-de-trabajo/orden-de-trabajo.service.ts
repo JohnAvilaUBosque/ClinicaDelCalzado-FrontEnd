@@ -195,7 +195,7 @@ export class OrdenDeTrabajoService extends BaseService {
           id: comment.id_comment,
           descripcion: comment.comment,
           nombreAdmin: comment.comment_by,
-          fecha: this.CONST.fechaATexto(comment.creation_date, this.CONST.FORMATS_ANGULAR.DATE),
+          fecha: this.CONST.fechaATexto(comment.creation_date, this.CONST.FORMATS_ANGULAR.DATETIME),
         };
       });
   }

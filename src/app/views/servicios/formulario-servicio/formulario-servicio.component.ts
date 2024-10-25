@@ -25,6 +25,7 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
   @Input() idServicio: number = 0;
   @Input() ocultarBoton: boolean = false;
 
+  public servicioOriginal: ServicioModel = new ServicioModel();
   public servicio: ServicioModel = new ServicioModel();
   public establecerPrecio: boolean = false;
 
@@ -65,7 +66,9 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
       respuesta => {
         if (respuesta.esError) return;
 
-        this.servicio = respuesta.objeto;
+        this.servicioOriginal = respuesta.objeto;
+
+        this.servicio = this.CONST.duplicarObjeto(respuesta.objeto);
         this.establecerPrecio = false;
         this.adjustTextareasHeight();
         this.cambiarEstado(this.servicio.estado);
@@ -82,7 +85,7 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
   editarServicio() {
     this.CONST.mostrarCargando();
 
-    var servicioEditado: ServicioModel = this.servicio;
+    var servicioEditado: ServicioModel = this.CONST.duplicarObjeto(this.servicio);
     servicioEditado.estado = this.btnRadioGroup.get('radioEstado')?.value ?? this.servicio.estado;
     if (!servicioEditado.precioEstablecido) servicioEditado.precioEstablecido = this.establecerPrecio;
 
@@ -93,24 +96,25 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
         this.CONST.ocultarCargando();
         this.CONST.mostrarMensajeExitoso(respuesta.objeto.mensaje);
 
-        var comentario = this.generarComentario(servicioEditado, this.servicio);
+        var comentario = this.generarComentario(this.servicioOriginal, servicioEditado);
         this.servicioEditadoEvent.emit(comentario);
         this.servicio = new ServicioModel();
+        this.servicioOriginal = new ServicioModel();
       }
     );
   }
 
-  generarComentario(servicioEditado: ServicioModel, servicioAntes: ServicioModel) {
-    var comentario = 'Se edito el servicio "' + servicioEditado.descripcion + '"';
+  generarComentario(servicioOriginal: ServicioModel, servicioEditado: ServicioModel) {
+    var comentario = 'Se edito el servicio "' + servicioOriginal.descripcion + '"';
 
-    if (servicioEditado.operario.nombre != servicioAntes.operario.nombre)
+    if (servicioOriginal.operario.nombre != servicioEditado.operario.nombre)
       comentario += ', se cambió el operador a ' + servicioEditado.operario.nombre;
 
-    if (servicioEditado.precio != servicioAntes.precio)
-      comentario += ', se cambió el precio a ' + servicioEditado.precio;
+    if (servicioOriginal.precio != servicioEditado.precio)
+      comentario += ', se cambió el precio a ' + this.CONST.monedaATexto(servicioEditado.precio);
 
-    if (servicioEditado.estado != servicioAntes.estado)
-      comentario += ', se cambió el estado a "' + servicioEditado.estado;
+    if (servicioOriginal.estado != servicioEditado.estado)
+      comentario += ', se cambió el estado a ' + servicioEditado.estado;
 
     return comentario;
   }
@@ -122,12 +126,6 @@ export class FormularioServicioComponent implements OnInit, OnChanges, AfterView
 
   cambiarEstado(value: string): void {
     this.btnRadioGroup.setValue({ radioEstado: value });
-  }
-
-  cambiarOperario(operario: OperarioModel) {
-    this.servicio.operario.identificacion = operario.identificacion;
-    this.servicio.operario.nombre = operario.nombre;
-    this.servicio.operario.celular = operario.celular;
   }
 
   seleccionarOperario() {

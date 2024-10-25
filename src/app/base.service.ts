@@ -99,8 +99,13 @@ export class BaseService {
     this.CONST.mostrarMensajeError(respuesta?.message || 'Error interno, comuniquese con el administrador.');
 
     if (respuesta && respuesta.status) {
-      if (validar401y403 && (respuesta.status == 401 || respuesta.status == 403)) {
+      if (validar401y403 && respuesta.status == 401) {
         this.router.navigate(['login']);
+        return;
+      }
+
+      if (validar401y403 && respuesta.status == 403) {
+        this.router.navigate(['']);
         return;
       }
 

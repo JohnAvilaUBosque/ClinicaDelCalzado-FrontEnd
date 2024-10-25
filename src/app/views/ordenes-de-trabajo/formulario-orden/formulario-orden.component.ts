@@ -252,9 +252,7 @@ export class FormularioOrdenComponent implements OnInit {
   // Funciones de Modals
 
   cambiarCliente(cliente: ClienteModel) {
-    this.orden.cliente.identificacion = cliente.identificacion;
-    this.orden.cliente.nombre = cliente.nombre;
-    this.orden.cliente.celular = cliente.celular;
+    this.orden.cliente = this.CONST.duplicarObjeto(cliente.identificacion);
   }
 
   enviarPorWhatsApp(whatsAppModal: ModalComponent) {
