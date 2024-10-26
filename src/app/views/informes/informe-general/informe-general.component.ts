@@ -114,6 +114,6 @@ export class InformeGeneralComponent implements OnInit {
     var nombrePDF = 'Informe-general-'
       + this.CONST.fechaATexto(this.fechaInicial, this.CONST.FORMATS_VIEW.DATE)
       + '-' + this.CONST.fechaATexto(this.fechaFinal, this.CONST.FORMATS_VIEW.DATE);
-    this.CONST.descargarPDF(this.elementoADescargar.nativeElement, nombrePDF);
+    this.CONST.descargarElementoHtmlToPdf(this.elementoADescargar.nativeElement, nombrePDF);
   }
 }

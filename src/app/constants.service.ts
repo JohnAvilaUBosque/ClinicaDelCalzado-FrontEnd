@@ -54,7 +54,7 @@ export class ConstantsService {
   public fechaATexto(fecha: string | number | Date, formato: string): string {
     if (typeof fecha == 'string' && fecha.indexOf('-') == 2)
       fecha = this.convertirAFechaValida(fecha);
-    
+
     return formatDate(fecha, formato, 'en-US');
   }
 
@@ -86,7 +86,7 @@ export class ConstantsService {
     const bytes = CryptoJS.AES.decrypt(textoEncriptado, this.secretKey);
     return bytes.toString(CryptoJS.enc.Utf8);
   }
-  
+
   public validarValorEnumerador(valor: string, enumerador: any): boolean {
     return Object.values(enumerador).includes(valor);
   }
@@ -95,7 +95,7 @@ export class ConstantsService {
     return JSON.parse(JSON.stringify(objeto));
   }
 
-  public descargarPDF(elemento: HTMLElement, nombrePDF: string): void {
+  public descargarElementoHtmlToPdf(elemento: HTMLElement, nombrePDF: string): void {
     html2canvas(elemento).then(canvas => {
       const imgWidth = 180;
       const imgHeight = canvas.height * imgWidth / canvas.width;
@@ -107,6 +107,13 @@ export class ConstantsService {
       pdf.addImage(contentDataURL, 'PNG', marginLeft, marginTop, imgWidth, imgHeight);
       pdf.save(nombrePDF);
     });
+  }
+
+  public descargarPDF(pdfUrl: string) {
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = 'documento.pdf';
+    link.click();
   }
 
   public mostrarMensajeError(error: string) {

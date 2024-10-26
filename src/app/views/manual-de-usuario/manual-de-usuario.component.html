@@ -1,3 +1,10 @@
 <object [data]="manualUrl" width="100%" [height]="height" type="application/pdf">
-    <div>No online PDF viewer installed</div>
+    <div>No hay ningún visor de PDF en línea instalado.</div>
+    <br/>
+    <button cButton color="primary" (click)="navegarAPdf()">
+        Abrir manual en otra pestaña.
+    </button>
+    <a cButton color="link" [href]="manualUrl" [download]="nombrePdf">
+        Descargar manual.
+    </a>
 </object>

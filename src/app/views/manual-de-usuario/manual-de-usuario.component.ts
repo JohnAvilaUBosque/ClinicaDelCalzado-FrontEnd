@@ -2,11 +2,12 @@ import { AfterViewInit, Component, ElementRef, inject } from '@angular/core';
 import { BaseService } from '../../base.service';
 import { ConstantsService } from 'src/app/constants.service';
 import { DomSanitizer, Title } from '@angular/platform-browser';
+import { ButtonModule } from '@coreui/angular';
 
 @Component({
   selector: 'app-manual-de-usuario',
   standalone: true,
-  imports: [],
+  imports: [ButtonModule],
   templateUrl: './manual-de-usuario.component.html',
   styleUrl: './manual-de-usuario.component.scss'
 })
@@ -19,6 +20,7 @@ export class ManualDeUsuarioComponent implements AfterViewInit {
   private CONST = inject(ConstantsService);
 
   public manualUrl!: any;
+  public nombrePdf!: any;
   public height!: string;
 
   constructor() {
@@ -28,13 +30,12 @@ export class ManualDeUsuarioComponent implements AfterViewInit {
 
     var pdfUrl: string;
     if (adminLocal.rol == this.CONST.ROL_ADMIN.SECUNDARIO)
-      pdfUrl = '/assets/Manual de usuario - Admin Secundario.pdf';
+      this.nombrePdf = 'Manual de usuario - Admin Secundario.pdf';
     else
-      pdfUrl = '/assets/Manual de usuario - Admin Principal.pdf';
+      this.nombrePdf = 'Manual de usuario - Admin Principal.pdf';
 
-    // pdfUrl += '#toolbar=0';
     const timestamp = new Date().getTime();
-    pdfUrl += '?timestamp=' + timestamp;
+    pdfUrl = '/assets/' + this.nombrePdf + '?timestamp=' + timestamp;
 
     this.manualUrl = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
   }
@@ -44,5 +45,9 @@ export class ManualDeUsuarioComponent implements AfterViewInit {
       const parentElement = this.elRef.nativeElement.closest('.body');
       this.height = (parentElement?.offsetHeight || 800) - 20 + 'px';
     }, 100);
+  }
+
+  navegarAPdf() {
+    window.open(this.manualUrl.changingThisBreaksApplicationSecurity, '_blank');
   }
 }

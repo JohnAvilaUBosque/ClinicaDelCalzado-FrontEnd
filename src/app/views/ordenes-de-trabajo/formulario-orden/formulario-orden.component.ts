@@ -252,7 +252,7 @@ export class FormularioOrdenComponent implements OnInit {
   // Funciones de Modals
 
   cambiarCliente(cliente: ClienteModel) {
-    this.orden.cliente = this.CONST.duplicarObjeto(cliente.identificacion);
+    this.orden.cliente = this.CONST.duplicarObjeto(cliente);
   }
 
   enviarPorWhatsApp(whatsAppModal: ModalComponent) {
@@ -275,7 +275,7 @@ export class FormularioOrdenComponent implements OnInit {
 
   descargar() {
     var nombrePDF = this.orden.numeroOrden + '-' + this.CONST.fechaATexto(new Date, this.CONST.FORMATS_VIEW.DATE);
-    this.CONST.descargarPDF(this.elementoADescargar.nativeElement, nombrePDF);
+    this.CONST.descargarElementoHtmlToPdf(this.elementoADescargar.nativeElement, nombrePDF);
   }
 
   abonar(abonarModal: ModalComponent) {
